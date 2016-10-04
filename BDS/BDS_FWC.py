@@ -1,41 +1,46 @@
-import sys
 import re
 from A429 import (A429LabelBNR,A429LabelBCD,A429LabelHYB,A429LabelDIS,A429SignalBool,A429SignalFloat)
+from BDS2XML import (BDS2XML)
 
-class BDS:
+class BDS_FWC:
     """
     Class to defined BDS data file
     """
 
-    def __init__(self,path_name):
+    def __init__(self, path_name):
         """
         Attributes are:
         _ path name of the file
         """
-        self.PathName=path_name
-        self.BDS={}
+        self.PathName = path_name
+        self.BDS = dict()
+
+        self.parse_BDS()
 
     def add_system(self,system):
         if system not in self.BDS.keys():
-            self.BDS[system]={}
-            self.BDS[system]['LabelsList']={}
-            self.BDS[system]['SignalList'] = {}
+            self.BDS[system] = dict()
+            self.BDS[system]['A429LabelsList'] = dict()
+            self.BDS[system]['DISLabelsList'] = dict()
+            self.BDS[system]['SignalList'] = dict()
 
     def add_Label(self,system,LabelNumber,LabelOject):
-        self.BDS[system]['LabelsList'][LabelNumber]=LabelOject
+        self.BDS[system]['A429LabelsList'][LabelNumber]=LabelOject
+
+    def get_LabelObj(self,system,LabelNumber):
+        if LabelNumber in self.BDS[system]['A429LabelsList'].keys():
+            return self.BDS[system]['A429LabelsList'][LabelNumber]
+        else:
+            return None
 
     def add_Signal(self,system,SignalName,SignalObj):
         self.BDS[system]['SignalList'][SignalName]=SignalObj
 
-    def get_LabelObject(self,LabelNumber):
-        if self.LabelsList.__len__()==0:
-            return None
+    def get_SignalObj(self, system, SignalName):
+        if SignalName in self.BDS[system]['SignalList'].keys():
+            return self.BDS[system]['SignalList'][SignalName]
         else:
-            LabelObj=None
-            for label in self.LabelsList:
-                if(label[0]==LabelNumber):
-                    LabelObj=label[1]
-            return LabelObj
+            return None
 
     def parse_BDS(self):
         """
@@ -55,7 +60,7 @@ class BDS:
         # into several line on  BDSFILE_LIST variable
         #
         try:
-            BDSFILE=open(self.PathName,'r')
+            BDSFILE = open(self.PathName,'r')
 
         except IOError:
             print('cannot open', self.PathName)
@@ -164,7 +169,7 @@ class BDS:
             # declare a new empty dictionary for line content
             # DicoLine will contain DicoLine['field']=field_value (extract from current line
             #
-            DicoLine = {}
+            DicoLine = dict()
 
             # declare objects
             LabelObj = None
@@ -181,50 +186,62 @@ class BDS:
             # nature of data on current line "ENTREE"/"SORTIE"/"E/S"
             nature=DicoLine['NATURE']
 
-            if(nature == "ENTREE"):
-                LabelObj = AddInputLabel(DicoLine)
-                self.add_Label(system,LabelObj.number,LabelObj)
+            # input / output type
+            typeIO=DicoLine['TYPE NAME']
 
-                # add associate signal
-                SignalObj= AddSignal(DicoLine,LabelObj)
-                self.add_Signal(system,SignalObj.name,SignalObj)
+            # in case of A429 data, I/O type is "NUM" or "BOOLEAN"
+            if(typeIO=="NUM") or (typeIO=="BOOLEAN"):
 
-            elif (nature == "SORTIE"):
-                LabelObj = AddOutputLabel(DicoLine)
-                self.add_Label(system,LabelObj.number, LabelObj)
+                if(nature == "ENTREE"):
+                    LabelObj = AddInputLabel(DicoLine)
+                    self.add_Label(system,LabelObj.number,LabelObj)
 
-                # add associate signal
-                SignalObj= AddSignal(DicoLine,LabelObj)
-                self.add_Signal(system,SignalObj.name,SignalObj)
+                    # add associate signal
+                    SignalObj= AddSignal(DicoLine,LabelObj)
+                    self.add_Signal(system,SignalObj.name,SignalObj)
 
-            elif (nature == "E/S"):
-                #
-                # for E/S label we have to create on label on input and one label on output
-                # output label are link to input label with attribute LinkToInput = label input number
-                #
-                # add input label
-                LabelObj = AddInputLabel(DicoLine)
-                LabelObj.nature = "ENTREE"
-                labelnum = LabelObj.number
-                self.add_Label(system, LabelObj.number, LabelObj)
+                elif (nature == "SORTIE"):
+                    LabelObj = AddOutputLabel(DicoLine)
+                    self.add_Label(system,LabelObj.number, LabelObj)
 
-                # add associate signal
-                SignalObj= AddSignal(DicoLine,LabelObj)
-                self.add_Signal(system,SignalObj.name,SignalObj)
+                    # add associate signal
+                    SignalObj= AddSignal(DicoLine,LabelObj)
+                    self.add_Signal(system,SignalObj.name,SignalObj)
 
-                # add output label
-                LabelObj = AddOutputLabel(DicoLine)
-                LabelObj.nature = "SORTIE"
-                LabelObj.LinkToInput=labelnum
-                self.add_Label(system, LabelObj.number, LabelObj)
+                elif (nature == "E/S"):
+                    #
+                    # for E/S label we have to create on label on input and one label on output
+                    # output label are link to input label with attribute LinkToInput = label input number
+                    #
+                    # add input label
+                    LabelObj = AddInputLabel(DicoLine)
+                    LabelObj.nature = "ENTREE"
+                    labelnum = LabelObj.number
+                    self.add_Label(system, LabelObj.number, LabelObj)
 
-                # add associate signal
-                SignalObj= AddSignal(DicoLine,LabelObj)
-                self.add_Signal(system,SignalObj.name,SignalObj)
-            #else:
-                #print("Label nature not defined:"+nature)
+                    # add associate signal
+                    SignalObj= AddSignal(DicoLine,LabelObj)
+                    self.add_Signal(system,SignalObj.name,SignalObj)
 
+                    # add output label
+                    LabelObj = AddOutputLabel(DicoLine)
+                    LabelObj.nature = "SORTIE"
+                    LabelObj.LinkToInput=labelnum
+                    self.add_Label(system, LabelObj.number, LabelObj)
 
+                    # add associate signal
+                    SignalObj= AddSignal(DicoLine,LabelObj)
+                    self.add_Signal(system,SignalObj.name,SignalObj)
+                #else:
+                    #print("Label nature not defined:"+nature)
+
+            # case of discrete data
+            elif(typeIO=="DISCRET"):
+                pass
+            # other I/O type
+            else:
+                pass
+            #TODO: Discret and other than A419 data type treatment
 
 def AddSignal(DicoLine,LabelObj):
 
@@ -313,24 +330,6 @@ def AddOutputLabel(DicoLine):
 
     return LabelObj
 
-def main():
-
-    print(sys.argv[1])
-
-    bds_file=BDS(sys.argv[1])
-    bds_file.parse_BDS()
 
 
-    for system in bds_file.BDS.keys():
-        print ("**"+system+"**")
-        label_list=list(bds_file.BDS[system]['LabelsList'].keys())
-        label_list.sort();
-        print (label_list)
-        for LabelNumber in bds_file.BDS[system]['LabelsList']:
-           # print ("\t**"+LabelNumber+"**")
-            label=bds_file.BDS[system]['LabelsList'][LabelNumber]
-            for signal in label.signalList:
-                pass
-                #print ("signal name: "+signal.name)
 
-main()
