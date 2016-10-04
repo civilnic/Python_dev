@@ -1,6 +1,7 @@
 import sys
 import re
 from A429 import (A429LabelBNR,A429LabelBCD,A429LabelHYB,A429LabelDIS,A429SignalBool,A429SignalFloat)
+from BDS2XML import (BDS2XML)
 
 class BDS:
     """
@@ -18,24 +19,26 @@ class BDS:
     def add_system(self,system):
         if system not in self.BDS.keys():
             self.BDS[system]={}
-            self.BDS[system]['LabelsList']={}
+            self.BDS[system]['LabelsList'] = {}
             self.BDS[system]['SignalList'] = {}
 
     def add_Label(self,system,LabelNumber,LabelOject):
         self.BDS[system]['LabelsList'][LabelNumber]=LabelOject
 
+    def get_LabelObj(self,system,LabelNumber):
+        if LabelNumber in self.BDS[system]['LabelsList'].keys():
+            return self.BDS[system]['LabelsList'][LabelNumber]
+        else:
+            return None
+
     def add_Signal(self,system,SignalName,SignalObj):
         self.BDS[system]['SignalList'][SignalName]=SignalObj
 
-    def get_LabelObject(self,LabelNumber):
-        if self.LabelsList.__len__()==0:
-            return None
+    def get_SignalObj(self, system, SignalName):
+        if SignalName in self.BDS[system]['SignalList'].keys():
+            return self.BDS[system]['SignalList'][SignalName]
         else:
-            LabelObj=None
-            for label in self.LabelsList:
-                if(label[0]==LabelNumber):
-                    LabelObj=label[1]
-            return LabelObj
+            return None
 
     def parse_BDS(self):
         """
@@ -313,24 +316,35 @@ def AddOutputLabel(DicoLine):
 
     return LabelObj
 
+
+
+
 def main():
 
     print(sys.argv[1])
 
     bds_file=BDS(sys.argv[1])
+    bds2xml_file=BDS2XML(sys.argv[2],True)
     bds_file.parse_BDS()
-
+    bds2xml_file.createemptyfile()
+    bds2xml_file.savefile()
 
     for system in bds_file.BDS.keys():
         print ("**"+system+"**")
         label_list=list(bds_file.BDS[system]['LabelsList'].keys())
         label_list.sort();
         print (label_list)
-        for LabelNumber in bds_file.BDS[system]['LabelsList']:
+        #for LabelNumber in bds_file.BDS[system]['LabelsList']:
            # print ("\t**"+LabelNumber+"**")
-            label=bds_file.BDS[system]['LabelsList'][LabelNumber]
-            for signal in label.signalList:
-                pass
+            #label=bds_file.BDS[system]['LabelsList'][LabelNumber]
+            #for signal in label.signalList:
+                #pass
                 #print ("signal name: "+signal.name)
+
+    if (bds_file.get_LabelObj('FWC',"008") is not None):
+        print (bds_file.get_LabelObj('FWC',"008").type)
+    else:
+        print ("Label 008 non défini")
+
 
 main()
