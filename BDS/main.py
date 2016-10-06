@@ -28,8 +28,8 @@ def main():
                 #pass
                 #print ("signal name: "+signal.name)
 
-    if (bds_file.get_LabelObj('FWC',"008") is not None):
-        print (bds_file.get_LabelObj('FWC',"008").type)
+    if (bds2xml_file.get_LabelObj("008") is not None):
+        print (bds2xml_file.get_LabelObj("008").type)
     else:
         print ("Label 008 non défini")
 

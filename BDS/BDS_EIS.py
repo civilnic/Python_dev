@@ -1,5 +1,5 @@
 import csv
-
+from A429 import (A429Label,A429ParamBNR,A429ParamBCD,A429ParamDIS)
 
 class BDS_EIS:
     """
@@ -35,13 +35,15 @@ class BDS_EIS:
             #
             # Use ''DictReader'' to directly have a dictionary (keys are the first row value)
             #
-            reader = csv.DictReader(file,delimiter=';')
+            reader = csv.DictReader(file, delimiter=';')
 
             #
             # read data
             #
             for row in reader:
-                AddLabel(row)
+                LabelObj=self.CreateLabel(row)
+                self.add_Label(LabelObj)
+
         finally:
             file.close()
 
@@ -51,7 +53,17 @@ class BDS_EIS:
         """
         pass
 
-    def AddLabel(DicoLine):
+    def add_Label(self,LabelOject):
+        self.BDS['A429LabelsList'][LabelOject.number]=LabelOject
+
+    def get_LabelObj(self,LabelNumber):
+        if LabelNumber in self.BDS['A429LabelsList'].keys():
+            return self.BDS['A429LabelsList'][LabelNumber]
+        else:
+            return None
+
+    def CreateLabel(self,DicoLine):
+
         LabelObj = None
 
         if (DicoLine["FORMAT_BLOC"]):
@@ -74,11 +86,11 @@ class BDS_EIS:
         elif (DicoLine["FORMAT_BLOC"] == "DW"):
             LabelObj = A429LabelDIS(DicoLine["LABEL"], DicoLine["SDI"])
 
-        LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
-        LabelObj.originATA = DicoLine["ORIGIN ATA"]
-        LabelObj.pins = DicoLine["INPUT PINS"]
-        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
-        LabelObj.nature = DicoLine['NATURE']
+        LabelObj.input_trans_rate = DicoLine["FREQU_CONT"]
+       # LabelObj.originATA = DicoLine["ORIGIN ATA"]
+      #  LabelObj.pins = DicoLine["INPUT PINS"]
+        LabelObj.source = DicoLine["NOM_SUPP"]
+        LabelObj.nature = DicoLine['SENS']
 
         return LabelObj
 
@@ -107,7 +119,7 @@ class BDS_EIS:
 
         if nb_bits > 0:
             resolution = range / (2 ** nb_bits)
-        else
+        else:
             resolution = None
 
         return resolution

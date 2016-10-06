@@ -1,5 +1,5 @@
 import re
-from A429 import (A429LabelBNR,A429LabelBCD,A429LabelHYB,A429LabelDIS,A429SignalBool,A429SignalFloat)
+from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD)
 from BDS2XML import (BDS2XML)
 
 class BDS_FWC:
@@ -33,10 +33,10 @@ class BDS_FWC:
         else:
             return None
 
-    def add_Signal(self,system,SignalName,SignalObj):
-        self.BDS[system]['SignalList'][SignalName]=SignalObj
+    def add_Signal(self,system,SignalName,ParamObj):
+        self.BDS[system]['SignalList'][SignalName]=ParamObj
 
-    def get_SignalObj(self, system, SignalName):
+    def get_ParamObj(self, system, SignalName):
         if SignalName in self.BDS[system]['SignalList'].keys():
             return self.BDS[system]['SignalList'][SignalName]
         else:
@@ -196,17 +196,17 @@ class BDS_FWC:
                     LabelObj = AddInputLabel(DicoLine)
                     self.add_Label(system,LabelObj.number,LabelObj)
 
-                    # add associate signal
-                    SignalObj= AddSignal(DicoLine,LabelObj)
-                    self.add_Signal(system,SignalObj.name,SignalObj)
+                    # add associate parameter
+                    ParamObj = AddParameter(DicoLine,LabelObj)
+                    self.add_Signal(system,ParamObj.name,ParamObj)
 
                 elif (nature == "SORTIE"):
                     LabelObj = AddOutputLabel(DicoLine)
                     self.add_Label(system,LabelObj.number, LabelObj)
 
-                    # add associate signal
-                    SignalObj= AddSignal(DicoLine,LabelObj)
-                    self.add_Signal(system,SignalObj.name,SignalObj)
+                    # add associate parameter
+                    ParamObj= AddParameter(DicoLine,LabelObj)
+                    self.add_Signal(system,ParamObj.name,ParamObj)
 
                 elif (nature == "E/S"):
                     #
@@ -219,9 +219,9 @@ class BDS_FWC:
                     labelnum = LabelObj.number
                     self.add_Label(system, LabelObj.number, LabelObj)
 
-                    # add associate signal
-                    SignalObj= AddSignal(DicoLine,LabelObj)
-                    self.add_Signal(system,SignalObj.name,SignalObj)
+                    # add associate parameter
+                    ParamObj= AddParameter(DicoLine,LabelObj)
+                    self.add_Signal(system,ParamObj.name,ParamObj)
 
                     # add output label
                     LabelObj = AddOutputLabel(DicoLine)
@@ -229,9 +229,9 @@ class BDS_FWC:
                     LabelObj.LinkToInput=labelnum
                     self.add_Label(system, LabelObj.number, LabelObj)
 
-                    # add associate signal
-                    SignalObj= AddSignal(DicoLine,LabelObj)
-                    self.add_Signal(system,SignalObj.name,SignalObj)
+                    # add associate parameter
+                    ParamObj= AddParameter(DicoLine,LabelObj)
+                    self.add_Signal(system,ParamObj.name,ParamObj)
                 #else:
                     #print("Label nature not defined:"+nature)
 
@@ -243,31 +243,45 @@ class BDS_FWC:
                 pass
             #TODO: Discret and other than A419 data type treatment
 
-def AddSignal(DicoLine,LabelObj):
+def AddParameter(DicoLine,LabelObj):
 
-    SignalObj=None
+    ParamObj=None
 
-    if(LabelObj.type=="BNR" or LabelObj.type=="HYB" or LabelObj.type=="BCD"):
-        SignalObj = A429SignalFloat(DicoLine["IDENTIFICATOR"], LabelObj.nature, LabelObj.number)
-    if(LabelObj.type == "DIS"):
-        SignalObj = A429SignalBool(DicoLine["IDENTIFICATOR"], LabelObj.nature, LabelObj.number)
+    # in FWC BDS msb is not specified
+    # we assume that msb = 28 for BNR and 29 for BCD
+    msb_bnr=28
+    msb_bcd=29
+
+    if (DicoLine["FORMAT"]):
+        if (DicoLine["FORMAT"] == "BNR"):
+            ParamObj=A429ParamBNR(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bnr,DicoLine["SIGNIFICANTS BITS"],DicoLine["RANGE MAX"],DicoLine["RESOLUTION"])
+            ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
+            ParamObj.signed=True
+        if (DicoLine["FORMAT"] == "BCD"):
+            ParamObj=A429ParamBCD(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bcd,DicoLine["SIGNIFICANTS BITS"],DicoLine["RANGE MAX"],DicoLine["RESOLUTION"])
+
+    # in case of DIS A429 Parameter FORMAT field is empty
+    else:
+        ParamObj = A429ParamDIS(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number)
 
         if(LabelObj.nature=="ENTREE"):
-            SignalObj.BitNumber=DicoLine["BIT IN"]
-            SignalObj.state0=DicoLine["STATE 0 PARAMETER DEFINITION"]
-            SignalObj.state1=DicoLine["STATE 1 PARAMETER DEFINITION"]
+            ParamObj.BitNumber=DicoLine["BIT IN"]
+            ParamObj.state0=DicoLine["STATE 0 PARAMETER DEFINITION"]
+            ParamObj.state1=DicoLine["STATE 1 PARAMETER DEFINITION"]
         elif(LabelObj.nature=="SORTIE"):
-            SignalObj.BitNumber = DicoLine["BIT OUT"]
-            SignalObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION OUT"]
-            SignalObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION OUT"]
+            ParamObj.BitNumber = DicoLine["BIT OUT"]
+            ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION OUT"]
+            ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION OUT"]
 
-    SignalObj.comments=DicoLine["COMMENTS"]
-    SignalObj.parameter_def=DicoLine["PARAMETER DEFINITION"]
-    SignalObj.unit=DicoLine["UNIT"]
+    ParamObj.comments=DicoLine["COMMENTS"]
+    ParamObj.parameter_def=DicoLine["PARAMETER DEFINITION"]
+    ParamObj.unit=DicoLine["UNIT"]
 
-    LabelObj.addSignal(SignalObj)
+    LabelObj.AddParameter(ParamObj)
 
-    return SignalObj
+
+    return ParamObj
+
 
 
 
@@ -275,25 +289,7 @@ def AddInputLabel(DicoLine):
 
     LabelObj=None
 
-
-    if (DicoLine["FORMAT"]):
-        if (DicoLine["FORMAT"] == "BNR"):
-            LabelObj = A429LabelBNR(DicoLine["LABEL IN"], DicoLine["SDI IN"], DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"],  DicoLine["RESOLUTION"])
-
-        if (DicoLine["FORMAT"] == "BCD"):
-            LabelObj = A429LabelBCD(DicoLine["LABEL IN"], DicoLine["SDI IN"], DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"],  DicoLine["RESOLUTION"])
-
-        if (DicoLine["FORMAT"] == "HYB"):
-            LabelObj = A429LabelHYB(DicoLine["LABEL IN"], DicoLine["SDI IN"], DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"],  DicoLine["RESOLUTION"])
-
-        LabelObj.accuracy=DicoLine["FULL SCALE CODING ACCURACY"]
-
-
-
-    # in case of DIS A429 label FORMAT field is empty
-    else:
-        LabelObj = A429LabelDIS(DicoLine["LABEL IN"], DicoLine["SDI IN"])
-
+    LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"],DicoLine["FORMAT"], DicoLine["NATURE"])
     LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
     LabelObj.originATA = DicoLine["ORIGIN ATA"]
     LabelObj.pins = DicoLine["INPUT PINS"]
@@ -306,27 +302,11 @@ def AddOutputLabel(DicoLine):
 
     LabelObj=None
 
-    if (DicoLine["FORMAT"]):
-        if (DicoLine["FORMAT"] == "BNR"):
-            LabelObj = A429LabelBNR(DicoLine["LABEL OUT"], DicoLine["SDI OUT"], DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"],  DicoLine["RESOLUTION"])
-
-        if (DicoLine["FORMAT"] == "BCD"):
-            LabelObj = A429LabelBCD(DicoLine["LABEL OUT"], DicoLine["SDI OUT"], DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"],  DicoLine["RESOLUTION"])
-
-        if (DicoLine["FORMAT"] == "HYB"):
-            LabelObj = A429LabelHYB(DicoLine["LABEL OUT"], DicoLine["SDI OUT"], DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"],  DicoLine["RESOLUTION"])
-
-        LabelObj.accuracy=DicoLine["FULL SCALE CODING ACCURACY"]
-
-    # in case of DIS A429 label FORMAT field is empty
-    else:
-        LabelObj = A429LabelDIS(DicoLine["LABEL OUT"], DicoLine["SDI OUT"])
-
+    LabelObj = A429Label(DicoLine["LABEL OUT"], DicoLine["SDI OUT"],DicoLine["FORMAT"], DicoLine["NATURE"])
     LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
     LabelObj.originATA = DicoLine["ORIGIN ATA"]
     LabelObj.pins = DicoLine["OUTPUT PINS"]
     LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
-    LabelObj.nature = DicoLine['NATURE']
 
     return LabelObj
 
