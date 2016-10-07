@@ -1,5 +1,5 @@
 import re
-from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD)
+from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
 from BDS2XML import (BDS2XML)
 
 class BDS_FWC:
@@ -21,8 +21,8 @@ class BDS_FWC:
         if system not in self.BDS.keys():
             self.BDS[system] = dict()
             self.BDS[system]['A429LabelsList'] = dict()
-            self.BDS[system]['DISLabelsList'] = dict()
-            self.BDS[system]['SignalList'] = dict()
+            self.BDS[system]['DISList'] = dict()
+            self.BDS[system]['ParameterList'] = dict()
 
     def add_Label(self,system,LabelNumber,LabelOject):
         self.BDS[system]['A429LabelsList'][LabelNumber]=LabelOject
@@ -33,12 +33,12 @@ class BDS_FWC:
         else:
             return None
 
-    def add_Signal(self,system,SignalName,ParamObj):
-        self.BDS[system]['SignalList'][SignalName]=ParamObj
+    def add_Parameter(self,system,ParameterName,ParamObj):
+        self.BDS[system]['ParameterList'][ParameterName]=ParamObj
 
-    def get_ParamObj(self, system, SignalName):
-        if SignalName in self.BDS[system]['SignalList'].keys():
-            return self.BDS[system]['SignalList'][SignalName]
+    def get_ParamObj(self, system, ParameterName):
+        if SignalName in self.BDS[system]['ParameterList'].keys():
+            return self.BDS[system]['ParameterList'][ParameterName]
         else:
             return None
 
@@ -176,21 +176,21 @@ class BDS_FWC:
 
             # split the line following BDS_parameters
             for field in BDS_Parameters.keys():
-                DicoLine[field]=line[BDS_Parameters[field][0]:BDS_Parameters[field][1]].strip()
+                DicoLine[field] = line[BDS_Parameters[field][0]:BDS_Parameters[field][1]].strip()
 
             # get current system
-            system=DicoLine['SYSTEM']
+            system = DicoLine['SYSTEM']
             # add it to current BDS object
             self.add_system(system)
 
             # nature of data on current line "ENTREE"/"SORTIE"/"E/S"
-            nature=DicoLine['NATURE']
+            nature = DicoLine['NATURE']
 
             # input / output type
-            typeIO=DicoLine['TYPE NAME']
+            typeIO = DicoLine['TYPE NAME']
 
             # in case of A429 data, I/O type is "NUM" or "BOOLEAN"
-            if(typeIO=="NUM") or (typeIO=="BOOLEAN"):
+            if(typeIO == "NUM") or (typeIO == "BOOLEAN"):
 
                 if(nature == "ENTREE"):
                     LabelObj = AddInputLabel(DicoLine)
@@ -198,7 +198,7 @@ class BDS_FWC:
 
                     # add associate parameter
                     ParamObj = AddParameter(DicoLine,LabelObj)
-                    self.add_Signal(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(system,ParamObj.name,ParamObj)
 
                 elif (nature == "SORTIE"):
                     LabelObj = AddOutputLabel(DicoLine)
@@ -206,7 +206,7 @@ class BDS_FWC:
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
-                    self.add_Signal(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(system,ParamObj.name,ParamObj)
 
                 elif (nature == "E/S"):
                     #
@@ -221,7 +221,7 @@ class BDS_FWC:
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
-                    self.add_Signal(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(system,ParamObj.name,ParamObj)
 
                     # add output label
                     LabelObj = AddOutputLabel(DicoLine)
@@ -231,7 +231,7 @@ class BDS_FWC:
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
-                    self.add_Signal(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(system,ParamObj.name,ParamObj)
                 #else:
                     #print("Label nature not defined:"+nature)
 
@@ -257,6 +257,8 @@ def AddParameter(DicoLine,LabelObj):
             ParamObj=A429ParamBNR(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bnr,DicoLine["SIGNIFICANTS BITS"],DicoLine["RANGE MAX"],DicoLine["RESOLUTION"])
             ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
             ParamObj.signed=True
+        if (DicoLine["FORMAT"] == "HYB"):
+            ParamObj=A429ParamOpaque(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bcd,DicoLine["SIGNIFICANTS BITS"])
         if (DicoLine["FORMAT"] == "BCD"):
             ParamObj=A429ParamBCD(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bcd,DicoLine["SIGNIFICANTS BITS"],DicoLine["RANGE MAX"],DicoLine["RESOLUTION"])
 
@@ -277,7 +279,7 @@ def AddParameter(DicoLine,LabelObj):
     ParamObj.parameter_def=DicoLine["PARAMETER DEFINITION"]
     ParamObj.unit=DicoLine["UNIT"]
 
-    LabelObj.AddParameter(ParamObj)
+    LabelObj.refParameter(ParamObj)
 
 
     return ParamObj
@@ -289,12 +291,11 @@ def AddInputLabel(DicoLine):
 
     LabelObj=None
 
-    LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"],DicoLine["FORMAT"], DicoLine["NATURE"])
+    LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
     LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
     LabelObj.originATA = DicoLine["ORIGIN ATA"]
     LabelObj.pins = DicoLine["INPUT PINS"]
     LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
-    LabelObj.nature = DicoLine['NATURE']
 
     return LabelObj
 
@@ -302,7 +303,7 @@ def AddOutputLabel(DicoLine):
 
     LabelObj=None
 
-    LabelObj = A429Label(DicoLine["LABEL OUT"], DicoLine["SDI OUT"],DicoLine["FORMAT"], DicoLine["NATURE"])
+    LabelObj = A429Label(DicoLine["LABEL OUT"], DicoLine["SDI OUT"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
     LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
     LabelObj.originATA = DicoLine["ORIGIN ATA"]
     LabelObj.pins = DicoLine["OUTPUT PINS"]

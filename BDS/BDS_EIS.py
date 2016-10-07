@@ -1,5 +1,5 @@
 import csv
-from A429 import (A429Label,A429ParamBNR,A429ParamBCD,A429ParamDIS)
+from A429 import (A429Label,A429ParamBNR,A429ParamBCD,A429ParamDIS,A429ParamOpaque)
 
 class BDS_EIS:
     """
@@ -16,7 +16,7 @@ class BDS_EIS:
         self.BDS = dict()
         self.BDS['A429LabelsList'] = dict()
         self.BDS['DISLabelsList'] = dict()
-        self.BDS['SignalList'] = dict()
+        self.BDS['ParamList'] = dict()
 
         self.parse_BDSA429()
         self.parse_BDSDis()
@@ -41,7 +41,7 @@ class BDS_EIS:
             # read data
             #
             for row in reader:
-                LabelObj=self.CreateLabel(row)
+                LabelObj = self.ParseLine(row)
                 self.add_Label(LabelObj)
 
         finally:
@@ -53,73 +53,109 @@ class BDS_EIS:
         """
         pass
 
-    def add_Label(self,LabelOject):
-        self.BDS['A429LabelsList'][LabelOject.number]=LabelOject
+    def add_Label(self, LabelOject):
+        labelIdentifier=LabelOject.createIndentifier()
+        if(labelIdentifier in self.BDS['A429LabelsList'].keys()):
+            print("Cannot Add label with identifier: {}".format(labelIdentifier))
+            #self.BDS['A429LabelsList'][labelIdentifier] = LabelOject
+        else:
+            self.BDS['A429LabelsList'][labelIdentifier] = LabelOject
 
-    def get_LabelObj(self,LabelNumber):
-        if LabelNumber in self.BDS['A429LabelsList'].keys():
-            return self.BDS['A429LabelsList'][LabelNumber]
+
+    def add_Parameter(self, ParamOject):
+        if (ParamOject.nature not in self.BDS['ParamList']):
+            self.BDS['ParamList'][ParamOject.nature] = dict()
+        self.BDS['ParamList'][ParamOject.nature][ParamOject.name] = ParamOject
+
+    def get_LabelObj(self, LabelNumber, nature):
+        if LabelNumber in self.BDS['A429LabelsList'][nature].keys():
+            return self.BDS['A429LabelsList'][nature][LabelNumber]
         else:
             return None
 
-    def CreateLabel(self,DicoLine):
+    def isLabelExist(self, LabelNumber, nature):
+        if LabelNumber in self.BDS['A429LabelsList'][nature].keys():
+            return True
+        else:
+            return False
 
-        LabelObj = None
+    def get_ParamObj(self, LabelNumber, nature):
+        if LabelNumber in self.BDS['A429LabelsList'][nature].keys():
+            return self.BDS['A429LabelsList'][nature][LabelNumber]
+        else:
+            return None
 
-        if (DicoLine["FORMAT_BLOC"]):
-            if (DicoLine["FORMAT_BLOC"] == "BNR"):
+    def ParseLine(self, DicoLine):
 
-                LabelObj = A429LabelBNR(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["POSITION"],
-                                        DicoLine["ECHEL"], ComputeResolutionBNR(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+        LabelObj=None
+        ParamObj=None
 
-            if (DicoLine["FORMAT_BLOC"] == "BCD"):
-
-                LabelObj = A429LabelBCD(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["POSITION"],
-                                        DicoLine["ECHEL"], ComputeResolutionBCD(DicoLine["TAILLE"],DicoLine["ECHEL"]))
-
-            if (DicoLine["FORMAT_BLOC"] == "HYB"):
-                LabelObj = A429LabelHYB(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["POSITION"],
-                                        DicoLine["ECHEL"], DicoLine["RESOLUTION"])
-
-
-        # in case of DIS A429 label FORMAT field is empty
-        elif (DicoLine["FORMAT_BLOC"] == "DW"):
-            LabelObj = A429LabelDIS(DicoLine["LABEL"], DicoLine["SDI"])
-
+        LabelObj = A429Label(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["FORMAT_BLOC"], DicoLine["SENS"], DicoLine["NOM_SOUS_ENS"])
         LabelObj.input_trans_rate = DicoLine["FREQU_CONT"]
-       # LabelObj.originATA = DicoLine["ORIGIN ATA"]
-      #  LabelObj.pins = DicoLine["INPUT PINS"]
         LabelObj.source = DicoLine["NOM_SUPP"]
-        LabelObj.nature = DicoLine['SENS']
 
+        if DicoLine['FORMAT_PARAM'] == "BNR":
+
+            ParamObj = A429ParamBNR(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
+                                    DicoLine["TAILLE"], DicoLine["ECHEL"], ComputeResolutionBNR(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+
+
+        elif DicoLine['FORMAT_PARAM'] == "BCD":
+            ParamObj = A429ParamBCD(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
+                                    DicoLine["TAILLE"], DicoLine["ECHEL"], ComputeResolutionBCD(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+
+        elif DicoLine['FORMAT_PARAM'] == "DW":
+            ParamObj = A429ParamDIS(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number)
+            ParamObj.BitNumber = DicoLine["POSITION"]
+            ParamObj.state0 = DicoLine["ETAT0"]
+            ParamObj.state1 = DicoLine["ETAT1"]
+
+        elif DicoLine['FORMAT_PARAM'] == "ISO5":
+
+            ParamObj = A429ParamOpaque(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],DicoLine["TAILLE"])
+
+        else:
+            #print ("[BDS_EIS][ParseLine] Type non reconnu: " + DicoLine['FORMAT_PARAM'])
+            return LabelObj
+
+        ParamObj.numbloc = DicoLine["NOM_BLOC"]
+        ParamObj.libbloc = DicoLine["LIB_BLOC"]
+        ParamObj.comments = DicoLine["LIB_PARAM"]
+        ParamObj.parameter_def = DicoLine["NOM_TYPE"]
+        ParamObj.unit = DicoLine["UNITE"]
+
+        LabelObj.refParameter(ParamObj)
         return LabelObj
 
 
 
-    def ComputeResolutionBCD(nb_bits,range):
+def ComputeResolutionBCD(nb_bits, range):
 
-        max_encoding=0
-        n_digit=0
+    max_encoding = 0.0
+    n_digit = 0
+    nombre_bits=int(nb_bits)
 
-        while nb_bits > 3:
-            max_encoding = max_encoding + 9*10**n_digit
-            nb_bits -= 4
-            n_digit += 1
-        if nb_bits==3:
-            max_encoding = max_encoding + 7*10**n_digit
-        elif nb_bits==2:
-            max_encoding = max_encoding + 3*10**n_digit
-        elif nb_bits==1:
-            max_encoding = max_encoding + 1*10**n_digit
+    while nombre_bits > 3:
+        max_encoding = max_encoding + 9*10**n_digit
+        nombre_bits -= 4
+        n_digit += 1
+    if nombre_bits == 3:
+        max_encoding = max_encoding + 7*10**n_digit
+    elif nombre_bits == 2:
+        max_encoding = max_encoding + 3*10**n_digit
+    elif nombre_bits == 1:
+        max_encoding = max_encoding + 1*10**n_digit
 
-        return range / max_encoding
+    return float(range) / max_encoding
 
 
-    def ComputeResolutionBNR(nb_bits,range):
+def ComputeResolutionBNR(nb_bits, range):
 
-        if nb_bits > 0:
-            resolution = range / (2 ** nb_bits)
-        else:
-            resolution = None
+    nombre_bits=int(nb_bits)
 
-        return resolution
+    if nombre_bits > 0:
+        resolution = float(range) / (2 ** nombre_bits)
+    else:
+        resolution = None
+
+    return resolution

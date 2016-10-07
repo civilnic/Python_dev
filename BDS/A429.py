@@ -1,65 +1,103 @@
+import re
+from IPython.lib.pretty import pprint
+
 class A429Label:
     """
     Class to defined A429Label data
     """
 
-    def __init__(self, number, sdi,labetype,nature):
+    def __init__(self, number, sdi,labetype,nature,system):
         """
         Attributes are:
         _ path name of the file
         """
-        self.number = number
+        self.number = int(number)
         self.sdi = sdi
         self.labetype = labetype
-        self.nature = nature
+        self.system = system
         self._source = None
+        self._ssmtype = None
         self._originATA = None
         self._input_trans_rate = None
         self._pins = None
         self._LinkToInput = None
-        self.signalList = []
+        self.ParameterList = []
 
-    def _set_LinkToInput(self, LinkToInput):
-        self._LinkToInput = LinkToInput
-    def _get_LinkToInput(self):
+        self.nature = convertNature(nature)
+
+    @property
+    def ssmtype(self):
+        return self._ssmtype
+    @ssmtype.setter
+    def ssmtype(self, ssmtype):
+        self._ssmtype = ssmtype
+
+    @property
+    def LinkToInput(self):
         return self._LinkToInput
-    LinkToInput = property(_get_LinkToInput, _set_LinkToInput)
+    @LinkToInput.setter
+    def LinkToInput(self, LinkToInput):
+        self._LinkToInput = LinkToInput
 
-
-    def _set_nature(self, nature):
-        self._nature = nature
-    def _get_nature(self):
+    @property
+    def nature(self):
         return self._nature
-    nature = property(_get_nature, _set_nature)
+    @nature.setter
+    def nature(self, nature):
+        self._nature = nature
 
-    def _set_originATA(self,origin_ATA):
-        self._originATA=origin_ATA
-    def _get_originATA(self):
+    @property
+    def originATA(self):
         return self._originATA
-    originATA = property(_get_originATA,_set_originATA)
+    @originATA.setter
+    def originATA(self, originATA):
+        self._originATA = originATA
 
-    def _set_input_trans_rate(self, input_trans_rate):
-        self._originATA = input_trans_rate
-    def _get_input_trans_rate(self):
+    @property
+    def input_trans_rate(self):
         return self._input_trans_rate
-    input_trans_rate = property(_get_input_trans_rate, _set_input_trans_rate)
 
+    @input_trans_rate.setter
+    def input_trans_rate(self, input_trans_rate):
+        self._input_trans_rate = input_trans_rate
 
-    def _set_pins(self, pins):
-        self._pins = pins
-    def _get_pins(self):
+    @property
+    def pins(self):
         return self._pins
-    pins = property(_get_pins, _set_pins)
+    @pins.setter
+    def pins(self, pins):
+        self._pins = pins
 
-
-    def _set_source(self, source):
-        self._source = source
-    def _get_source(self):
+    @property
+    def source(self):
         return self._source
-    source = property(_get_source, _set_source)
+    @source.setter
+    def source(self, source):
+        self._source = source
 
-    def addSignal(self,signalObj):
-        self.signalList.append(signalObj)
+    def refParameter(self,paramObj):
+        self.ParameterList.append(paramObj)
+
+    def getParameterList(self, paramObj):
+        return self.ParameterList
+
+    def print(self):
+        print ("Label number: "+str(self.number))
+        print ("Label sdi: "+str(self.sdi))
+        print ("Label type: "+str(self.labetype))
+        print ("Label source: "+str(self._source))
+        print ("Label nature: "+str(self.nature))
+        print ("Label _ssmtype: "+str(self._ssmtype))
+        for param in self.ParameterList:
+            print ("Parameter name: "+str(param.name))
+            print ("Parameter nature: "+str(param.nature))
+            print ("Parameter codingtype: "+str(param._codingtype))
+            print ("Parameter unit: "+str(param._unit))
+            print ("Parameter commment: "+str(param._comments))
+
+    def createIndentifier(self):
+        identifier = (self.nature, self.system, self.number, self.sdi,self.source)
+        return identifier
 
 
 class A429Parameter:
@@ -70,11 +108,30 @@ class A429Parameter:
     def __init__(self, name, nature,label):
         self.name = name
         self.nature = nature
-        self.label = label
+        self.label = int(label)
         self._codingtype = None
         self._unit = None
         self._comments = None
         self._parameter_def = None
+        self._nombloc = None
+        self._libbloc = None
+        
+    @property
+    def libbloc(self):
+        return self._libbloc
+    @libbloc.setter
+    def libbloc(self, libbloc):
+        if(not libbloc):
+            self._libbloc = 'ALL'
+        else:
+            self._libbloc = libbloc
+
+    @property
+    def nombloc(self):
+        return self._nombloc
+    @nombloc.setter
+    def nombloc(self, nombloc):
+        self._nombloc = nombloc
 
     @property
     def unit(self):
@@ -123,7 +180,7 @@ class A429ParamDIS(A429Parameter):
             return self._BitNumber
         @BitNumber.setter
         def BitNumber(self, BitNumber):
-            self._BitNumber = BitNumber
+            self._BitNumber = int(BitNumber)
 
         @property
         def state0(self):
@@ -149,11 +206,11 @@ class A429ParamBNR(A429Parameter):
     def __init__(self, name, nature, label, msb, nb_bits, range, resolution):
         A429Parameter.__init__(self,name, nature, label)
         self.codingtype="float"
-        self.msb = msb
-        self.nb_bits = nb_bits
-        self.range = range
-        self.resolution = resolution
-        self.lsb = self.msb - self.nb_bits
+        self.msb = int(msb)
+        self.nb_bits = int(nb_bits)
+        self.range = float(range)
+        self.resolution = float(resolution)
+        self.lsb = int(self.msb) - int(self.nb_bits)
         self._accuracy = None
         self._signed = None
 
@@ -162,7 +219,11 @@ class A429ParamBNR(A429Parameter):
         return self._accuracy
     @accuracy.setter
     def accuracy(self, accuracy):
-        self._accuracy = accuracy
+        if(accuracy):
+            if isfloat(accuracy):
+                self._accuracy = float(accuracy)
+            else:
+                self.accuracy = None
 
 
     @property
@@ -170,17 +231,58 @@ class A429ParamBNR(A429Parameter):
         return self._signed
     @signed.setter
     def signed(self, signed):
-        self._signed = signed
+        self._signed = bool(signed)
 
 class A429ParamBCD(A429Parameter):
     """
     Base class to defined A429 BOOL signal type
     """
 
-    def __init__(self, name, nature, label, msb, signif_bits, range, resolution):
+    def __init__(self, name, nature, label, msb, nb_bits, range, resolution):
         A429Parameter.__init__(self,name, nature, label)
-        self.codingtype="float"
-        self.msb = msb
-        self.signif_bits = signif_bits
-        self.range = range
-        self.resolution = resolution
+        self.codingtype = "int"
+        self.msb = int(msb)
+        self.nb_bits = int(nb_bits)
+
+        if len(re.findall("\s", range))> 0:
+            range_chaine = range.split(" ")
+            self.range = float(range_chaine[-1])
+        else:
+            self.range = float(range)
+
+        self.resolution = float(resolution)
+
+class A429ParamOpaque(A429Parameter):
+    """
+    Base class to defined A429 BOOL signal type
+    """
+
+    def __init__(self, name, nature, label, msb, nb_bits):
+        A429Parameter.__init__(self, name, nature, label)
+        self.codingtype = "int"
+        self.msb = int(msb)
+        if(nb_bits):
+            self.nb_bits = int(nb_bits)
+        else:
+            self.nb_bits = None
+
+def isfloat(value):
+  try:
+    float(value)
+    return True
+  except:
+    return False
+
+def convertNature(nature):
+    if nature == 'O':
+        nature = "OUT"
+    elif nature == "I":
+        nature = "IN"
+    elif nature == "ENTREE":
+        nature = "IN"
+    elif nature == "SORTIE":
+        nature = "OUT"
+    else:
+        return None
+
+    return nature

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationTable type="A429" generationDate="17/06/2016 13h16m" generationTool="BDS2FDEF">
+	<configurationSources>
+		<sourceFile type="SDAC BDS" pathname="D:\SVN_AI~1\A320ID\MSP\trunk\03-Models\fdef_EIS\Inputs\BDS\BDStoXML_MSP_PW_fdef_EIS.xls"/>
+	</configurationSources>
+	<configurationEntity>
+	</configurationEntity>
+</configurationTable>
