@@ -29,18 +29,13 @@ def main():
                 #pass
                 #print ("signal name: "+signal.name)
     print ("**EIS**")
-    print(list(bdsEis.BDS['A429LabelsList']['IN'].keys()))
-    print(list(bdsEis.BDS['A429LabelsList']['OUT'].keys()))
 
-    label_nb=7
 
-    print (bdsEis.BDS['A429LabelsList'].keys())
-    if (bdsEis.isLabelExist(label_nb,"IN")):
-        labelObj=bdsEis.get_LabelObj(label_nb,"IN")
-        labelObj.print();
-      #  print (bdsEis.get_LabelObj(label_nb,"IN").labetype)
-    else:
-        print ("Label "+label_nb+" non défini")
+    label_nb=377
+
+    labelObjList=bdsEis.get_LabelObjList(number=label_nb,nature="IN")
+    for label in labelObjList:
+        label.print();
 
 
 main()

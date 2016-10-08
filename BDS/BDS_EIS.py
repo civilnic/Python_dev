@@ -1,4 +1,5 @@
 import csv
+import re
 from A429 import (A429Label,A429ParamBNR,A429ParamBCD,A429ParamDIS,A429ParamOpaque)
 
 class BDS_EIS:
@@ -16,7 +17,8 @@ class BDS_EIS:
         self.BDS = dict()
         self.BDS['A429LabelsList'] = dict()
         self.BDS['DISLabelsList'] = dict()
-        self.BDS['ParamList'] = dict()
+        self.BDS['ParamList'] = ()
+        self.BDS['sourceList'] = dict()
 
         self.parse_BDSA429()
         self.parse_BDSDis()
@@ -54,36 +56,69 @@ class BDS_EIS:
         pass
 
     def add_Label(self, LabelOject):
+
+        # an label identifier is a tuple made of the following fields
+        # self.nature, self.system, self.number, self.sdi,self.source
         labelIdentifier=LabelOject.createIndentifier()
-        if(labelIdentifier in self.BDS['A429LabelsList'].keys()):
-            print("Cannot Add label with identifier: {}".format(labelIdentifier))
-            #self.BDS['A429LabelsList'][labelIdentifier] = LabelOject
-        else:
+        if(labelIdentifier not in self.BDS['A429LabelsList'].keys()):
             self.BDS['A429LabelsList'][labelIdentifier] = LabelOject
 
-
     def add_Parameter(self, ParamOject):
-        if (ParamOject.nature not in self.BDS['ParamList']):
-            self.BDS['ParamList'][ParamOject.nature] = dict()
-        self.BDS['ParamList'][ParamOject.nature][ParamOject.name] = ParamOject
+        self.BDS['ParamList'].append(ParamOject)
 
-    def get_LabelObj(self, LabelNumber, nature):
-        if LabelNumber in self.BDS['A429LabelsList'][nature].keys():
-            return self.BDS['A429LabelsList'][nature][LabelNumber]
-        else:
-            return None
+    def add_Source(self, source):
+        if (source not in self.BDS['sourceList']):
+            self.BDS['sourceList'][source] = source
 
-    def isLabelExist(self, LabelNumber, nature):
-        if LabelNumber in self.BDS['A429LabelsList'][nature].keys():
-            return True
-        else:
-            return False
+    def get_SourceList(self, source):
+            return self.BDS['sourceList'][source]
 
-    def get_ParamObj(self, LabelNumber, nature):
-        if LabelNumber in self.BDS['A429LabelsList'][nature].keys():
-            return self.BDS['A429LabelsList'][nature][LabelNumber]
+    def get_LabelObjList(self,**paramdict):
+        # self.nature, self.system, self.number, self.sdi,self.source
+        mylabellist=[]
+
+        if 'nature' in paramdict:
+            naturesearched=str(paramdict['nature'])
         else:
-            return None
+            naturesearched=".*"
+
+        if 'system' in paramdict:
+            systemsearched=str(paramdict['system'])
+        else:
+            systemsearched=".*"
+
+        if 'number' in paramdict:
+            numbersearched=str(paramdict['number'])
+            print ("numbersearched: "+numbersearched)
+        else:
+            numbersearched=".*"
+
+        if 'sdi' in paramdict:
+            sdisearched=str(paramdict['sdi'])
+        else:
+            sdisearched=".*"
+
+        if 'source' in paramdict:
+            sourcesearched=str(paramdict['source'])
+        else:
+            sourcesearched=".*"
+
+        natureregexp=re.compile(naturesearched)
+        systemregexp=re.compile(systemsearched)
+        numberregexp=re.compile(numbersearched)
+        sdiregexp=re.compile(sdisearched)
+        sourceregexp=re.compile(sourcesearched)
+
+        for (nature, system, number, sdi, source) in self.BDS['A429LabelsList'].keys():
+            if natureregexp.search(str(nature)):
+                if systemregexp.search(str(system)):
+                    if numberregexp.search(str(number)):
+                        if sdiregexp.search(str(sdi)):
+                            if sourceregexp.search(str(source)):
+                                mylabellist.append(self.BDS['A429LabelsList'][(nature, system, number, sdi, source)])
+        return mylabellist
+
+
 
     def ParseLine(self, DicoLine):
 

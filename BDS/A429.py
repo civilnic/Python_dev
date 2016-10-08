@@ -1,19 +1,18 @@
 import re
-from IPython.lib.pretty import pprint
 
 class A429Label:
     """
     Class to defined A429Label data
     """
 
-    def __init__(self, number, sdi,labetype,nature,system):
+    def __init__(self, number, sdi,labeltype,nature,system):
         """
         Attributes are:
         _ path name of the file
         """
         self.number = int(number)
         self.sdi = sdi
-        self.labetype = labetype
+        self.labeltype = labeltype
         self.system = system
         self._source = None
         self._ssmtype = None
@@ -77,23 +76,23 @@ class A429Label:
 
     def refParameter(self,paramObj):
         self.ParameterList.append(paramObj)
+        paramObj.labelObj=self
 
-    def getParameterList(self, paramObj):
+    def getParameterList(self):
         return self.ParameterList
 
     def print(self):
         print ("Label number: "+str(self.number))
         print ("Label sdi: "+str(self.sdi))
-        print ("Label type: "+str(self.labetype))
+        print ("Label type: "+str(self.labeltype))
+        print ("Label from system: "+str(self.system))
         print ("Label source: "+str(self._source))
         print ("Label nature: "+str(self.nature))
         print ("Label _ssmtype: "+str(self._ssmtype))
-        for param in self.ParameterList:
-            print ("Parameter name: "+str(param.name))
-            print ("Parameter nature: "+str(param.nature))
-            print ("Parameter codingtype: "+str(param._codingtype))
-            print ("Parameter unit: "+str(param._unit))
-            print ("Parameter commment: "+str(param._comments))
+        for param in self.getParameterList():
+            param.print()
+
+
 
     def createIndentifier(self):
         identifier = (self.nature, self.system, self.number, self.sdi,self.source)
@@ -115,7 +114,15 @@ class A429Parameter:
         self._parameter_def = None
         self._nombloc = None
         self._libbloc = None
-        
+        self._labelObj = None
+
+    @property
+    def labelObj(self):
+        return self._labelObj
+    @labelObj.setter
+    def labelObj(self, labelObj):
+        self._labelObj = labelObj
+
     @property
     def libbloc(self):
         return self._libbloc
@@ -161,6 +168,15 @@ class A429Parameter:
     def codingtype(self, codingtype):
         self._codingtype = codingtype
 
+    def print(self):
+        print("Parameter name: " + str(self.name))
+        print("Parameter nature: " + str(self.nature))
+        print("Parameter codingtype: " + str(self._codingtype))
+        print("Parameter unit: " + str(self._unit))
+        print("Parameter commment: " + str(self._comments))
+        print("Parameter parameter_def: " + str(self.parameter_def))
+
+
 
 class A429ParamDIS(A429Parameter):
     """
@@ -175,28 +191,32 @@ class A429ParamDIS(A429Parameter):
         self._state0=None
         self._state1=None
 
-        @property
-        def BitNumber(self):
-            return self._BitNumber
-        @BitNumber.setter
-        def BitNumber(self, BitNumber):
-            self._BitNumber = int(BitNumber)
+    @property
+    def BitNumber(self):
+        return self._BitNumber
+    @BitNumber.setter
+    def BitNumber(self, BitNumber):
+        self._BitNumber = int(BitNumber)
 
-        @property
-        def state0(self):
-            return self._state0
+    @property
+    def state0(self):
+        return self._state0
+    @state0.setter
+    def state0(self, state0):
+        self._state0 = state0
 
-        @state0.setter
-        def state0(self, state0):
-            self._state0 = state0
+    @property
+    def state1(self):
+        return self._state1
+    @state1.setter
+    def state1(self, state1):
+        self._state1 = state1
 
-        @property
-        def state1(self):
-            return self._state1
-
-        @state1.setter
-        def state1(self, state1):
-            self._state1 = state1
+    def print(self):
+        super(A429ParamDIS, self).print()
+        print("Parameter BitNumber: " + str(self.BitNumber))
+        print("Parameter state0: " + str(self.state0))
+        print("Parameter state1: " + str(self.state1))
 
 class A429ParamBNR(A429Parameter):
     """
@@ -225,13 +245,24 @@ class A429ParamBNR(A429Parameter):
             else:
                 self.accuracy = None
 
-
     @property
     def signed(self):
         return self._signed
     @signed.setter
     def signed(self, signed):
         self._signed = bool(signed)
+
+
+    def print(self):
+        super(A429ParamBNR, self).print()
+        print("Parameter msb: " + str(self.msb))
+        print("Parameter nb_bits: " + str(self.nb_bits))
+        print("Parameter range: " + str(self.range))
+        print("Parameter resolution: " + str(self.resolution))
+        print("Parameter lsb: " + str(self.lsb))
+        print("Parameter accuracy: " + str(self.accuracy))
+        print("Parameter signed: " + str(self.signed))
+
 
 class A429ParamBCD(A429Parameter):
     """
@@ -252,6 +283,13 @@ class A429ParamBCD(A429Parameter):
 
         self.resolution = float(resolution)
 
+    def print(self):
+        super(A429ParamBCD, self).print()
+        print("Parameter msb: " + str(self.msb))
+        print("Parameter nb_bits: " + str(self.nb_bits))
+        print("Parameter range: " + str(self.range))
+        print("Parameter resolution: " + str(self.resolution))
+
 class A429ParamOpaque(A429Parameter):
     """
     Base class to defined A429 BOOL signal type
@@ -265,6 +303,14 @@ class A429ParamOpaque(A429Parameter):
             self.nb_bits = int(nb_bits)
         else:
             self.nb_bits = None
+
+
+    def print(self):
+        super(A429ParamOpaque,self).print()
+        print("Parameter msb: " + str(self.msb))
+        print("Parameter nb_bits: " + str(self.nb_bits))
+
+
 
 def isfloat(value):
   try:
