@@ -1,46 +1,23 @@
 import re
+from BDS import BDS
 from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
 from BDS2XML import (BDS2XML)
 
-class BDS_FWC:
+class BDS_FWC(BDS):
     """
     Class to defined BDS data file
     """
 
-    def __init__(self, path_name):
+    def __init__(self, pathname):
         """
         Attributes are:
         _ path name of the file
         """
-        self.PathName = path_name
-        self.BDS = dict()
+        super(BDS_FWC, self).__init__()
 
+        self.PathName=pathname
         self.parse_BDS()
 
-    def add_system(self,system):
-        if system not in self.BDS.keys():
-            self.BDS[system] = dict()
-            self.BDS[system]['A429LabelsList'] = dict()
-            self.BDS[system]['DISList'] = dict()
-            self.BDS[system]['ParameterList'] = dict()
-
-    def add_Label(self,system,LabelNumber,LabelOject):
-        self.BDS[system]['A429LabelsList'][LabelNumber]=LabelOject
-
-    def get_LabelObj(self,system,LabelNumber):
-        if LabelNumber in self.BDS[system]['A429LabelsList'].keys():
-            return self.BDS[system]['A429LabelsList'][LabelNumber]
-        else:
-            return None
-
-    def add_Parameter(self,system,ParameterName,ParamObj):
-        self.BDS[system]['ParameterList'][ParameterName]=ParamObj
-
-    def get_ParamObj(self, system, ParameterName):
-        if SignalName in self.BDS[system]['ParameterList'].keys():
-            return self.BDS[system]['ParameterList'][ParameterName]
-        else:
-            return None
 
     def parse_BDS(self):
         """
@@ -178,11 +155,6 @@ class BDS_FWC:
             for field in BDS_Parameters.keys():
                 DicoLine[field] = line[BDS_Parameters[field][0]:BDS_Parameters[field][1]].strip()
 
-            # get current system
-            system = DicoLine['SYSTEM']
-            # add it to current BDS object
-            self.add_system(system)
-
             # nature of data on current line "ENTREE"/"SORTIE"/"E/S"
             nature = DicoLine['NATURE']
 
@@ -194,19 +166,19 @@ class BDS_FWC:
 
                 if(nature == "ENTREE"):
                     LabelObj = AddInputLabel(DicoLine)
-                    self.add_Label(system,LabelObj.number,LabelObj)
+                    self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj = AddParameter(DicoLine,LabelObj)
-                    self.add_Parameter(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(ParamObj)
 
                 elif (nature == "SORTIE"):
                     LabelObj = AddOutputLabel(DicoLine)
-                    self.add_Label(system,LabelObj.number, LabelObj)
+                    self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
-                    self.add_Parameter(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(ParamObj)
 
                 elif (nature == "E/S"):
                     #
@@ -217,21 +189,21 @@ class BDS_FWC:
                     LabelObj = AddInputLabel(DicoLine)
                     LabelObj.nature = "ENTREE"
                     labelnum = LabelObj.number
-                    self.add_Label(system, LabelObj.number, LabelObj)
+                    self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
-                    self.add_Parameter(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(ParamObj)
 
                     # add output label
                     LabelObj = AddOutputLabel(DicoLine)
                     LabelObj.nature = "SORTIE"
                     LabelObj.LinkToInput=labelnum
-                    self.add_Label(system, LabelObj.number, LabelObj)
+                    self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
-                    self.add_Parameter(system,ParamObj.name,ParamObj)
+                    self.add_Parameter(ParamObj)
                 #else:
                     #print("Label nature not defined:"+nature)
 

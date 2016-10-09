@@ -85,7 +85,7 @@ class A429Label:
         print ("Label number: "+str(self.number))
         print ("Label sdi: "+str(self.sdi))
         print ("Label type: "+str(self.labeltype))
-        print ("Label from system: "+str(self.system))
+        print ("Label of system: "+str(self.system))
         print ("Label source: "+str(self._source))
         print ("Label nature: "+str(self.nature))
         print ("Label _ssmtype: "+str(self._ssmtype))

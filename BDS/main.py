@@ -17,11 +17,6 @@ def main():
     bdsEis=BDS_EIS(sys.argv[3],sys.argv[4])
 
 
-    for system in bds_file.BDS.keys():
-        print ("**"+system+"**")
-        label_list=list(bds_file.BDS[system]['A429LabelsList'].keys())
-        label_list.sort();
-        print (label_list)
         #for LabelNumber in bds_file.BDS[system]['A429LabelsList']:
            # print ("\t**"+LabelNumber+"**")
             #label=bds_file.BDS[system]['A429LabelsList'][LabelNumber]
@@ -33,9 +28,10 @@ def main():
 
     label_nb=377
 
-    labelObjList=bdsEis.get_LabelObjList(number=label_nb,nature="IN")
-    for label in labelObjList:
-        label.print();
-
-
+    labelObjList=bdsEis.get_LabelObjList(nature="IN")
+    for labelObj in labelObjList:
+        print (labelObj.number)
+        for parameterObj in labelObj.getParameterList():
+            bds2xml_file.AddLine(parameterObj)
+    bds2xml_file.savefile()
 main()

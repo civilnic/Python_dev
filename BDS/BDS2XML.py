@@ -1,5 +1,6 @@
-
 import xlrd, xlwt
+import re
+from A429 import (A429Parameter,A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
 
 class BDS2XML:
     """
@@ -67,6 +68,84 @@ class BDS2XML:
             self.SheetAndIndex[sheet]['RowIndex'] += 1
             self.SheetAndIndex[sheet]['RowNbr'] += 1
 
+    def AddLine(self, ParameterObj):
+
+        linedict=dict()
+
+        # wich tab must be filled with parameter values
+        LabelObj=ParameterObj.labelObj
+
+        testFWC=re.compile(r"\w*FWC\w*")
+        testEIS=re.compile(r"\w*EIS\w*")
+        testSDAC=re.compile(r"\w*SDAC\w*")
+
+        if testEIS.search(LabelObj.system):
+            if LabelObj.nature == "IN":
+                sheet="toEIS"
+            elif LabelObj.nature == "OUT":
+                sheet="fromEIS"
+
+            # 'Model from'
+                linedict['Model from'] = "SIMU"
+            # 'Name PF',
+            # 'Type'
+                linedict['Type'] = ParameterObj.codingtype
+            # 'Name F'
+            # 'NOM_SUPP'
+                linedict['NOM_SUPP'] = ParameterObj.source
+            #  'CONT'
+
+            # 'NOM_BLOC'
+            # 'FORMAT_BLOC'
+            # 'LIB_BLOC'
+            # 'SSM_TYPE'
+            # 'NOM_PARAM'
+            # 'FORMAT_PARAM'
+            # 'LIB_PARAM'
+            # 'UNITE'
+            # 'TYPE'
+            # 'POSI'
+            # 'TAIL'
+            # 'SGN'
+            # 'ECHEL'
+            #  'DOMAINE'
+            # 'ETAT_0'
+            # 'ETAT_1'
+            # 'ERREUR'
+            #  'Version BDS'
+            #  'Comments'
+
+
+
+        elif testFWC.search(LabelObj.system):
+            if LabelObj.nature == "IN":
+                if LabelObj.labeltype == "DW":
+                    sheet="toFWC(DIS)"
+                else:
+                    sheet="toFWC(BNR)"
+            elif LabelObj.nature == "OUT":
+                if LabelObj.labeltype == "DW":
+                    sheet="fromFWC(DIS)"
+                else:
+                    sheet="fromFWC(BNR)"
+        elif testSDAC.search(LabelObj.system):
+            if LabelObj.nature == "IN":
+                sheet="toSDAC"
+            elif LabelObj.nature == "OUT":
+                sheet="fromSDAC"
+
+        else:
+            print("[BDS2XML creation] Cannot set tab")
+            return None
+
+
+        for field in linedict.keys():
+            self.SheetAndIndex[sheet]['XlsSheet'].write(self.SheetAndIndex[sheet]['RowIndex'],
+                                                        self.SheetAndIndex[sheet]['ColIndex'], header_cell,
+                                                        BDS2XML.xls_style)
+            self.SheetAndIndex[sheet]['ColIndex'] += 1
+
+        self.SheetAndIndex[sheet]['RowIndex'] += 1
 
     def savefile(self):
         """

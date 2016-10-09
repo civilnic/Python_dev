@@ -1,8 +1,8 @@
 import csv
-import re
-from A429 import (A429Label,A429ParamBNR,A429ParamBCD,A429ParamDIS,A429ParamOpaque)
+from BDS import (BDS)
+from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
 
-class BDS_EIS:
+class BDS_EIS(BDS):
     """
     Class to defined BDS data file
     """
@@ -12,13 +12,9 @@ class BDS_EIS:
         Attributes are:
         _ path name of the file
         """
+        super(BDS_EIS, self).__init__()
         self.A429File = A429File
         self.DISFile = DISFile
-        self.BDS = dict()
-        self.BDS['A429LabelsList'] = dict()
-        self.BDS['DISLabelsList'] = dict()
-        self.BDS['ParamList'] = ()
-        self.BDS['sourceList'] = dict()
 
         self.parse_BDSA429()
         self.parse_BDSDis()
@@ -55,71 +51,6 @@ class BDS_EIS:
         """
         pass
 
-    def add_Label(self, LabelOject):
-
-        # an label identifier is a tuple made of the following fields
-        # self.nature, self.system, self.number, self.sdi,self.source
-        labelIdentifier=LabelOject.createIndentifier()
-        if(labelIdentifier not in self.BDS['A429LabelsList'].keys()):
-            self.BDS['A429LabelsList'][labelIdentifier] = LabelOject
-
-    def add_Parameter(self, ParamOject):
-        self.BDS['ParamList'].append(ParamOject)
-
-    def add_Source(self, source):
-        if (source not in self.BDS['sourceList']):
-            self.BDS['sourceList'][source] = source
-
-    def get_SourceList(self, source):
-            return self.BDS['sourceList'][source]
-
-    def get_LabelObjList(self,**paramdict):
-        # self.nature, self.system, self.number, self.sdi,self.source
-        mylabellist=[]
-
-        if 'nature' in paramdict:
-            naturesearched=str(paramdict['nature'])
-        else:
-            naturesearched=".*"
-
-        if 'system' in paramdict:
-            systemsearched=str(paramdict['system'])
-        else:
-            systemsearched=".*"
-
-        if 'number' in paramdict:
-            numbersearched=str(paramdict['number'])
-            print ("numbersearched: "+numbersearched)
-        else:
-            numbersearched=".*"
-
-        if 'sdi' in paramdict:
-            sdisearched=str(paramdict['sdi'])
-        else:
-            sdisearched=".*"
-
-        if 'source' in paramdict:
-            sourcesearched=str(paramdict['source'])
-        else:
-            sourcesearched=".*"
-
-        natureregexp=re.compile(naturesearched)
-        systemregexp=re.compile(systemsearched)
-        numberregexp=re.compile(numbersearched)
-        sdiregexp=re.compile(sdisearched)
-        sourceregexp=re.compile(sourcesearched)
-
-        for (nature, system, number, sdi, source) in self.BDS['A429LabelsList'].keys():
-            if natureregexp.search(str(nature)):
-                if systemregexp.search(str(system)):
-                    if numberregexp.search(str(number)):
-                        if sdiregexp.search(str(sdi)):
-                            if sourceregexp.search(str(source)):
-                                mylabellist.append(self.BDS['A429LabelsList'][(nature, system, number, sdi, source)])
-        return mylabellist
-
-
-
     def ParseLine(self, DicoLine):
 
         LabelObj=None
@@ -132,12 +63,12 @@ class BDS_EIS:
         if DicoLine['FORMAT_PARAM'] == "BNR":
 
             ParamObj = A429ParamBNR(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
-                                    DicoLine["TAILLE"], DicoLine["ECHEL"], ComputeResolutionBNR(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBNR(DicoLine["TAILLE"],DicoLine["ECHEL"]))
 
 
         elif DicoLine['FORMAT_PARAM'] == "BCD":
             ParamObj = A429ParamBCD(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
-                                    DicoLine["TAILLE"], DicoLine["ECHEL"], ComputeResolutionBCD(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBCD(DicoLine["TAILLE"],DicoLine["ECHEL"]))
 
         elif DicoLine['FORMAT_PARAM'] == "DW":
             ParamObj = A429ParamDIS(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number)
@@ -164,33 +95,3 @@ class BDS_EIS:
 
 
 
-def ComputeResolutionBCD(nb_bits, range):
-
-    max_encoding = 0.0
-    n_digit = 0
-    nombre_bits=int(nb_bits)
-
-    while nombre_bits > 3:
-        max_encoding = max_encoding + 9*10**n_digit
-        nombre_bits -= 4
-        n_digit += 1
-    if nombre_bits == 3:
-        max_encoding = max_encoding + 7*10**n_digit
-    elif nombre_bits == 2:
-        max_encoding = max_encoding + 3*10**n_digit
-    elif nombre_bits == 1:
-        max_encoding = max_encoding + 1*10**n_digit
-
-    return float(range) / max_encoding
-
-
-def ComputeResolutionBNR(nb_bits, range):
-
-    nombre_bits=int(nb_bits)
-
-    if nombre_bits > 0:
-        resolution = float(range) / (2 ** nombre_bits)
-    else:
-        resolution = None
-
-    return resolution
