@@ -106,17 +106,15 @@ def SetLabelFormattedName(LabelObj):
     try:
         int(LabelObj.sdi, 2)
     except ValueError:
-        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(LabelObj.sdi) + str(LabelObj.number)
+        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(LabelObj.sdi) + str("%03d" % LabelObj.number)
     else:
-        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi, 2)) + str(LabelObj.number)
+        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi, 2)) + str("%03d" % LabelObj.number)
 
 def SetParameterPreFormattedName(ParamObj):
 
-    ParamObj.
+    LabelObj=ParamObj.labelObj
 
     if LabelObj.labeltype == "DW":
-        linedict['Name PF'] = str(LabelObj.source) + "_L" + str(LabelObj.number) + "_B" + str(
-            ParameterObj.BitNumber) + "_" + str(ParameterObj.name)
+        ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_B" + str(ParamObj.BitNumber) + "_" + str(ParamObj.name)
     else:
-        linedict['Name PF'] = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + str(
-            ParameterObj.name)
+        ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + str(ParamObj.name)

@@ -101,7 +101,7 @@ class BDS2XML:
                 else:
                     sheet = "fromFWC(BNR)"
 
-
+            self.fillFWCLineDict(ParameterObj, linedict)
 
 
 
@@ -148,23 +148,13 @@ class BDS2XML:
         linedict['Model from'] = "SIMU"
 
         # 'Name PF',
-        if LabelObj.labeltype == "DW":
-            linedict['Name PF'] = str(LabelObj.source) + "_L" + str(LabelObj.number) + "_B" + str(
-                ParameterObj.BitNumber) + "_" + str(ParameterObj.name)
-        else:
-            linedict['Name PF'] = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + str(
-                ParameterObj.name)
+        linedict['Name PF'] = ParameterObj.SimuPreFormattedName
 
         # 'Type'
         linedict['Type'] = ParameterObj.codingtype
 
         # 'Name F'
-        try:
-            int(LabelObj.sdi, 2)
-        except ValueError:
-            linedict['Name F'] = str(LabelObj.source) + "a4_w" + str(LabelObj.sdi) + str(LabelObj.number)
-        else:
-            linedict['Name F'] = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi, 2)) + str(LabelObj.number)
+        linedict['Name F'] = LabelObj.SimuFormattedName
 
         # 'NOM_SUPP'
         linedict['NOM_SUPP'] = LabelObj.source
@@ -221,28 +211,136 @@ class BDS2XML:
                 #  'Version BDS'
                 #  'Comments'
 
-    def fillFWCLineDict(self,linedict):
+    def fillFWCLineDict(self,  ParameterObj, linedict):
+
+        LabelObj=ParameterObj.labelObj
 
         # 'Model from'
         linedict['Model from'] = "SIMU"
 
-        # Name PF'
+        # 'Name PF',
+        linedict['Name PF'] = ParameterObj.SimuPreFormattedName
+
         # 'Type'
+        linedict['Type'] = ParameterObj.codingtype
+
         # 'Name F'
+        linedict['Name F'] = LabelObj.SimuFormattedName
+
         # 'SW_IDENT'
+        linedict['SW_IDENT'] = LabelObj.SimuFormattedName
+
         # 'IDENT'
-        # 'NATURE'
+        linedict['SW_IDENT'] = ParameterObj.name
+
         # 'TYPE'
-        # 'SIG_BIT'
-        # 'RANG_IN'
-        # 'RESOLUTION_IN'
-        # 'UNIT_IN'
-        # 'FORMAT'
+        linedict['TYPE'] = ParameterObj.codingtype
+
         # 'PAR_DEF'
-        # 'WIRE_NAME_IN'
-        # 'LABEL_IN'
-        # 'SDI_IN'
-        # 'IN_TRANS'
-        # 'FULLSC'
-        # 'Version BDS'
-        # 'Comments'
+        linedict['PAR_DEF'] = ParameterObj.parameter_def
+
+        if LabelObj.nature == "IN":
+            # 'NATURE'
+            linedict['SW_IDENT'] = "I"
+
+            # 'IN_TYPE'
+            linedict['IN_TYPE'] = "I"
+
+            # 'SDI_IN'
+            linedict['SDI_IN'] = LabelObj.sdi
+
+            # 'LABEL_IN'
+            linedict['LABEL_IN'] = LabelObj.number
+
+            # 'WIRE_NAME_IN'
+            linedict['WIRE_NAME_IN'] = LabelObj.source
+
+            # 'IN_TRANS'
+            linedict['IN_TRANS'] = LabelObj.input_trans_rate
+
+            if LabelObj.labeltype != "DW" and ParameterObj.formatparam != "":
+
+                # 'SIG_BIT'
+                linedict['SIG_BIT'] = ParameterObj.nb_bits
+
+                # 'RANG_IN'
+                ParameterObj.print()
+                linedict['RANG_IN'] = ParameterObj.range
+
+                # 'RESOLUTION_IN'
+                linedict['RESOLUTION_IN'] = ParameterObj.resolution
+
+                # 'UNIT_IN'
+                linedict['UNIT_IN'] = ParameterObj.unit
+
+                # 'FORMAT'
+                linedict['FORMAT'] = ParameterObj.formatparam
+
+            else:
+                # 'STATE1_IN'
+                linedict['STATE1_IN'] = ParameterObj.state1
+
+                # 'STATE0_IN'
+                linedict['STATE0_IN'] = ParameterObj.state0
+
+                # 'BIT_IN'
+                linedict['BIT_IN'] = ParameterObj.BitNumber
+
+        else:
+            # 'NATURE'
+            linedict['SW_IDENT'] = "O"
+
+            # 'IN_TYPE'
+            linedict['IN_TYPE'] = "O"
+
+            # 'SDI_OUT'
+            linedict['SDI_OUT'] = LabelObj.sdi
+
+            # 'LABEL_OUT'
+            linedict['LABEL_OUT'] = LabelObj.number
+
+            # 'WIRE_NAME_OUT'
+            linedict['WIRE_NAME_OUT'] = LabelObj.source
+
+            # 'OUT_TRANS'
+            linedict['OUT_TRANS'] = LabelObj.input_trans_rate
+
+            if LabelObj.labeltype != "DW":
+
+                # 'SIG_BIT'
+                linedict['SIG_BIT'] = ParameterObj.nb_bits
+
+                # 'RANG_OUT'
+                linedict['RANG_OUT'] = ParameterObj.range
+
+                # 'RESOLUTION_OUT'
+                linedict['RESOLUTION_OUT'] = ParameterObj.resolution
+
+                # 'UNIT_OUT'
+                linedict['UNIT_OUT'] = ParameterObj.unit
+
+                # 'FORMAT'
+                linedict['FORMAT'] = ParameterObj.formatparam
+
+            else:
+                # 'STATE1_OUT'
+                linedict['STATE1_OUT'] = ParameterObj.state1
+
+                # 'STATE0_OUT'
+                linedict['STATE0_OUT'] = ParameterObj.state0
+
+                # 'BIT_OUT'
+                linedict['BIT_OUT'] = ParameterObj.BitNumber
+
+#'toFWC(BNR)':
+# ('Model from', 'Name PF', 'Type', 'Name F', 'SW_IDENT', 'IDENT', 'NATURE', 'TYPE', 'SIG_BIT','RANG_IN', 'RESOLUTION_IN', 'UNIT_IN', 'FORMAT', 'PAR_DEF', 'WIRE_NAME_IN', 'LABEL_IN',
+#                          'SDI_IN', 'IN_TRANS', 'FULLSC', 'Version BDS', 'Comments'),
+# 'fromFWC(BNR)':
+# ('Model from', 'Name PF', 'Type', 'Name F', 'SW_IDENT', 'IDENT', 'NATURE', 'TYPE', 'SIG_BIT','RANG_OUT', 'RESOLUTION_OUT', 'UNIT_OUT', 'FORMAT', 'PAR_DEF', 'WIRE_NAME_OUT', 'LABEL_OUT',
+#                           'SDI_OUT', 'OUT_TRANS', 'FULLSC', 'Version BDS', 'Comments'),
+#'toFWC(DIS)':
+# ('Model from', 'Name PF', 'Type', 'Name F', 'SW_IDENT', 'IDENT', 'NATURE', 'TYPE', 'IN_TYPE','PAR_DEF', 'STATE1_IN', 'STATE0_IN', 'WIRE_NAME_IN', 'LABEL_IN', 'SDI_IN', 'BIT_IN',
+#                          'IN_TRANS', 'Version BDS', 'Comments'),
+# 'fromFWC(DIS)':(
+#'Model from', 'Name PF', 'Type', 'Name F', 'SW_IDENT', 'IDENT', 'NATURE', 'TYPE', 'OUT_TYPE','PAR_DEF', 'STATE1_OUT', 'STATE0_OUT', 'WIRE_NAME_OUT', 'LABEL_OUT', 'SDI_OUT', 'BIT_OUT',
+#                           'OUT_TRANS', 'Version BDS', 'Comments'),

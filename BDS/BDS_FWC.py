@@ -1,14 +1,16 @@
 import re
 from BDS import BDS
 from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
+from lxml import etree
 from BDS2XML import (BDS2XML)
 
 class BDS_FWC(BDS):
     """
     Class to defined BDS data file
     """
+    ConnectorMap = dict()
 
-    def __init__(self, pathname):
+    def __init__(self, pathname, connectormapfile):
         """
         Attributes are:
         _ path name of the file
@@ -16,8 +18,35 @@ class BDS_FWC(BDS):
         super(BDS_FWC, self).__init__()
 
         self.PathName=pathname
+        self.ConnectorMapFile = connectormapfile
+
+
+        self.parseMapFile()
         self.parse_BDS()
 
+
+    def parseMapFile(self):
+        """
+        Method to parse connector map file (to create formatted label name of FWC)
+        """
+        print(self.ConnectorMapFile)
+        if self.ConnectorMapFile:
+            try:
+                tree = etree.parse(self.ConnectorMapFile)
+            except:
+                print ("Canoot open FWC connector map file: "+self.ConnectorMapFile)
+                return None
+
+
+        for input in tree.xpath("/FWC_connector_map/input"):
+
+            connector = input.get("connector")
+
+            if connector not in self.ConnectorMap.keys():
+                self.ConnectorMap[connector] = dict()
+            self.ConnectorMap[connector]["type"] = input.get("type")
+            self.ConnectorMap[connector]["source"] = input.get("source")
+            self.ConnectorMap[connector]["idfwc"] = input.get("idfwc")
 
     def parse_BDS(self):
         """
@@ -165,19 +194,19 @@ class BDS_FWC(BDS):
             if(typeIO == "NUM") or (typeIO == "BOOLEAN"):
 
                 if(nature == "ENTREE"):
-                    LabelObj = AddInputLabel(DicoLine)
+                    LabelObj = self.AddInputLabel(DicoLine)
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    ParamObj = AddParameter(DicoLine,LabelObj)
+                    ParamObj = self.AddParameter(DicoLine, LabelObj)
                     self.add_Parameter(ParamObj)
 
                 elif (nature == "SORTIE"):
-                    LabelObj = AddOutputLabel(DicoLine)
+                    LabelObj = self.AddOutputLabel(DicoLine)
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    ParamObj= AddParameter(DicoLine,LabelObj)
+                    ParamObj= self.AddParameter(DicoLine, LabelObj)
                     self.add_Parameter(ParamObj)
 
                 elif (nature == "E/S"):
@@ -186,103 +215,127 @@ class BDS_FWC(BDS):
                     # output label are link to input label with attribute LinkToInput = label input number
                     #
                     # add input label
-                    LabelObj = AddInputLabel(DicoLine)
+                    LabelObj = self.AddInputLabel(DicoLine)
                     LabelObj.nature = "ENTREE"
                     labelnum = LabelObj.number
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    ParamObj= AddParameter(DicoLine,LabelObj)
+                    ParamObj= self.AddParameter(DicoLine, LabelObj)
                     self.add_Parameter(ParamObj)
 
                     # add output label
-                    LabelObj = AddOutputLabel(DicoLine)
+                    LabelObj = self.AddOutputLabel(DicoLine)
                     LabelObj.nature = "SORTIE"
                     LabelObj.LinkToInput=labelnum
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    ParamObj= AddParameter(DicoLine,LabelObj)
+                    ParamObj= self.AddParameter(DicoLine, LabelObj)
                     self.add_Parameter(ParamObj)
                 #else:
                     #print("Label nature not defined:"+nature)
 
             # case of discrete data
-            elif(typeIO=="DISCRET"):
+            elif(typeIO == "DISCRET"):
                 pass
             # other I/O type
             else:
                 pass
             #TODO: Discret and other than A419 data type treatment
 
-def AddParameter(DicoLine,LabelObj):
+    def AddParameter(self, DicoLine, LabelObj):
 
-    ParamObj=None
+        ParamObj=None
 
-    # in FWC BDS msb is not specified
-    # we assume that msb = 28 for BNR and 29 for BCD
-    msb_bnr=28
-    msb_bcd=29
+        # in FWC BDS msb is not specified
+        # we assume that msb = 28 for BNR and 29 for BCD
+        msb_bnr = 28
+        msb_bcd = 29
 
-    if (DicoLine["FORMAT"]):
-        if (DicoLine["FORMAT"] == "BNR"):
-            ParamObj=A429ParamBNR(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bnr,DicoLine["SIGNIFICANTS BITS"],DicoLine["RANGE MAX"],DicoLine["RESOLUTION"])
-            ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
-            ParamObj.signed=True
-        if (DicoLine["FORMAT"] == "HYB"):
-            ParamObj=A429ParamOpaque(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bcd,DicoLine["SIGNIFICANTS BITS"])
-        if (DicoLine["FORMAT"] == "BCD"):
-            ParamObj=A429ParamBCD(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number,msb_bcd,DicoLine["SIGNIFICANTS BITS"],DicoLine["RANGE MAX"],DicoLine["RESOLUTION"])
+        if DicoLine["FORMAT"]:
+            if DicoLine["FORMAT"] == "BNR":
+                ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
+                ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
+                ParamObj.signed = True
+            if DicoLine["FORMAT"] == "HYB":
+                ParamObj = A429ParamOpaque(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"])
+            if DicoLine["FORMAT"] == "BCD":
+                ParamObj = A429ParamBCD(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
 
-    # in case of DIS A429 Parameter FORMAT field is empty
-    else:
-        ParamObj = A429ParamDIS(DicoLine["IDENTIFICATOR"],DicoLine["NATURE"], LabelObj.number)
+        # in case of DIS A429 Parameter FORMAT field is empty
+        else:
+            ParamObj = A429ParamDIS(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number)
 
-        if(LabelObj.nature=="ENTREE"):
-            ParamObj.BitNumber=DicoLine["BIT IN"]
-            ParamObj.state0=DicoLine["STATE 0 PARAMETER DEFINITION"]
-            ParamObj.state1=DicoLine["STATE 1 PARAMETER DEFINITION"]
-        elif(LabelObj.nature=="SORTIE"):
-            ParamObj.BitNumber = DicoLine["BIT OUT"]
-            ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION OUT"]
-            ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION OUT"]
+            if LabelObj.nature == "ENTREE":
+                ParamObj.BitNumber = DicoLine["BIT IN"]
+                ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION"]
+                ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION"]
+            elif LabelObj.nature == "SORTIE":
+                ParamObj.BitNumber = DicoLine["BIT OUT"]
+                ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION OUT"]
+                ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION OUT"]
 
-    ParamObj.comments=DicoLine["COMMENTS"]
-    ParamObj.parameter_def=DicoLine["PARAMETER DEFINITION"]
-    ParamObj.unit=DicoLine["UNIT"]
+        ParamObj.comments = DicoLine["COMMENTS"]
+        ParamObj.parameter_def = DicoLine["PARAMETER DEFINITION"]
+        ParamObj.unit = DicoLine["UNIT"]
 
-    LabelObj.refParameter(ParamObj)
+        LabelObj.refParameter(ParamObj)
+
+        self.SetParameterPreFormattedName(ParamObj)
+
+        return ParamObj
 
 
-    return ParamObj
+    def AddInputLabel(self, DicoLine):
 
+        LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
+        LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
+        LabelObj.originATA = DicoLine["ORIGIN ATA"]
+        LabelObj.pins = DicoLine["INPUT PINS"]
+        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
 
+        self.SetLabelFormattedName(LabelObj)
 
+        return LabelObj
 
-def AddInputLabel(DicoLine):
+    def AddOutputLabel(self, DicoLine):
 
-    LabelObj=None
+        LabelObj = A429Label(DicoLine["LABEL OUT"], DicoLine["SDI OUT"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
+        LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
+        LabelObj.originATA = DicoLine["ORIGIN ATA"]
+        LabelObj.pins = DicoLine["OUTPUT PINS"]
+        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
 
-    LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
-    LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
-    LabelObj.originATA = DicoLine["ORIGIN ATA"]
-    LabelObj.pins = DicoLine["INPUT PINS"]
-    LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
+        self.SetLabelFormattedName(LabelObj)
 
-    return LabelObj
-
-def AddOutputLabel(DicoLine):
-
-    LabelObj=None
-
-    LabelObj = A429Label(DicoLine["LABEL OUT"], DicoLine["SDI OUT"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
-    LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
-    LabelObj.originATA = DicoLine["ORIGIN ATA"]
-    LabelObj.pins = DicoLine["OUTPUT PINS"]
-    LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
-
-    return LabelObj
-
+        return LabelObj
 
 
 
+    def SetLabelFormattedName(self, LabelObj):
+
+        # set formatted name (i.e simulation label name)
+        if LabelObj.pins in self.ConnectorMap.keys():
+            connectorId=self.ConnectorMap[LabelObj.pins]['idfwc']
+        else:
+            connectorId=""
+
+        try:
+            int(LabelObj.sdi, 2)
+        except ValueError:
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + str(LabelObj.sdi) + "_1"
+        else:
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + str(int(LabelObj.sdi, 2)) + "_1"
+
+    def SetParameterPreFormattedName(self, ParamObj):
+
+        LabelObj=ParamObj.labelObj
+        parametername=str(ParamObj.name)
+        parametername.replace("\.", "_")
+
+        if LabelObj.labeltype == "DW":
+            ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_B" + str(
+                ParamObj.BitNumber) + "_" + parametername
+        else:
+            ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + parametername

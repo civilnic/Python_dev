@@ -8,7 +8,7 @@ def main():
 
     print(sys.argv[1])
 
-    bds_file=BDS_FWC(sys.argv[1])
+    bds_fwc=BDS_FWC(sys.argv[1],sys.argv[5])
     bds2xml_file=BDS2XML(sys.argv[2],True)
    # bds_file.parse_BDS()
  #   bds2xml_file.createemptyfile()
@@ -25,7 +25,8 @@ def main():
                 #print ("signal name: "+signal.name)
     print ("**EIS**")
 
-    labelObjList=bdsEis.get_LabelObjList(nature="IN",source="FWC")
+    #labelObjList=bdsEis.get_LabelObjList(nature="IN",source="FWC")
+    labelObjList=bds_fwc.get_LabelObjList(nature="IN")
     source_list={}
 
     for labelObj in labelObjList:

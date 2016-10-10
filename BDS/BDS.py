@@ -76,7 +76,7 @@ class BDS:
         sdiregexp = re.compile(sdisearched)
         sourceregexp = re.compile(sourcesearched)
 
-        for (nature, system, number, sdi, source) in self.A429LabelDict.keys():
+        for (nature, system, number, sdi, source) in sorted(self.A429LabelDict.keys()):
             if natureregexp.search(str(nature)):
                 if systemregexp.search(str(system)):
                     if numberregexp.search(str(number)):
