@@ -39,8 +39,8 @@ class BDS_EIS(BDS):
             # read data
             #
             for row in reader:
-                LabelObj = self.ParseLine(row)
-                self.add_Label(LabelObj)
+                self.ParseLine(row)
+                #self.add_Label(LabelObj)
 
         finally:
             file.close()
@@ -53,28 +53,31 @@ class BDS_EIS(BDS):
 
     def ParseLine(self, DicoLine):
 
-        LabelObj=None
-        ParamObj=None
-
         LabelObj = A429Label(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["FORMAT_BLOC"], DicoLine["SENS"], DicoLine["NOM_SOUS_ENS"])
         LabelObj.input_trans_rate = DicoLine["FREQU_CONT"]
         LabelObj.source = DicoLine["NOM_SUPP"]
+
+        LabelObj = self.add_Label(LabelObj)
+
+        SetLabelFormattedName(LabelObj)
 
         if DicoLine['FORMAT_PARAM'] == "BNR":
 
             ParamObj = A429ParamBNR(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
                                     DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBNR(DicoLine["TAILLE"],DicoLine["ECHEL"]))
-
+            ParamObj.signed = DicoLine["SIGNE"]
 
         elif DicoLine['FORMAT_PARAM'] == "BCD":
             ParamObj = A429ParamBCD(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
                                     DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBCD(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+            ParamObj.signed = DicoLine["SIGNE"]
 
         elif DicoLine['FORMAT_PARAM'] == "DW":
             ParamObj = A429ParamDIS(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number)
             ParamObj.BitNumber = DicoLine["POSITION"]
             ParamObj.state0 = DicoLine["ETAT0"]
             ParamObj.state1 = DicoLine["ETAT1"]
+
 
         elif DicoLine['FORMAT_PARAM'] == "ISO5":
 
@@ -84,14 +87,36 @@ class BDS_EIS(BDS):
             #print ("[BDS_EIS][ParseLine] Type non reconnu: " + DicoLine['FORMAT_PARAM'])
             return LabelObj
 
-        ParamObj.numbloc = DicoLine["NOM_BLOC"]
+        ParamObj.formatparam = DicoLine['FORMAT_PARAM']
+        ParamObj.nombloc = DicoLine["NOM_BLOC"]
         ParamObj.libbloc = DicoLine["LIB_BLOC"]
         ParamObj.comments = DicoLine["LIB_PARAM"]
         ParamObj.parameter_def = DicoLine["NOM_TYPE"]
         ParamObj.unit = DicoLine["UNITE"]
 
         LabelObj.refParameter(ParamObj)
+
+        SetParameterPreFormattedName(ParamObj)
+
         return LabelObj
 
+def SetLabelFormattedName(LabelObj):
 
+    # set formatted name (i.e simulation label name)
+    try:
+        int(LabelObj.sdi, 2)
+    except ValueError:
+        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(LabelObj.sdi) + str(LabelObj.number)
+    else:
+        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi, 2)) + str(LabelObj.number)
 
+def SetParameterPreFormattedName(ParamObj):
+
+    ParamObj.
+
+    if LabelObj.labeltype == "DW":
+        linedict['Name PF'] = str(LabelObj.source) + "_L" + str(LabelObj.number) + "_B" + str(
+            ParameterObj.BitNumber) + "_" + str(ParameterObj.name)
+    else:
+        linedict['Name PF'] = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + str(
+            ParameterObj.name)

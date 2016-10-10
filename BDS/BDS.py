@@ -24,6 +24,10 @@ class BDS:
         labelIdentifier=LabelOject.createIndentifier()
         if(labelIdentifier not in self.A429LabelDict.keys()):
             self.A429LabelDict[labelIdentifier] = LabelOject
+        else:
+            pass
+            #print("Label deja dans la BDS: " + str(labelIdentifier))
+        return self.A429LabelDict[labelIdentifier]
 
     def add_Parameter(self, ParamOject):
         self.ParameterList.append(ParamOject)
@@ -36,6 +40,7 @@ class BDS:
             self.sourceDict[source] = source
 
     def get_LabelObjList(self, **paramdict):
+
         # self.nature, self.system, self.number, self.sdi,self.source
         mylabellist = []
 

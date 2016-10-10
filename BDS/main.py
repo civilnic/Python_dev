@@ -25,13 +25,20 @@ def main():
                 #print ("signal name: "+signal.name)
     print ("**EIS**")
 
+    labelObjList=bdsEis.get_LabelObjList(nature="IN",source="FWC")
+    source_list={}
 
-    label_nb=377
-
-    labelObjList=bdsEis.get_LabelObjList(nature="IN")
     for labelObj in labelObjList:
-        print (labelObj.number)
+        #labelObj.print(False)
+        if (labelObj.number == 10) and (labelObj.source == "EECPW2B"):
+            #pass
+            labelObj.print(True)
+            source_list[labelObj.source]=labelObj
         for parameterObj in labelObj.getParameterList():
+            #if (labelObj.number == 10) and (labelObj.source == "EECPW2B"):
+                #print ("\t\tparam: "+parameterObj.name)
             bds2xml_file.AddLine(parameterObj)
+#    print (sorted(source_list.keys()))
+#    print (len(source_list))
     bds2xml_file.savefile()
 main()

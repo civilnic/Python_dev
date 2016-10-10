@@ -166,7 +166,7 @@ class BDS_FWC(BDS):
 
                 if(nature == "ENTREE"):
                     LabelObj = AddInputLabel(DicoLine)
-                    self.add_Label(LabelObj)
+                    LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj = AddParameter(DicoLine,LabelObj)
@@ -174,7 +174,7 @@ class BDS_FWC(BDS):
 
                 elif (nature == "SORTIE"):
                     LabelObj = AddOutputLabel(DicoLine)
-                    self.add_Label(LabelObj)
+                    LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
@@ -189,7 +189,7 @@ class BDS_FWC(BDS):
                     LabelObj = AddInputLabel(DicoLine)
                     LabelObj.nature = "ENTREE"
                     labelnum = LabelObj.number
-                    self.add_Label(LabelObj)
+                    LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)
@@ -199,7 +199,7 @@ class BDS_FWC(BDS):
                     LabelObj = AddOutputLabel(DicoLine)
                     LabelObj.nature = "SORTIE"
                     LabelObj.LinkToInput=labelnum
-                    self.add_Label(LabelObj)
+                    LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
                     ParamObj= AddParameter(DicoLine,LabelObj)

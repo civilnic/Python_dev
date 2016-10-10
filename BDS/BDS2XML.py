@@ -62,9 +62,10 @@ class BDS2XML:
             # header creation
             for header_cell in list(self.SheetAndIndex[sheet]['Header']):
                 self.SheetAndIndex[sheet]['XlsSheet'].write(self.SheetAndIndex[sheet]['RowIndex'], self.SheetAndIndex[sheet]['ColIndex'], header_cell, BDS2XML.xls_style)
-                self.SheetAndIndex[sheet]['ColIndex']+=1
+                self.SheetAndIndex[sheet]['ColIndex'] += 1
 
             # update object information
+            self.SheetAndIndex[sheet]['ColIndex'] = 0
             self.SheetAndIndex[sheet]['RowIndex'] += 1
             self.SheetAndIndex[sheet]['RowNbr'] += 1
 
@@ -81,53 +82,29 @@ class BDS2XML:
 
         if testEIS.search(LabelObj.system):
             if LabelObj.nature == "IN":
-                sheet="toEIS"
+                sheet = "toEIS"
             elif LabelObj.nature == "OUT":
-                sheet="fromEIS"
+                sheet = "fromEIS"
 
-            # 'Model from'
-                linedict['Model from'] = "SIMU"
-            # 'Name PF',
-            # 'Type'
-                linedict['Type'] = ParameterObj.codingtype
-            # 'Name F'
-            # 'NOM_SUPP'
-                linedict['NOM_SUPP'] = ParameterObj.source
-            #  'CONT'
-
-            # 'NOM_BLOC'
-            # 'FORMAT_BLOC'
-            # 'LIB_BLOC'
-            # 'SSM_TYPE'
-            # 'NOM_PARAM'
-            # 'FORMAT_PARAM'
-            # 'LIB_PARAM'
-            # 'UNITE'
-            # 'TYPE'
-            # 'POSI'
-            # 'TAIL'
-            # 'SGN'
-            # 'ECHEL'
-            #  'DOMAINE'
-            # 'ETAT_0'
-            # 'ETAT_1'
-            # 'ERREUR'
-            #  'Version BDS'
-            #  'Comments'
-
-
+            self.fillEISLineDict(ParameterObj, linedict)
 
         elif testFWC.search(LabelObj.system):
             if LabelObj.nature == "IN":
                 if LabelObj.labeltype == "DW":
-                    sheet="toFWC(DIS)"
+                    sheet = "toFWC(DIS)"
+
                 else:
-                    sheet="toFWC(BNR)"
+                    sheet = "toFWC(BNR)"
             elif LabelObj.nature == "OUT":
                 if LabelObj.labeltype == "DW":
-                    sheet="fromFWC(DIS)"
+                    sheet = "fromFWC(DIS)"
                 else:
-                    sheet="fromFWC(BNR)"
+                    sheet = "fromFWC(BNR)"
+
+
+
+
+
         elif testSDAC.search(LabelObj.system):
             if LabelObj.nature == "IN":
                 sheet="toSDAC"
@@ -135,17 +112,25 @@ class BDS2XML:
                 sheet="fromSDAC"
 
         else:
-            print("[BDS2XML creation] Cannot set tab")
+            #print("[BDS2XML creation] Cannot set tab")
             return None
 
 
         for field in linedict.keys():
-            self.SheetAndIndex[sheet]['XlsSheet'].write(self.SheetAndIndex[sheet]['RowIndex'],
-                                                        self.SheetAndIndex[sheet]['ColIndex'], header_cell,
-                                                        BDS2XML.xls_style)
-            self.SheetAndIndex[sheet]['ColIndex'] += 1
-
+            self.writeCell(sheet, field, linedict[field])
+        self.SheetAndIndex[sheet]['ColIndex'] = 0
         self.SheetAndIndex[sheet]['RowIndex'] += 1
+
+    def writeCell(self, sheet, field, value):
+
+        index=self.file_structure[sheet].index(field)
+        self.SheetAndIndex[sheet]['XlsSheet'].write(self.SheetAndIndex[sheet]['RowIndex'],
+                                                    index,
+                                                    value,
+                                                    BDS2XML.xls_style
+                                                    )
+        self.SheetAndIndex[sheet]['ColIndex'] += 1
+
 
     def savefile(self):
         """
@@ -153,3 +138,111 @@ class BDS2XML:
         :return True/False:
         """
         self.Workbook.save(self.PathName)
+
+
+    def fillEISLineDict(self, ParameterObj, linedict):
+
+        LabelObj=ParameterObj.labelObj
+
+        # 'Model from'
+        linedict['Model from'] = "SIMU"
+
+        # 'Name PF',
+        if LabelObj.labeltype == "DW":
+            linedict['Name PF'] = str(LabelObj.source) + "_L" + str(LabelObj.number) + "_B" + str(
+                ParameterObj.BitNumber) + "_" + str(ParameterObj.name)
+        else:
+            linedict['Name PF'] = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + str(
+                ParameterObj.name)
+
+        # 'Type'
+        linedict['Type'] = ParameterObj.codingtype
+
+        # 'Name F'
+        try:
+            int(LabelObj.sdi, 2)
+        except ValueError:
+            linedict['Name F'] = str(LabelObj.source) + "a4_w" + str(LabelObj.sdi) + str(LabelObj.number)
+        else:
+            linedict['Name F'] = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi, 2)) + str(LabelObj.number)
+
+        # 'NOM_SUPP'
+        linedict['NOM_SUPP'] = LabelObj.source
+        #  'CONT'
+        linedict['CONT'] = str(LabelObj.number) + "_" + str(LabelObj.sdi)
+        # 'NOM_BLOC'
+        linedict['NOM_BLOC'] = ParameterObj.nombloc
+        # 'FORMAT_BLOC'
+        linedict['FORMAT_BLOC'] = LabelObj.labeltype
+        # 'LIB_BLOC'
+        linedict['LIB_BLOC'] = ParameterObj.libbloc
+        # 'SSM_TYPE'
+        linedict['SSM_TYPE'] = LabelObj.ssmtype
+        # 'NOM_PARAM'
+        linedict['NOM_PARAM'] = ParameterObj.name
+        # 'FORMAT_PARAM'
+        if ParameterObj.formatparam:
+            linedict['FORMAT_PARAM'] = ParameterObj.formatparam
+        else:
+            linedict['FORMAT_PARAM'] = LabelObj.labeltype
+        # 'LIB_PARAM'
+        linedict['LIB_PARAM'] = ParameterObj.comments
+        # 'UNITE'
+        linedict['UNITE'] = ParameterObj.unit
+        # 'TYPE'
+        linedict['TYPE'] = ParameterObj.parameter_def
+
+        if LabelObj.labeltype == "DW":
+            # 'ETAT_0'
+            linedict['ETAT_0'] = ParameterObj.state0
+            # 'ETAT_1'
+            linedict['ETAT_1'] = ParameterObj.state1
+            # 'TAIL'
+            linedict['TAIL'] = 1
+            # 'POSI'
+            linedict['POSI'] = ParameterObj.BitNumber
+        else:
+            # 'TAIL'
+            linedict['TAIL'] = ParameterObj.nb_bits
+            if ParameterObj.formatparam != "DW":
+                # 'POSI'
+                linedict['POSI'] = ParameterObj.msb
+            else:
+                # 'POSI'
+                linedict['POSI'] = ParameterObj.BitNumber
+            if LabelObj.labeltype != "ISO5" and ParameterObj.formatparam != "DW":
+                # 'SGN'
+                linedict['SGN'] = ParameterObj.signed
+                # 'ECHEL'
+                linedict['ECHEL'] = ParameterObj.range
+
+                #  'DOMAINE'
+                # 'ERREUR'
+                #  'Version BDS'
+                #  'Comments'
+
+    def fillFWCLineDict(self,linedict):
+
+        # 'Model from'
+        linedict['Model from'] = "SIMU"
+
+        # Name PF'
+        # 'Type'
+        # 'Name F'
+        # 'SW_IDENT'
+        # 'IDENT'
+        # 'NATURE'
+        # 'TYPE'
+        # 'SIG_BIT'
+        # 'RANG_IN'
+        # 'RESOLUTION_IN'
+        # 'UNIT_IN'
+        # 'FORMAT'
+        # 'PAR_DEF'
+        # 'WIRE_NAME_IN'
+        # 'LABEL_IN'
+        # 'SDI_IN'
+        # 'IN_TRANS'
+        # 'FULLSC'
+        # 'Version BDS'
+        # 'Comments'

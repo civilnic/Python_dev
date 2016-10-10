@@ -20,6 +20,7 @@ class A429Label:
         self._input_trans_rate = None
         self._pins = None
         self._LinkToInput = None
+        self.SimuFormattedName = None
         self.ParameterList = []
 
         self.nature = convertNature(nature)
@@ -74,25 +75,33 @@ class A429Label:
     def source(self, source):
         self._source = source
 
-    def refParameter(self,paramObj):
+    def refParameter(self, paramObj):
+        #print (self.number)
         self.ParameterList.append(paramObj)
-        paramObj.labelObj=self
+        paramObj.labelObj = self
+
+        if self.number==271:
+
+            for param in self.ParameterList:
+                pass
+                #print(paramObj.name)
+
+
 
     def getParameterList(self):
         return self.ParameterList
 
-    def print(self):
+    def print(self, DisplayParam):
         print ("Label number: "+str(self.number))
-        print ("Label sdi: "+str(self.sdi))
-        print ("Label type: "+str(self.labeltype))
-        print ("Label of system: "+str(self.system))
-        print ("Label source: "+str(self._source))
-        print ("Label nature: "+str(self.nature))
-        print ("Label _ssmtype: "+str(self._ssmtype))
-        for param in self.getParameterList():
-            param.print()
-
-
+        print ("\tLabel sdi: "+str(self.sdi))
+        print ("\tLabel type: "+str(self.labeltype))
+        print ("\tLabel of system: "+str(self.system))
+        print ("\tLabel source: "+str(self._source))
+        print ("\tLabel nature: "+str(self.nature))
+        print ("\tLabel _ssmtype: "+str(self._ssmtype))
+        if(DisplayParam is True):
+            for param in self.getParameterList():
+                param.print()
 
     def createIndentifier(self):
         identifier = (self.nature, self.system, self.number, self.sdi,self.source)
@@ -111,10 +120,19 @@ class A429Parameter:
         self._codingtype = None
         self._unit = None
         self._comments = None
+        self._formatparam = None
         self._parameter_def = None
         self._nombloc = None
         self._libbloc = None
         self._labelObj = None
+        self.SimuPreFormattedName = None
+
+    @property
+    def formatparam(self):
+        return self._formatparam
+    @formatparam.setter
+    def formatparam(self, formatparam):
+        self._formatparam = formatparam
 
     @property
     def labelObj(self):
@@ -128,10 +146,7 @@ class A429Parameter:
         return self._libbloc
     @libbloc.setter
     def libbloc(self, libbloc):
-        if(not libbloc):
-            self._libbloc = 'ALL'
-        else:
-            self._libbloc = libbloc
+        self._libbloc = libbloc
 
     @property
     def nombloc(self):
@@ -169,12 +184,12 @@ class A429Parameter:
         self._codingtype = codingtype
 
     def print(self):
-        print("Parameter name: " + str(self.name))
-        print("Parameter nature: " + str(self.nature))
-        print("Parameter codingtype: " + str(self._codingtype))
-        print("Parameter unit: " + str(self._unit))
-        print("Parameter commment: " + str(self._comments))
-        print("Parameter parameter_def: " + str(self.parameter_def))
+        print("\t\tParameter name: " + str(self.name))
+        print("\t\t\tParameter nature: " + str(self.nature))
+        print("\t\t\tParameter codingtype: " + str(self._codingtype))
+        print("\t\t\tParameter unit: " + str(self._unit))
+        print("\t\t\tParameter commment: " + str(self._comments))
+        print("\t\t\tParameter parameter_def: " + str(self.parameter_def))
 
 
 
@@ -184,12 +199,14 @@ class A429ParamDIS(A429Parameter):
     """
 
     def __init__(self, name, nature, label):
-        A429Parameter.__init__(self,name, nature, label)
+        A429Parameter.__init__(self, name, nature, label)
 
-        self.codingtype="boolean"
-        self._BitNumber=None
-        self._state0=None
-        self._state1=None
+        self.codingtype = "boolean"
+        self._BitNumber = None
+        self._state0 = None
+        self._state1 = None
+        self.nb_bits = 1
+
 
     @property
     def BitNumber(self):
@@ -197,6 +214,7 @@ class A429ParamDIS(A429Parameter):
     @BitNumber.setter
     def BitNumber(self, BitNumber):
         self._BitNumber = int(BitNumber)
+
 
     @property
     def state0(self):
@@ -214,9 +232,9 @@ class A429ParamDIS(A429Parameter):
 
     def print(self):
         super(A429ParamDIS, self).print()
-        print("Parameter BitNumber: " + str(self.BitNumber))
-        print("Parameter state0: " + str(self.state0))
-        print("Parameter state1: " + str(self.state1))
+        print("\t\t\tParameter BitNumber: " + str(self.BitNumber))
+        print("\t\t\tParameter state0: " + str(self.state0))
+        print("\t\t\tParameter state1: " + str(self.state1))
 
 class A429ParamBNR(A429Parameter):
     """
@@ -250,18 +268,18 @@ class A429ParamBNR(A429Parameter):
         return self._signed
     @signed.setter
     def signed(self, signed):
-        self._signed = bool(signed)
+        self._signed = signed
 
 
     def print(self):
         super(A429ParamBNR, self).print()
-        print("Parameter msb: " + str(self.msb))
-        print("Parameter nb_bits: " + str(self.nb_bits))
-        print("Parameter range: " + str(self.range))
-        print("Parameter resolution: " + str(self.resolution))
-        print("Parameter lsb: " + str(self.lsb))
-        print("Parameter accuracy: " + str(self.accuracy))
-        print("Parameter signed: " + str(self.signed))
+        print("\t\t\tParameter msb: " + str(self.msb))
+        print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
+        print("\t\t\tParameter range: " + str(self.range))
+        print("\t\t\tParameter resolution: " + str(self.resolution))
+        print("\t\t\tParameter lsb: " + str(self.lsb))
+        print("\t\t\tParameter accuracy: " + str(self.accuracy))
+        print("\t\t\tParameter signed: " + str(self.signed))
 
 
 class A429ParamBCD(A429Parameter):
@@ -285,10 +303,10 @@ class A429ParamBCD(A429Parameter):
 
     def print(self):
         super(A429ParamBCD, self).print()
-        print("Parameter msb: " + str(self.msb))
-        print("Parameter nb_bits: " + str(self.nb_bits))
-        print("Parameter range: " + str(self.range))
-        print("Parameter resolution: " + str(self.resolution))
+        print("\t\t\tParameter msb: " + str(self.msb))
+        print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
+        print("\t\t\tParameter range: " + str(self.range))
+        print("\t\t\tParameter resolution: " + str(self.resolution))
 
 class A429ParamOpaque(A429Parameter):
     """
@@ -307,8 +325,8 @@ class A429ParamOpaque(A429Parameter):
 
     def print(self):
         super(A429ParamOpaque,self).print()
-        print("Parameter msb: " + str(self.msb))
-        print("Parameter nb_bits: " + str(self.nb_bits))
+        print("\t\t\tParameter msb: " + str(self.msb))
+        print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
 
 
 
