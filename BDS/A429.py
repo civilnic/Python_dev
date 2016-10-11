@@ -5,7 +5,7 @@ class A429Label:
     Class to defined A429Label data
     """
 
-    def __init__(self, number, sdi,labeltype,nature,system):
+    def __init__(self, number, sdi, labeltype, nature, system):
         """
         Attributes are:
         _ path name of the file
@@ -22,8 +22,7 @@ class A429Label:
         self._LinkToInput = None
         self.SimuFormattedName = None
         self.ParameterList = []
-
-        self.nature = convertNature(nature)
+        self._nature = convertNature(nature)
 
     @property
     def ssmtype(self):
@@ -44,7 +43,7 @@ class A429Label:
         return self._nature
     @nature.setter
     def nature(self, nature):
-        self._nature = nature
+        self._nature = convertNature(nature)
 
     @property
     def originATA(self):
@@ -76,17 +75,8 @@ class A429Label:
         self._source = source
 
     def refParameter(self, paramObj):
-        #print (self.number)
         self.ParameterList.append(paramObj)
         paramObj.labelObj = self
-
-        if self.number==271:
-
-            for param in self.ParameterList:
-                pass
-                #print(paramObj.name)
-
-
 
     def getParameterList(self):
         return self.ParameterList
@@ -115,7 +105,7 @@ class A429Parameter:
 
     def __init__(self, name, nature,label):
         self.name = name
-        self.nature = nature
+        self.nature = convertNature(nature)
         self.label = int(label)
         self._codingtype = None
         self._unit = None
@@ -243,7 +233,7 @@ class A429ParamBNR(A429Parameter):
 
     def __init__(self, name, nature, label, msb, nb_bits, range, resolution):
         A429Parameter.__init__(self,name, nature, label)
-        self.codingtype="float"
+        self.codingtype = "float"
         self.msb = int(msb)
         self.nb_bits = int(nb_bits)
         self.range = float(range)

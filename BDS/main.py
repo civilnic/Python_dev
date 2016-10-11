@@ -26,7 +26,7 @@ def main():
     print ("**EIS**")
 
     #labelObjList=bdsEis.get_LabelObjList(nature="IN",source="FWC")
-    labelObjList=bds_fwc.get_LabelObjList(nature="IN")
+    labelObjList=bds_fwc.get_LabelObjList(nature="IN", system="FWC")
     source_list={}
 
     for labelObj in labelObjList:

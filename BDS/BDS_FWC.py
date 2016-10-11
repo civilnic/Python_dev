@@ -258,20 +258,24 @@ class BDS_FWC(BDS):
                 ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
                 ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
                 ParamObj.signed = True
-            if DicoLine["FORMAT"] == "HYB":
+            elif DicoLine["FORMAT"] == "HYB":
+                if LabelObj.labeltype:
+                    LabelObj.labeltype = "HYB"
                 ParamObj = A429ParamOpaque(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"])
-            if DicoLine["FORMAT"] == "BCD":
+            elif DicoLine["FORMAT"] == "BCD":
                 ParamObj = A429ParamBCD(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
-
+            else:
+                print(DicoLine["FORMAT"])
+                print("FORMAT non reconnu")
         # in case of DIS A429 Parameter FORMAT field is empty
         else:
             ParamObj = A429ParamDIS(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number)
 
-            if LabelObj.nature == "ENTREE":
+            if LabelObj.nature == "IN":
                 ParamObj.BitNumber = DicoLine["BIT IN"]
                 ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION"]
                 ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION"]
-            elif LabelObj.nature == "SORTIE":
+            elif LabelObj.nature == "OUT":
                 ParamObj.BitNumber = DicoLine["BIT OUT"]
                 ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION OUT"]
                 ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION OUT"]
@@ -289,7 +293,13 @@ class BDS_FWC(BDS):
 
     def AddInputLabel(self, DicoLine):
 
-        LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
+        if DicoLine["FORMAT"]:
+            label_format = DicoLine["FORMAT"]
+        else:
+            label_format = "DW"
+
+
+        LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"], label_format, DicoLine["NATURE"], DicoLine["SYSTEM"])
         LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
         LabelObj.originATA = DicoLine["ORIGIN ATA"]
         LabelObj.pins = DicoLine["INPUT PINS"]
@@ -301,7 +311,12 @@ class BDS_FWC(BDS):
 
     def AddOutputLabel(self, DicoLine):
 
-        LabelObj = A429Label(DicoLine["LABEL OUT"], DicoLine["SDI OUT"],DicoLine["FORMAT"], DicoLine["NATURE"], DicoLine["SYSTEM"])
+        if DicoLine["FORMAT"]:
+            label_format = DicoLine["FORMAT"]
+        else:
+            label_format = "DW"
+
+        LabelObj = A429Label(DicoLine["LABEL OUT"], DicoLine["SDI OUT"], label_format, DicoLine["NATURE"], DicoLine["SYSTEM"])
         LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
         LabelObj.originATA = DicoLine["ORIGIN ATA"]
         LabelObj.pins = DicoLine["OUTPUT PINS"]
@@ -317,9 +332,9 @@ class BDS_FWC(BDS):
 
         # set formatted name (i.e simulation label name)
         if LabelObj.pins in self.ConnectorMap.keys():
-            connectorId=self.ConnectorMap[LabelObj.pins]['idfwc']
+            connectorId = self.ConnectorMap[LabelObj.pins]['idfwc']
         else:
-            connectorId=""
+            connectorId = ""
 
         try:
             int(LabelObj.sdi, 2)
@@ -330,12 +345,16 @@ class BDS_FWC(BDS):
 
     def SetParameterPreFormattedName(self, ParamObj):
 
-        LabelObj=ParamObj.labelObj
-        parametername=str(ParamObj.name)
+        LabelObj = ParamObj.labelObj
+        parametername = str(ParamObj.name)
         parametername.replace("\.", "_")
 
         if LabelObj.labeltype == "DW":
-            ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_B" + str(
-                ParamObj.BitNumber) + "_" + parametername
+#            LabelObj.print(False)
+#            print(type(ParamObj))
+#            ParamObj.print()
+
+            ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) \
+                                            + "_B" + str(ParamObj.BitNumber) + "_" + parametername
         else:
             ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + parametername

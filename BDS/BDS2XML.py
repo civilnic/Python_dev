@@ -71,14 +71,14 @@ class BDS2XML:
 
     def AddLine(self, ParameterObj):
 
-        linedict=dict()
+        linedict = dict()
 
         # wich tab must be filled with parameter values
-        LabelObj=ParameterObj.labelObj
+        LabelObj = ParameterObj.labelObj
 
-        testFWC=re.compile(r"\w*FWC\w*")
-        testEIS=re.compile(r"\w*EIS\w*")
-        testSDAC=re.compile(r"\w*SDAC\w*")
+        testFWC = re.compile(r"\w*FWC\w*")
+        testEIS = re.compile(r"\w*EIS\w*")
+        testSDAC = re.compile(r"\w*SDAC\w*")
 
         if testEIS.search(LabelObj.system):
             if LabelObj.nature == "IN":
@@ -92,13 +92,12 @@ class BDS2XML:
             if LabelObj.nature == "IN":
                 if LabelObj.labeltype == "DW":
                     sheet = "toFWC(DIS)"
-
-                else:
+                elif LabelObj.labeltype == "BNR":
                     sheet = "toFWC(BNR)"
             elif LabelObj.nature == "OUT":
                 if LabelObj.labeltype == "DW":
                     sheet = "fromFWC(DIS)"
-                else:
+                elif LabelObj.labeltype == "BNR":
                     sheet = "fromFWC(BNR)"
 
             self.fillFWCLineDict(ParameterObj, linedict)
@@ -123,7 +122,10 @@ class BDS2XML:
 
     def writeCell(self, sheet, field, value):
 
-        index=self.file_structure[sheet].index(field)
+        print("sheet: "+sheet)
+        print("field: "+field)
+        print("field: "+str(self.file_structure[sheet]))
+        index = self.file_structure[sheet].index(field)
         self.SheetAndIndex[sheet]['XlsSheet'].write(self.SheetAndIndex[sheet]['RowIndex'],
                                                     index,
                                                     value,
@@ -264,7 +266,6 @@ class BDS2XML:
                 linedict['SIG_BIT'] = ParameterObj.nb_bits
 
                 # 'RANG_IN'
-                ParameterObj.print()
                 linedict['RANG_IN'] = ParameterObj.range
 
                 # 'RESOLUTION_IN'

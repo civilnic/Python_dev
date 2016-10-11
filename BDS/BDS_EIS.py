@@ -102,7 +102,7 @@ class BDS_EIS(BDS):
 
 def SetLabelFormattedName(LabelObj):
 
-    # set formatted name (i.e simulation label name)
+    # set formatted name (i.e simulation label name)pip
     try:
         int(LabelObj.sdi, 2)
     except ValueError:
