@@ -283,7 +283,7 @@ class A429ParamBCD(A429Parameter):
         self.msb = int(msb)
         self.nb_bits = int(nb_bits)
 
-        if len(re.findall("\s", range))> 0:
+        if len(re.findall("\s", range)) > 0:
             range_chaine = range.split(" ")
             self.range = float(range_chaine[-1])
         else:

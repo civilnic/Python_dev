@@ -96,7 +96,7 @@ class BDS2XML:
                 elif LabelObj.labeltype == "BNR":
                     sheet = "toFWC(BNR)"
                 else:
-                    print("Unknwon label type: " + LabelObj.labeltype)
+                    #print("Unknwon label type: " + LabelObj.labeltype)
                     return None
             elif LabelObj.nature == "OUT":
                 if LabelObj.labeltype == "DW":
@@ -104,13 +104,10 @@ class BDS2XML:
                 elif LabelObj.labeltype == "BNR":
                     sheet = "fromFWC(BNR)"
                 else:
-                    print("Unknwon label type: " + LabelObj.labeltype)
+                    #print("Unknwon label type: " + LabelObj.labeltype)
                     return None
             else:
                 print("Unknwon label nature: " + LabelObj.nature)
-            LabelObj.print(False)
-            print (type(LabelObj))
-            print (type(ParameterObj))
 
             self.fillFWCLineDict(ParameterObj, linedict)
 
@@ -132,10 +129,6 @@ class BDS2XML:
         self.SheetAndIndex[sheet]['RowIndex'] += 1
 
     def writeCell(self, sheet, field, value):
-
-        print("sheet: "+sheet)
-        print("field: "+field)
-        print("field: "+str(self.file_structure[sheet]))
 
         index = self.file_structure[sheet].index(field)
 
@@ -229,8 +222,6 @@ class BDS2XML:
     def fillFWCLineDict(self,  ParameterObj, linedict):
 
         LabelObj=ParameterObj.labelObj
-
-        print (LabelObj.source   )
 
         # 'Model from'
         linedict['Model from'] = "SIMU"

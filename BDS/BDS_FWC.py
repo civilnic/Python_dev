@@ -255,7 +255,8 @@ class BDS_FWC(BDS):
 
         if DicoLine["FORMAT"]:
             if DicoLine["FORMAT"] == "BNR":
-                ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
+                #ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
+                ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], self.ComputeResolutionBNR(DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"]))
                 ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
                 ParamObj.signed = True
             elif DicoLine["FORMAT"] == "HYB":
@@ -263,7 +264,7 @@ class BDS_FWC(BDS):
                     LabelObj.labeltype = "HYB"
                 ParamObj = A429ParamOpaque(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"])
             elif DicoLine["FORMAT"] == "BCD":
-                ParamObj = A429ParamBCD(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
+                ParamObj = A429ParamBCD(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], self.ComputeResolutionBCD(DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"]))
             else:
                 print(DicoLine["FORMAT"])
                 print("FORMAT non reconnu")

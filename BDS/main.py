@@ -1,6 +1,7 @@
 from BDS2XML import BDS2XML
 from BDS_FWC import BDS_FWC
 from BDS_EIS import BDS_EIS
+from FDEF_XML import FDEF_XML
 
 import sys
 
@@ -10,22 +11,10 @@ def main():
 
     bds_fwc=BDS_FWC(sys.argv[1],sys.argv[5])
     bds2xml_file=BDS2XML(sys.argv[2],True)
-   # bds_file.parse_BDS()
- #   bds2xml_file.createemptyfile()
-  #  bds2xml_file.savefile()
-
     bdsEis=BDS_EIS(sys.argv[3],sys.argv[4])
 
-
-        #for LabelNumber in bds_file.BDS[system]['A429LabelsList']:
-           # print ("\t**"+LabelNumber+"**")
-            #label=bds_file.BDS[system]['A429LabelsList'][LabelNumber]
-            #for signal in label.signalList:
-                #pass
-                #print ("signal name: "+signal.name)
     print ("**EIS**")
 
-    #labelObjList=bdsEis.get_LabelObjList(nature="IN",source="FWC")
     labelObjList=bds_fwc.get_LabelObjList(nature="IN", system="FWC")
     source_list={}
 
@@ -42,4 +31,6 @@ def main():
 #    print (sorted(source_list.keys()))
 #    print (len(source_list))
     bds2xml_file.savefile()
+
+    xml_file=FDEF_XML("test.xml", "A429")
 main()

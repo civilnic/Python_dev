@@ -92,6 +92,12 @@ class BDS:
         n_digit = 0
         nombre_bits=int(nb_bits)
 
+        if len(re.findall("\s", range)) > 0:
+            range_chaine = range.split(" ")
+            range = float(range_chaine[-1])
+        else:
+            range = float(range)
+
         while nombre_bits > 3:
             max_encoding = max_encoding + 9*10**n_digit
             nombre_bits -= 4
@@ -103,15 +109,16 @@ class BDS:
         elif nombre_bits == 1:
             max_encoding = max_encoding + 1*10**n_digit
 
-        return float(range) / max_encoding
+        resolution = "%.10f" % (float(range) / max_encoding)
 
+        return resolution
 
     def ComputeResolutionBNR(self, nb_bits, range):
 
         nombre_bits=int(nb_bits)
 
         if nombre_bits > 0:
-            resolution = float(range) / (2 ** nombre_bits)
+            resolution = "%.10f" % (float(range) / (2 ** nombre_bits))
         else:
             resolution = None
 
