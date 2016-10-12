@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <FWC_connector_map>
-	<input type="A429" connector="LMP04J,K" source="SDAC1" idfwc="WV1"/>
-	<input type="A429" connector="RMP04A,B" source="SDAC2" idfwc="WV3"/>
+	<input type="A429" connector="LMP04J,K,RMP04A,B" source="SDAC1_2" idfwc="WV1"/>
+<!--	<input type="A429" connector="LMP04J,K" source="SDAC1" idfwc="WV1"/>
+	<input type="A429" connector="RMP04A,B" source="SDAC2" idfwc="WV3"/>  -->
 	<input type="A429" connector="LMP06G,H" source="CSAS" idfwc="XX1"/>
 	<input type="A429" connector="RMP05E,F" source="ATSU" idfwc="TX1"/>
 	<input type="A429" connector="LMP08E,F" source="SDCU1" idfwc="WQ1"/>

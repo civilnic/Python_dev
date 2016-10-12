@@ -85,7 +85,8 @@ class BDS2XML:
                 sheet = "toEIS"
             elif LabelObj.nature == "OUT":
                 sheet = "fromEIS"
-
+            else:
+                print("Unknwon label nature: "+LabelObj.nature)
             self.fillEISLineDict(ParameterObj, linedict)
 
         elif testFWC.search(LabelObj.system):
@@ -94,29 +95,39 @@ class BDS2XML:
                     sheet = "toFWC(DIS)"
                 elif LabelObj.labeltype == "BNR":
                     sheet = "toFWC(BNR)"
+                else:
+                    print("Unknwon label type: " + LabelObj.labeltype)
+                    return None
             elif LabelObj.nature == "OUT":
                 if LabelObj.labeltype == "DW":
                     sheet = "fromFWC(DIS)"
                 elif LabelObj.labeltype == "BNR":
                     sheet = "fromFWC(BNR)"
+                else:
+                    print("Unknwon label type: " + LabelObj.labeltype)
+                    return None
+            else:
+                print("Unknwon label nature: " + LabelObj.nature)
+            LabelObj.print(False)
+            print (type(LabelObj))
+            print (type(ParameterObj))
 
             self.fillFWCLineDict(ParameterObj, linedict)
 
-
-
         elif testSDAC.search(LabelObj.system):
             if LabelObj.nature == "IN":
-                sheet="toSDAC"
+                sheet = "toSDAC"
             elif LabelObj.nature == "OUT":
-                sheet="fromSDAC"
+                sheet = "fromSDAC"
 
         else:
-            #print("[BDS2XML creation] Cannot set tab")
+            print("[BDS2XML creation] Cannot set tab")
             return None
 
 
         for field in linedict.keys():
             self.writeCell(sheet, field, linedict[field])
+
         self.SheetAndIndex[sheet]['ColIndex'] = 0
         self.SheetAndIndex[sheet]['RowIndex'] += 1
 
@@ -125,7 +136,9 @@ class BDS2XML:
         print("sheet: "+sheet)
         print("field: "+field)
         print("field: "+str(self.file_structure[sheet]))
+
         index = self.file_structure[sheet].index(field)
+
         self.SheetAndIndex[sheet]['XlsSheet'].write(self.SheetAndIndex[sheet]['RowIndex'],
                                                     index,
                                                     value,
@@ -217,6 +230,8 @@ class BDS2XML:
 
         LabelObj=ParameterObj.labelObj
 
+        print (LabelObj.source   )
+
         # 'Model from'
         linedict['Model from'] = "SIMU"
 
@@ -233,7 +248,7 @@ class BDS2XML:
         linedict['SW_IDENT'] = LabelObj.SimuFormattedName
 
         # 'IDENT'
-        linedict['SW_IDENT'] = ParameterObj.name
+        linedict['IDENT'] = ParameterObj.name
 
         # 'TYPE'
         linedict['TYPE'] = ParameterObj.codingtype
@@ -242,11 +257,9 @@ class BDS2XML:
         linedict['PAR_DEF'] = ParameterObj.parameter_def
 
         if LabelObj.nature == "IN":
-            # 'NATURE'
-            linedict['SW_IDENT'] = "I"
 
-            # 'IN_TYPE'
-            linedict['IN_TYPE'] = "I"
+            # 'NATURE'
+            linedict['NATURE'] = "I"
 
             # 'SDI_IN'
             linedict['SDI_IN'] = LabelObj.sdi
@@ -278,6 +291,10 @@ class BDS2XML:
                 linedict['FORMAT'] = ParameterObj.formatparam
 
             else:
+
+                # 'IN_TYPE'
+                linedict['IN_TYPE'] = "I"
+
                 # 'STATE1_IN'
                 linedict['STATE1_IN'] = ParameterObj.state1
 
@@ -289,10 +306,7 @@ class BDS2XML:
 
         else:
             # 'NATURE'
-            linedict['SW_IDENT'] = "O"
-
-            # 'IN_TYPE'
-            linedict['IN_TYPE'] = "O"
+            linedict['NATURE'] = "O"
 
             # 'SDI_OUT'
             linedict['SDI_OUT'] = LabelObj.sdi
@@ -324,6 +338,10 @@ class BDS2XML:
                 linedict['FORMAT'] = ParameterObj.formatparam
 
             else:
+
+                # 'OUT_TYPE'
+                linedict['OUT_TYPE'] = "O"
+
                 # 'STATE1_OUT'
                 linedict['STATE1_OUT'] = ParameterObj.state1
 

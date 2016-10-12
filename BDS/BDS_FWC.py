@@ -303,7 +303,7 @@ class BDS_FWC(BDS):
         LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
         LabelObj.originATA = DicoLine["ORIGIN ATA"]
         LabelObj.pins = DicoLine["INPUT PINS"]
-        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
+        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"].replace("/", "_")
 
         self.SetLabelFormattedName(LabelObj)
 
@@ -320,7 +320,7 @@ class BDS_FWC(BDS):
         LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
         LabelObj.originATA = DicoLine["ORIGIN ATA"]
         LabelObj.pins = DicoLine["OUTPUT PINS"]
-        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"]
+        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"].replace("/","_")
 
         self.SetLabelFormattedName(LabelObj)
 
@@ -339,9 +339,9 @@ class BDS_FWC(BDS):
         try:
             int(LabelObj.sdi, 2)
         except ValueError:
-            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + str(LabelObj.sdi) + "_1"
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number)  + "_" +  str(LabelObj.sdi) + "_1"
         else:
-            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + str(int(LabelObj.sdi, 2)) + "_1"
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number)  + "_" +  str(int(LabelObj.sdi, 2)) + "_1"
 
     def SetParameterPreFormattedName(self, ParamObj):
 
