@@ -196,6 +196,9 @@ class A429ParamDIS(A429Parameter):
         self._state0 = None
         self._state1 = None
         self.nb_bits = 1
+        self.lsb = None
+        self.msb = None
+        self.signed = None
 
 
     @property
@@ -204,7 +207,8 @@ class A429ParamDIS(A429Parameter):
     @BitNumber.setter
     def BitNumber(self, BitNumber):
         self._BitNumber = int(BitNumber)
-
+        self.lsb = int(BitNumber)
+        self.msb = int(BitNumber)
 
     @property
     def state0(self):
@@ -282,6 +286,8 @@ class A429ParamBCD(A429Parameter):
         self.codingtype = "int"
         self.msb = int(msb)
         self.nb_bits = int(nb_bits)
+        self.lsb = int(self.msb) - int(self.nb_bits)
+        self.signed = None
 
         if len(re.findall("\s", range)) > 0:
             range_chaine = range.split(" ")
@@ -300,7 +306,30 @@ class A429ParamBCD(A429Parameter):
 
 class A429ParamOpaque(A429Parameter):
     """
-    Base class to defined A429 BOOL signal type
+    Base class to defined A429 Opaque parameter type
+    """
+
+    def __init__(self, name, nature, label, msb, nb_bits):
+        A429Parameter.__init__(self, name, nature, label)
+        self.codingtype = "int"
+        self.msb = int(msb)
+        if(nb_bits):
+            self.nb_bits = int(nb_bits)
+        else:
+            self.nb_bits = None
+
+        self.lsb = "1"
+        self.signed = "no"
+
+    def print(self):
+        super(A429ParamOpaque,self).print()
+        print("\t\t\tParameter msb: " + str(self.msb))
+        print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
+
+
+class A429ParamISO5(A429Parameter):
+    """
+    Base class to defined A429 ISO5 parameter type
     """
 
     def __init__(self, name, nature, label, msb, nb_bits):
@@ -314,7 +343,7 @@ class A429ParamOpaque(A429Parameter):
 
 
     def print(self):
-        super(A429ParamOpaque,self).print()
+        super(A429ParamISO5,self).print()
         print("\t\t\tParameter msb: " + str(self.msb))
         print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
 

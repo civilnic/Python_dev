@@ -255,7 +255,6 @@ class BDS_FWC(BDS):
 
         if DicoLine["FORMAT"]:
             if DicoLine["FORMAT"] == "BNR":
-                #ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], DicoLine["RESOLUTION"])
                 ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], self.ComputeResolutionBNR(DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"]))
                 ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
                 ParamObj.signed = True
@@ -266,8 +265,9 @@ class BDS_FWC(BDS):
             elif DicoLine["FORMAT"] == "BCD":
                 ParamObj = A429ParamBCD(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], self.ComputeResolutionBCD(DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"]))
             else:
-                print(DicoLine["FORMAT"])
-                print("FORMAT non reconnu")
+                # TODO: Opaque and ISO5 labels are not treated yet in BDS_FWC
+                # Opaque and ISO5 format are not treated yet
+                print("[BDS_FWC: Label format not treated" + str(DicoLine["FORMAT"]))
         # in case of DIS A429 Parameter FORMAT field is empty
         else:
             ParamObj = A429ParamDIS(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number)
@@ -351,10 +351,6 @@ class BDS_FWC(BDS):
         parametername.replace("\.", "_")
 
         if LabelObj.labeltype == "DW":
-#            LabelObj.print(False)
-#            print(type(ParamObj))
-#            ParamObj.print()
-
             ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) \
                                             + "_B" + str(ParamObj.BitNumber) + "_" + parametername
         else:

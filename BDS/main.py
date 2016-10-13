@@ -33,4 +33,9 @@ def main():
     bds2xml_file.savefile()
 
     xml_file=FDEF_XML("test.xml", "A429")
+
+    for labelObj in labelObjList:
+        xml_file.AddLabel(labelObj)
+
+    xml_file.WriteAndClose()
 main()

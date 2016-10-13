@@ -32,7 +32,7 @@ class FDEF_XML:
             self.sourceInfos = sourceInfos
 
         self.fileInit()
-        self.WriteAndClose()
+       # self.WriteAndClose()
 
     #
     # create a new structure (empty) of FDEF XML file
@@ -67,13 +67,85 @@ class FDEF_XML:
         self._LabelCurrentElement = etree.SubElement(
                                                         self._LabelRootElement, "A429Label",
                                                         name=labelObj.SimuFormattedName, type=labelObj.labeltype,
-                                                        labelNumber=labelObj.number, sdi=labelObj.sdi
+                                                        labelNumber=str(labelObj.number), sdi=labelObj.sdi
                                                      )
 
-        _ssmElement=etree.SubElement(self._LabelCurrentElement, "ssm", type=labelObj.labeltype)
+        _ssmElement=etree.SubElement(self._LabelCurrentElement, "ssm", type=self.getSsmType(labelObj))
+
+        _parameterElement=etree.SubElement(
+            _ssmElement, "parameter",
+            name=labelObj.SimuFormattedName+"_SSM", type="status",
+            comment="SSM of label " + labelObj.SimuFormattedName
+        )
 
         etree.SubElement(
-            self._LabelCurrentElement, "ssm",
-            name=labelObj.SimuFormattedName+"_SSM", type=labelObj.labeltype,
-            labelNumber=labelObj.number, sdi=labelObj.sdi
+            _parameterElement, "signal",
+            name=labelObj.SimuFormattedName + "_SSM"
         )
+
+        for ParamObj in labelObj.ParameterList:
+
+            self.AddParameter(ParamObj)
+
+    def AddParameter(self, ParamObj):
+
+        _parameterElement = etree.SubElement(
+            self._LabelCurrentElement,
+            "parameter",
+            name=ParamObj.parameter_def,
+            type=ParamObj.codingtype
+        )
+
+        etree.SubElement(
+            _parameterElement,
+            "signal",
+            name=ParamObj.SimuPreFormattedName,
+            type=ParamObj.codingtype,
+            nbBit=str(ParamObj.nb_bits),
+            lsb=str(ParamObj.lsb),
+            msb=str(ParamObj.msb),
+            signed=str(ParamObj.signed)
+        )
+
+    def getSsmType(self, labelObj):
+
+        # if ssmtype attribute is set on object (i.e specified on BDS) we use it here
+        if labelObj.ssmtype:
+            _ssmtype = FDEF_XML.ssmType(labelObj)
+
+        # we test labeltype field of label object
+        # in case of HYB label, ssm type depends on parameters types
+        if labelObj.labeltype == "HYB":
+
+            # we parse parameters list of current label
+            # if one parameter is BNR => status will be BNR type
+            # if one parameter is BCD => status will be BCD type
+            # else status is set to default value: no SSM
+            for paramobj in labelObj.ParameterList:
+                if paramobj.formatparam == "BNR":
+                    _ssmtype = "status_ssm_bnr"
+                    break
+                elif paramobj.formatparam == "BCD":
+                    _ssmtype = "status_ssm_bcd"
+                    break
+                else:
+                    _ssmtype = "status_no_ssm"
+                pass
+        # for other label type DW/BCD/BNR ssm type follow label type
+        # => directly converted with ssmType function
+        else:
+            _ssmtype = FDEF_XML.ssmType(labelObj)
+        return _ssmtype
+
+    # set ssmtype according to label type.
+    def ssmType(labelObj):
+        _ssmtype=None
+        if labelObj.labeltype == "BNR":
+            _ssmtype = "status_ssm_bnr"
+        elif labelObj.labeltype == "DW":
+            _ssmtype = "status_ssm_dis"
+        elif labelObj.labeltype == "BCD":
+            _ssmtype = "status_ssm_bcd"
+        else:
+            _ssmtype = "status_no_ssm"
+        return _ssmtype

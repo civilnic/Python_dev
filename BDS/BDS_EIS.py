@@ -1,6 +1,6 @@
 import csv
 from BDS import (BDS)
-from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
+from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque,A429ParamISO5)
 
 class BDS_EIS(BDS):
     """
@@ -80,6 +80,11 @@ class BDS_EIS(BDS):
 
 
         elif DicoLine['FORMAT_PARAM'] == "ISO5":
+
+            ParamObj = A429ParamISO5(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],DicoLine["TAILLE"])
+
+
+        elif DicoLine['FORMAT_PARAM'] == "Opaque":
 
             ParamObj = A429ParamOpaque(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],DicoLine["TAILLE"])
 
