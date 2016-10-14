@@ -18,7 +18,6 @@ class FDEF_XML:
         self.Type = type
 
         self.sourceInfos = None
-
         self._doc = None
         self._RootElement = None
         self._LabelRootElement = None
@@ -96,7 +95,7 @@ class FDEF_XML:
             type=ParamObj.codingtype
         )
 
-        etree.SubElement(
+        _signalElement=etree.SubElement(
             _parameterElement,
             "signal",
             name=ParamObj.SimuPreFormattedName,
@@ -106,6 +105,8 @@ class FDEF_XML:
             msb=str(ParamObj.msb),
             signed=str(ParamObj.signed)
         )
+
+
 
     def getSsmType(self, labelObj):
 

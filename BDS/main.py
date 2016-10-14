@@ -32,7 +32,7 @@ def main():
 #    print (len(source_list))
     bds2xml_file.savefile()
 
-    xml_file=FDEF_XML("test.xml", "A429")
+    xml_file = FDEF_XML("test.xml", "A429")
 
     for labelObj in labelObjList:
         xml_file.AddLabel(labelObj)

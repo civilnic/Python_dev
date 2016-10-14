@@ -14,6 +14,7 @@ class A429Label:
         self.sdi = sdi
         self.labeltype = labeltype
         self.system = system
+        self._nature = convertNature(nature)
         self._source = None
         self._ssmtype = None
         self._originATA = None
@@ -22,10 +23,10 @@ class A429Label:
         self._LinkToInput = None
         self.SimuFormattedName = None
         self.ParameterList = []
-        self._nature = convertNature(nature)
 
     @property
     def ssmtype(self):
+
         return self._ssmtype
     @ssmtype.setter
     def ssmtype(self, ssmtype):
@@ -198,7 +199,7 @@ class A429ParamDIS(A429Parameter):
         self.nb_bits = 1
         self.lsb = None
         self.msb = None
-        self.signed = None
+        self.signed = "0"
 
 
     @property
@@ -244,7 +245,7 @@ class A429ParamBNR(A429Parameter):
         self.resolution = float(resolution)
         self.lsb = int(self.msb) - int(self.nb_bits)
         self._accuracy = None
-        self._signed = None
+        self._signed = "1"
 
     @property
     def accuracy(self):
@@ -262,8 +263,21 @@ class A429ParamBNR(A429Parameter):
         return self._signed
     @signed.setter
     def signed(self, signed):
-        self._signed = signed
+        convert_sign = str(signed)
+        print ("signe: "+str(signed))
+        if signed:
+            if (convert_sign == "yes") or (convert_sign =="O"):
+                self._signed = "1"
+            elif (convert_sign == "no") or (convert_sign =="N"):
+                self._signed = "0"
+            elif convert_sign == "True":
+                self._signed = "1"
+            else:
+                self._signed = "0"
+        else:
+            self._signed = "0"
 
+        print("\tsigne etabli: " + self._signed)
 
     def print(self):
         super(A429ParamBNR, self).print()
@@ -287,7 +301,7 @@ class A429ParamBCD(A429Parameter):
         self.msb = int(msb)
         self.nb_bits = int(nb_bits)
         self.lsb = int(self.msb) - int(self.nb_bits)
-        self.signed = None
+        self.signed = "0"
 
         if len(re.findall("\s", range)) > 0:
             range_chaine = range.split(" ")
@@ -319,7 +333,7 @@ class A429ParamOpaque(A429Parameter):
             self.nb_bits = None
 
         self.lsb = "1"
-        self.signed = "no"
+        self.signed = "0"
 
     def print(self):
         super(A429ParamOpaque,self).print()

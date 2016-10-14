@@ -321,7 +321,7 @@ class BDS_FWC(BDS):
         LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
         LabelObj.originATA = DicoLine["ORIGIN ATA"]
         LabelObj.pins = DicoLine["OUTPUT PINS"]
-        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"].replace("/","_")
+        LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"].replace("/", "_")
 
         self.SetLabelFormattedName(LabelObj)
 
@@ -347,8 +347,7 @@ class BDS_FWC(BDS):
     def SetParameterPreFormattedName(self, ParamObj):
 
         LabelObj = ParamObj.labelObj
-        parametername = str(ParamObj.name)
-        parametername.replace("\.", "_")
+        parametername = str(ParamObj.name).replace(".", "_")
 
         if LabelObj.labeltype == "DW":
             ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) \
