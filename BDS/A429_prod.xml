@@ -1,0 +1,1422 @@
+<?xml version="1.0" standalone="yes"?>
+<configurationTable name="A429_TABLE" type="A429" generationDate="29/09/2015 14h38m" generationTool="ICD2XML_V7.0">
+   <configurationSources>
+      <sourceFile type="modelICD" pathname="ICD_Display_formatCDS_fun_in.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_3C.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_CL.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_CR.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_IL.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_IR.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_LL.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_LR.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_OL.csv"/>
+      <sourceFile type="aircraftICD" pathname="D:\SVN_OCASIME_2015\02-Workspace\FormatDGWP\1_Inputs\ACICD/DU_OR.csv"/>
+   </configurationSources>
+   <configurationEntity>
+      <A429Label name="A4FLAPS_TL_AC1_A429_1001XX_O" type="Discrete" labelNumber="001" sdi="XX" refreshRate="60">
+            <ssm>
+            <parameter name="FLAPS_SYSTEM_STATUS_DISCRETE_1_1_SSM" type="status" comment="SSM of label: FLAPS_SYSTEM_STATUS_DISCRETE_1_1">
+               <signal name="SSM_FLAPS_TL_AC1_A429_1_FLAPS_SYSTEM_STATUS_DISCRETE_1_1_001"/>
+               </parameter>
+            </ssm>
+            <parameter name="CDS_SD_FAULT_INHIBIT_1" type="logical" comment="High Lift Sub-System (1 or 2) not operational for CDS indication">
+               <signal name="D_CDS_SD_FAULT_INHIBIT_1_001" type="logical" nbBit="1" lsb="22" msb="22" startBit="22" comment="High Lift Sub-System (1 or 2) not operational for CDS indication">
+               </signal>
+            </parameter>
+            <parameter name="FLAPSLEVERVAL_1" type="logical" comment="Flaps Lever valid">
+               <signal name="D_FLAPSLEVERVAL_1_001" type="logical" nbBit="1" lsb="17" msb="17" startBit="17" comment="Flaps Lever valid">
+               </signal>
+            </parameter>
+            <parameter name="FLAPSLOCKED_1" type="logical" comment="HLS is locked when system 1 + 2 set this bit">
+               <signal name="D_FLAPSLOCKED_1_001" type="logical" nbBit="1" lsb="12" msb="12" startBit="12" comment="HLS is locked when system 1 + 2 set this bit">
+               </signal>
+            </parameter>
+            <parameter name="FLRFENGAGED_1" type="logical" comment="Flaps Load Relief Function engaged">
+               <signal name="D_FLRFENGAGED_1_001" type="logical" nbBit="1" lsb="16" msb="16" startBit="16" comment="Flaps Load Relief Function engaged">
+               </signal>
+            </parameter>
+            <parameter name="FSAVAL_1" type="logical" comment="Flaps Position (BNR and discrete) valid">
+               <signal name="D_FSAVAL_1_001" type="logical" nbBit="1" lsb="11" msb="11" startBit="11" comment="Flaps Position (BNR and discrete) valid">
+               </signal>
+            </parameter>
+            <parameter name="IM_TEST_IN_PROGRESS_1" type="logical" comment="Interactive Mode Test in progress">
+               <signal name="D_IM_TEST_IN_PROGRESS_1_001" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="Interactive Mode Test in progress">
+               </signal>
+            </parameter>
+            <parameter name="IM_TEST_RESULT_FAILED_1" type="logical" comment="Interactive Mode Test failed">
+               <signal name="D_IM_TEST_RESULT_FAILED_1_001" type="logical" nbBit="1" lsb="20" msb="20" startBit="20" comment="Interactive Mode Test failed">
+               </signal>
+            </parameter>
+            <parameter name="IM_TEST_RESULT_OK_1" type="logical" comment="Interactive Mode Test ok">
+               <signal name="D_IM_TEST_RESULT_OK_1_001" type="logical" nbBit="1" lsb="21" msb="21" startBit="21" comment="Interactive Mode Test ok">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FLAPS_TL_AC1_A429_1011XX_O" type="BNR" labelNumber="011" sdi="XX" refreshRate="60">
+            <ssm>
+            <parameter name="FLAPS_SURFACE_ANGLE_BNR_1_SSM" type="status" comment="SSM of label: FLAPS_SURFACE_ANGLE_BNR_1">
+               <signal name="SSM_FLAPS_TL_AC1_A429_1_FLAPS_SURFACE_ANGLE_BNR_1_011"/>
+               </parameter>
+            </ssm>
+            <parameter name="FLAPSURFACEANGLE_1" type="Float" comment="Flaps Surface Angle in deg">
+               <signal name="D_FLAPSURFACEANGLE_1_011" type="float" nbBit="16" lsb="13" msb="28" startBit="13" signed="1" comment="Flaps Surface Angle in deg">
+               <float floatResolution="0.125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FLAPS_TL_AC1_A429_1031XX_O" type="Discrete" labelNumber="031" sdi="XX" refreshRate="60">
+            <ssm>
+            <parameter name="FLAPS_LEVER_POSITION_DISCRETE_1_SSM" type="status" comment="SSM of label: FLAPS_LEVER_POSITION_DISCRETE_1">
+               <signal name="SSM_FLAPS_TL_AC1_A429_1_FLAPS_LEVER_POSITION_DISCRETE_1_031"/>
+               </parameter>
+            </ssm>
+            <parameter name="LEVERINPOS_0_1" type="logical" comment="Flaps Lever in pos 0">
+               <signal name="D_LEVERINPOS_0_1_031" type="logical" nbBit="1" lsb="11" msb="11" startBit="11" comment="Flaps Lever in pos 0">
+               </signal>
+            </parameter>
+            <parameter name="LEVERINPOS_1_1" type="logical" comment="Flaps Lever in pos 1">
+               <signal name="D_LEVERINPOS_1_1_031" type="logical" nbBit="1" lsb="12" msb="12" startBit="12" comment="Flaps Lever in pos 1">
+               </signal>
+            </parameter>
+            <parameter name="LEVERINPOS_2_1" type="logical" comment="Flaps Lever in pos 2">
+               <signal name="D_LEVERINPOS_2_1_031" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="Flaps Lever in pos 2">
+               </signal>
+            </parameter>
+            <parameter name="LEVERINPOS_3_1" type="logical" comment="Flaps Lever in pos 3">
+               <signal name="D_LEVERINPOS_3_1_031" type="logical" nbBit="1" lsb="14" msb="14" startBit="14" comment="Flaps Lever in pos 3">
+               </signal>
+            </parameter>
+            <parameter name="LEVERINPOS_4_1" type="logical" comment="Flaps Lever in pos 4">
+               <signal name="D_LEVERINPOS_4_1_031" type="logical" nbBit="1" lsb="15" msb="15" startBit="15" comment="Flaps Lever in pos 4">
+               </signal>
+            </parameter>
+            <parameter name="LEVERINPOS_FULL_1" type="logical" comment="Flaps Lever in pos Full">
+               <signal name="D_LEVERINPOS_FULL_1_031" type="logical" nbBit="1" lsb="16" msb="16" startBit="16" comment="Flaps Lever in pos Full">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FLAPS_TL_AC1_A429_1201XX_O" type="Discrete" labelNumber="201" sdi="XX" refreshRate="60">
+            <ssm>
+            <parameter name="FLAPS_SYSTEM_STATUS_DISCRETE_2_1_SSM" type="status" comment="SSM of label: FLAPS_SYSTEM_STATUS_DISCRETE_2_1">
+               <signal name="SSM_FLAPS_TL_AC1_A429_1_FLAPS_SYSTEM_STATUS_DISCRETE_2_1_201"/>
+               </parameter>
+            </ssm>
+            <parameter name="FLAPFAULT_1" type="logical" comment="High Lift Sub-System (1 or 2) not operational">
+               <signal name="D_FLAPFAULT_1_201" type="logical" nbBit="1" lsb="11" msb="11" startBit="11" comment="High Lift Sub-System (1 or 2) not operational">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115000_O" type="Discrete" labelNumber="150" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ALERTS_4_1_SSM" type="status" comment="SSM of label: FW_ALERTS_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ALERTS_4_1_150"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OVERTORQUE_ARINC_4_1" type="logical" comment="ENGINE OVERTORQUE from ENG 4">
+               <signal name="D_ENGINE_OVERTORQUE_ARINC_4_1_150" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="ENGINE OVERTORQUE from ENG 4">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115001_O" type="Discrete" labelNumber="150" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ALERTS_1_1_SSM" type="status" comment="SSM of label: FW_ALERTS_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ALERTS_1_1_150"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OVERTORQUE_ARINC_1_1" type="logical" comment="ENGINE OVERTORQUE from ENG 1">
+               <signal name="D_ENGINE_OVERTORQUE_ARINC_1_1_150" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="ENGINE OVERTORQUE from ENG 1">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115010_O" type="Discrete" labelNumber="150" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ALERTS_2_1_SSM" type="status" comment="SSM of label: FW_ALERTS_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ALERTS_2_1_150"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OVERTORQUE_ARINC_2_1" type="logical" comment="ENGINE OVERTORQUE from ENG 2">
+               <signal name="D_ENGINE_OVERTORQUE_ARINC_2_1_150" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="ENGINE OVERTORQUE from ENG 2">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115011_O" type="Discrete" labelNumber="150" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ALERTS_3_1_SSM" type="status" comment="SSM of label: FW_ALERTS_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ALERTS_3_1_150"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OVERTORQUE_ARINC_3_1" type="logical" comment="ENGINE OVERTORQUE from ENG 3">
+               <signal name="D_ENGINE_OVERTORQUE_ARINC_3_1_150" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="ENGINE OVERTORQUE from ENG 3">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115100_O" type="Discrete" labelNumber="151" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_FAILURES_4_1_SSM" type="status" comment="SSM of label: FW_FAILURES_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_FAILURES_4_1_151"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_FEATHERED_ARINC_4_1" type="logical" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 4">
+               <signal name="D_PROPELLER_FEATHERED_ARINC_4_1_151" type="logical" nbBit="1" lsb="18" msb="18" startBit="18" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 4">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115101_O" type="Discrete" labelNumber="151" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_FAILURES_1_1_SSM" type="status" comment="SSM of label: FW_FAILURES_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_FAILURES_1_1_151"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_FEATHERED_ARINC_1_1" type="logical" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 1">
+               <signal name="D_PROPELLER_FEATHERED_ARINC_1_1_151" type="logical" nbBit="1" lsb="18" msb="18" startBit="18" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 1">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115110_O" type="Discrete" labelNumber="151" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_FAILURES_2_1_SSM" type="status" comment="SSM of label: FW_FAILURES_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_FAILURES_2_1_151"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_FEATHERED_ARINC_2_1" type="logical" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 2">
+               <signal name="D_PROPELLER_FEATHERED_ARINC_2_1_151" type="logical" nbBit="1" lsb="18" msb="18" startBit="18" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 2">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115111_O" type="Discrete" labelNumber="151" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_FAILURES_3_1_SSM" type="status" comment="SSM of label: FW_FAILURES_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_FAILURES_3_1_151"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_FEATHERED_ARINC_3_1" type="logical" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 3">
+               <signal name="D_PROPELLER_FEATHERED_ARINC_3_1_151" type="logical" nbBit="1" lsb="18" msb="18" startBit="18" comment="VARIABLE INDICATING THE PROP IS FEATHERED-ENG 3">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115200_O" type="Discrete" labelNumber="152" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_152_FAILURES_4_1_SSM" type="status" comment="SSM of label: FW_152_FAILURES_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_152_FAILURES_4_1_152"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCHLOCKED_ARINC_4_1" type="logical" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 4">
+               <signal name="D_PROPELLER_PITCHLOCKED_ARINC_4_1_152" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 4">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115201_O" type="Discrete" labelNumber="152" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_152_FAILURES_1_1_SSM" type="status" comment="SSM of label: FW_152_FAILURES_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_152_FAILURES_1_1_152"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCHLOCKED_ARINC_1_1" type="logical" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 1">
+               <signal name="D_PROPELLER_PITCHLOCKED_ARINC_1_1_152" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 1">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115210_O" type="Discrete" labelNumber="152" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_152_FAILURES_2_1_SSM" type="status" comment="SSM of label: FW_152_FAILURES_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_152_FAILURES_2_1_152"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCHLOCKED_ARINC_2_1" type="logical" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 2">
+               <signal name="D_PROPELLER_PITCHLOCKED_ARINC_2_1_152" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 2">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115211_O" type="Discrete" labelNumber="152" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_152_FAILURES_3_1_SSM" type="status" comment="SSM of label: FW_152_FAILURES_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_152_FAILURES_3_1_152"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCHLOCKED_ARINC_3_1" type="logical" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 3">
+               <signal name="D_PROPELLER_PITCHLOCKED_ARINC_3_1_152" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="VARIABLE INDICATING A PROP PITCHLOCK OCCURRED-ENG 3">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115300_O" type="Discrete" labelNumber="153" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_AVAIL_4_1_SSM" type="status" comment="SSM of label: FW_ENGINE_AVAIL_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_AVAIL_4_1_153"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_AVAIL_ARINC_4_1" type="logical">
+               <signal name="D_ENGINE_AVAIL_ARINC_4_1_153" type="logical" nbBit="1" lsb="17" msb="17" startBit="17">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115301_O" type="Discrete" labelNumber="153" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_AVAIL_1_1_SSM" type="status" comment="SSM of label: FW_ENGINE_AVAIL_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_AVAIL_1_1_153"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_AVAIL_ARINC_1_1" type="logical">
+               <signal name="D_ENGINE_AVAIL_ARINC_1_1_153" type="logical" nbBit="1" lsb="17" msb="17" startBit="17">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115310_O" type="Discrete" labelNumber="153" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_AVAIL_2_1_SSM" type="status" comment="SSM of label: FW_ENGINE_AVAIL_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_AVAIL_2_1_153"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_AVAIL_ARINC_2_1" type="logical">
+               <signal name="D_ENGINE_AVAIL_ARINC_2_1_153" type="logical" nbBit="1" lsb="17" msb="17" startBit="17">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115311_O" type="Discrete" labelNumber="153" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_AVAIL_3_1_SSM" type="status" comment="SSM of label: FW_ENGINE_AVAIL_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_AVAIL_3_1_153"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_AVAIL_ARINC_3_1" type="logical">
+               <signal name="D_ENGINE_AVAIL_ARINC_3_1_153" type="logical" nbBit="1" lsb="17" msb="17" startBit="17">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115500_O" type="Discrete" labelNumber="155" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_155_STATUS_4_1_SSM" type="status" comment="SSM of label: FW_155_STATUS_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_155_STATUS_4_1_155"/>
+               </parameter>
+            </ssm>
+            <parameter name="REVERSE_MODE_SELECTED_ARINC_4_1" type="logical" comment="REVERSE MODE SELECTED  from ENG 4">
+               <signal name="D_REVERSE_MODE_SELECTED_ARINC_4_1_155" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="REVERSE MODE SELECTED  from ENG 4">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115501_O" type="Discrete" labelNumber="155" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_155_STATUS_1_1_SSM" type="status" comment="SSM of label: FW_155_STATUS_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_155_STATUS_1_1_155"/>
+               </parameter>
+            </ssm>
+            <parameter name="REVERSE_MODE_SELECTED_ARINC_1_1" type="logical" comment="REVERSE MODE SELECTED  from ENG 1">
+               <signal name="D_REVERSE_MODE_SELECTED_ARINC_1_1_155" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="REVERSE MODE SELECTED  from ENG 1">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115510_O" type="Discrete" labelNumber="155" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_155_STATUS_2_1_SSM" type="status" comment="SSM of label: FW_155_STATUS_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_155_STATUS_2_1_155"/>
+               </parameter>
+            </ssm>
+            <parameter name="REVERSE_MODE_SELECTED_ARINC_2_1" type="logical" comment="REVERSE MODE SELECTED  from ENG 2">
+               <signal name="D_REVERSE_MODE_SELECTED_ARINC_2_1_155" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="REVERSE MODE SELECTED  from ENG 2">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115511_O" type="Discrete" labelNumber="155" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_155_STATUS_3_1_SSM" type="status" comment="SSM of label: FW_155_STATUS_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_155_STATUS_3_1_155"/>
+               </parameter>
+            </ssm>
+            <parameter name="REVERSE_MODE_SELECTED_ARINC_3_1" type="logical" comment="REVERSE MODE SELECTED  from ENG 3">
+               <signal name="D_REVERSE_MODE_SELECTED_ARINC_3_1_155" type="logical" nbBit="1" lsb="19" msb="19" startBit="19" comment="REVERSE MODE SELECTED  from ENG 3">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115600_O" type="Discrete" labelNumber="156" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_RED_EXC_ARINC_4_1_SSM" type="status" comment="SSM of label: FW_NP_RED_EXC_ARINC_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_RED_EXC_ARINC_4_1_156"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_EXCEEDED_ARINC_4_1" type="logical" comment="NP REDLINE EXCEEDANCE FROM ENG4">
+               <signal name="D_NP_REDLINE_EXCEEDED_ARINC_4_1_156" type="logical" nbBit="1" lsb="14" msb="14" comment="NP REDLINE EXCEEDANCE FROM ENG4">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115601_O" type="Discrete" labelNumber="156" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_RED_EXC_ARINC_1_1_SSM" type="status" comment="SSM of label: FW_NP_RED_EXC_ARINC_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_RED_EXC_ARINC_1_1_156"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_EXCEEDED_ARINC_1_1" type="logical" comment="NP REDLINE EXCEEDANCE FROM ENG1">
+               <signal name="D_NP_REDLINE_EXCEEDED_ARINC_1_1_156" type="logical" nbBit="1" lsb="14" msb="14" comment="NP REDLINE EXCEEDANCE FROM ENG1">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115610_O" type="Discrete" labelNumber="156" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_RED_EXC_ARINC_2_1_SSM" type="status" comment="SSM of label: FW_NP_RED_EXC_ARINC_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_RED_EXC_ARINC_2_1_156"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_EXCEEDED_ARINC_2_1" type="logical" comment="NP REDLINE EXCEEDANCE FROM ENG2">
+               <signal name="D_NP_REDLINE_EXCEEDED_ARINC_2_1_156" type="logical" nbBit="1" lsb="14" msb="14" comment="NP REDLINE EXCEEDANCE FROM ENG2">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115611_O" type="Discrete" labelNumber="156" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_RED_EXC_ARINC_3_1_SSM" type="status" comment="SSM of label: FW_NP_RED_EXC_ARINC_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_RED_EXC_ARINC_3_1_156"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_EXCEEDED_ARINC_3_1" type="logical" comment="NP REDLINE EXCEEDANCE FROM ENG3">
+               <signal name="D_NP_REDLINE_EXCEEDED_ARINC_3_1_156" type="logical" nbBit="1" lsb="14" msb="14" comment="NP REDLINE EXCEEDANCE FROM ENG3">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115700_O" type="Discrete" labelNumber="157" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_4_1_SSM" type="status" comment="SSM of label: FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_4_1_157"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_4_1" type="logical" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG4">
+               <signal name="D_ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_4_1_157" type="logical" nbBit="1" lsb="14" msb="14" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG4">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115701_O" type="Discrete" labelNumber="157" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_1_1_SSM" type="status" comment="SSM of label: FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_1_1_157"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_1_1" type="logical" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG1">
+               <signal name="D_ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_1_1_157" type="logical" nbBit="1" lsb="14" msb="14" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG1">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115710_O" type="Discrete" labelNumber="157" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_2_1_SSM" type="status" comment="SSM of label: FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_2_1_157"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_2_1" type="logical" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG2">
+               <signal name="D_ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_2_1_157" type="logical" nbBit="1" lsb="14" msb="14" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG2">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_115711_O" type="Discrete" labelNumber="157" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_3_1_SSM" type="status" comment="SSM of label: FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENG_OIL_TEMP_AMBER_EXC_ARINC_3_1_157"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_3_1" type="logical" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG3">
+               <signal name="D_ENGINE_OIL_TEMPERATURE_AMBER_LIMIT_EXCEEDED_ARINC_3_1_157" type="logical" nbBit="1" lsb="14" msb="14" comment="ENGINE OIL TEMPERATURE OVER AMBER DISPLAY LIMIT FOR ENG3">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116000_O" type="BNR" labelNumber="160" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_AMBER_LINE_4_1_SSM" type="status" comment="SSM of label: FW_EGT_AMBER_LINE_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_AMBER_LINE_4_1_160"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_AMBER_LINE_ARINC_4_1" type="Float" comment="EGT AMBER LINE from ENG 4">
+               <signal name="D_EGT_AMBER_LINE_ARINC_4_1_160" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT AMBER LINE from ENG 4">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116001_O" type="BNR" labelNumber="160" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_AMBER_LINE_1_1_SSM" type="status" comment="SSM of label: FW_EGT_AMBER_LINE_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_AMBER_LINE_1_1_160"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_AMBER_LINE_ARINC_1_1" type="Float" comment="EGT AMBER LINE from ENG 1">
+               <signal name="D_EGT_AMBER_LINE_ARINC_1_1_160" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT AMBER LINE from ENG 1">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116010_O" type="BNR" labelNumber="160" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_AMBER_LINE_2_1_SSM" type="status" comment="SSM of label: FW_EGT_AMBER_LINE_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_AMBER_LINE_2_1_160"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_AMBER_LINE_ARINC_2_1" type="Float" comment="EGT AMBER LINE from ENG 2">
+               <signal name="D_EGT_AMBER_LINE_ARINC_2_1_160" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT AMBER LINE from ENG 2">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116011_O" type="BNR" labelNumber="160" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_AMBER_LINE_3_1_SSM" type="status" comment="SSM of label: FW_EGT_AMBER_LINE_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_AMBER_LINE_3_1_160"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_AMBER_LINE_ARINC_3_1" type="Float" comment="EGT AMBER LINE from ENG 3">
+               <signal name="D_EGT_AMBER_LINE_ARINC_3_1_160" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT AMBER LINE from ENG 3">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116100_O" type="BNR" labelNumber="161" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_PEAK_4_1_SSM" type="status" comment="SSM of label: FW_EGT_PEAK_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_PEAK_4_1_161"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_PEAK_ARINC_4_1" type="Float" comment="EGT PEAK from ENG 4">
+               <signal name="D_EGT_PEAK_ARINC_4_1_161" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT PEAK from ENG 4">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116101_O" type="BNR" labelNumber="161" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_PEAK_1_1_SSM" type="status" comment="SSM of label: FW_EGT_PEAK_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_PEAK_1_1_161"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_PEAK_ARINC_1_1" type="Float" comment="EGT PEAK from ENG 1">
+               <signal name="D_EGT_PEAK_ARINC_1_1_161" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT PEAK from ENG 1">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116110_O" type="BNR" labelNumber="161" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_PEAK_2_1_SSM" type="status" comment="SSM of label: FW_EGT_PEAK_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_PEAK_2_1_161"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_PEAK_ARINC_2_1" type="Float" comment="EGT PEAK from ENG 2">
+               <signal name="D_EGT_PEAK_ARINC_2_1_161" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT PEAK from ENG 2">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116111_O" type="BNR" labelNumber="161" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_PEAK_3_1_SSM" type="status" comment="SSM of label: FW_EGT_PEAK_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_PEAK_3_1_161"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_PEAK_ARINC_3_1" type="Float" comment="EGT PEAK from ENG 3">
+               <signal name="D_EGT_PEAK_ARINC_3_1_161" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT PEAK from ENG 3">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116200_O" type="BNR" labelNumber="162" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_REDLINE_4_1_SSM" type="status" comment="SSM of label: FW_EGT_REDLINE_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_REDLINE_4_1_162"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_REDLINE_ARINC_4_1" type="Float" comment="EGT REDLINE from ENG 4">
+               <signal name="D_EGT_REDLINE_ARINC_4_1_162" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT REDLINE from ENG 4">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116201_O" type="BNR" labelNumber="162" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_REDLINE_1_1_SSM" type="status" comment="SSM of label: FW_EGT_REDLINE_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_REDLINE_1_1_162"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_REDLINE_ARINC_1_1" type="Float" comment="EGT REDLINE from ENG 1">
+               <signal name="D_EGT_REDLINE_ARINC_1_1_162" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT REDLINE from ENG 1">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116210_O" type="BNR" labelNumber="162" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_REDLINE_2_1_SSM" type="status" comment="SSM of label: FW_EGT_REDLINE_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_REDLINE_2_1_162"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_REDLINE_ARINC_2_1" type="Float" comment="EGT REDLINE from ENG 2">
+               <signal name="D_EGT_REDLINE_ARINC_2_1_162" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT REDLINE from ENG 2">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116211_O" type="BNR" labelNumber="162" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_REDLINE_3_1_SSM" type="status" comment="SSM of label: FW_EGT_REDLINE_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_REDLINE_3_1_162"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_REDLINE_ARINC_3_1" type="Float" comment="EGT REDLINE from ENG 3">
+               <signal name="D_EGT_REDLINE_ARINC_3_1_162" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT REDLINE from ENG 3">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116300_O" type="BNR" labelNumber="163" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_SELECTED_4_1_SSM" type="status" comment="SSM of label: FW_EGT_SELECTED_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_SELECTED_4_1_163"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_SELECTED_ARINC_4_1" type="Float" comment="EGT SELECTED from ENG 4">
+               <signal name="D_EGT_SELECTED_ARINC_4_1_163" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT SELECTED from ENG 4">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116301_O" type="BNR" labelNumber="163" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_SELECTED_1_1_SSM" type="status" comment="SSM of label: FW_EGT_SELECTED_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_SELECTED_1_1_163"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_SELECTED_ARINC_1_1" type="Float" comment="EGT SELECTED from ENG 1">
+               <signal name="D_EGT_SELECTED_ARINC_1_1_163" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT SELECTED from ENG 1">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116310_O" type="BNR" labelNumber="163" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_SELECTED_2_1_SSM" type="status" comment="SSM of label: FW_EGT_SELECTED_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_SELECTED_2_1_163"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_SELECTED_ARINC_2_1" type="Float" comment="EGT SELECTED from ENG 2">
+               <signal name="D_EGT_SELECTED_ARINC_2_1_163" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT SELECTED from ENG 2">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116311_O" type="BNR" labelNumber="163" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_EGT_SELECTED_3_1_SSM" type="status" comment="SSM of label: FW_EGT_SELECTED_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_EGT_SELECTED_3_1_163"/>
+               </parameter>
+            </ssm>
+            <parameter name="EGT_SELECTED_ARINC_3_1" type="Float" comment="EGT SELECTED from ENG 3">
+               <signal name="D_EGT_SELECTED_ARINC_3_1_163" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="EGT SELECTED from ENG 3">
+               <float floatResolution="0.0625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116400_O" type="BNR" labelNumber="164" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_ACTUAL_4_1_SSM" type="status" comment="SSM of label: FW_NP_ACTUAL_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_ACTUAL_4_1_164"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_ACTUAL_SELECTED_ARINC_4_1" type="Float" comment="NP ACTUAL from ENG 4">
+               <signal name="D_NP_ACTUAL_SELECTED_ARINC_4_1_164" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP ACTUAL from ENG 4">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116401_O" type="BNR" labelNumber="164" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_ACTUAL_1_1_SSM" type="status" comment="SSM of label: FW_NP_ACTUAL_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_ACTUAL_1_1_164"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_ACTUAL_SELECTED_ARINC_1_1" type="Float" comment="NP ACTUAL from ENG 1">
+               <signal name="D_NP_ACTUAL_SELECTED_ARINC_1_1_164" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP ACTUAL from ENG 1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116410_O" type="BNR" labelNumber="164" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_ACTUAL_2_1_SSM" type="status" comment="SSM of label: FW_NP_ACTUAL_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_ACTUAL_2_1_164"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_ACTUAL_SELECTED_ARINC_2_1" type="Float" comment="NP ACTUAL from ENG 2">
+               <signal name="D_NP_ACTUAL_SELECTED_ARINC_2_1_164" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP ACTUAL from ENG 2">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116411_O" type="BNR" labelNumber="164" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_ACTUAL_3_1_SSM" type="status" comment="SSM of label: FW_NP_ACTUAL_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_ACTUAL_3_1_164"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_ACTUAL_SELECTED_ARINC_3_1" type="Float" comment="NP ACTUAL from ENG 3">
+               <signal name="D_NP_ACTUAL_SELECTED_ARINC_3_1_164" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP ACTUAL from ENG 3">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116500_O" type="BNR" labelNumber="165" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_PEAK_4_1_SSM" type="status" comment="SSM of label: FW_NP_PEAK_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_PEAK_4_1_165"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_PEAK_ARINC_4_1" type="Float" comment="NP PEAK from ENG 4">
+               <signal name="D_NP_PEAK_ARINC_4_1_165" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP PEAK from ENG 4">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116501_O" type="BNR" labelNumber="165" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_PEAK_1_1_SSM" type="status" comment="SSM of label: FW_NP_PEAK_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_PEAK_1_1_165"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_PEAK_ARINC_1_1" type="Float" comment="NP PEAK from ENG 1">
+               <signal name="D_NP_PEAK_ARINC_1_1_165" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP PEAK from ENG 1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116510_O" type="BNR" labelNumber="165" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_PEAK_2_1_SSM" type="status" comment="SSM of label: FW_NP_PEAK_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_PEAK_2_1_165"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_PEAK_ARINC_2_1" type="Float" comment="NP PEAK from ENG 2">
+               <signal name="D_NP_PEAK_ARINC_2_1_165" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP PEAK from ENG 2">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116511_O" type="BNR" labelNumber="165" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_PEAK_3_1_SSM" type="status" comment="SSM of label: FW_NP_PEAK_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_PEAK_3_1_165"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_PEAK_ARINC_3_1" type="Float" comment="NP PEAK from ENG 3">
+               <signal name="D_NP_PEAK_ARINC_3_1_165" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP PEAK from ENG 3">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116600_O" type="BNR" labelNumber="166" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_REDLINE_4_1_SSM" type="status" comment="SSM of label: FW_NP_REDLINE_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_REDLINE_4_1_166"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_ARINC_4_1" type="Float" comment="NP REDLINE from ENG 4">
+               <signal name="D_NP_REDLINE_ARINC_4_1_166" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP REDLINE from ENG 4">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116601_O" type="BNR" labelNumber="166" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_REDLINE_1_1_SSM" type="status" comment="SSM of label: FW_NP_REDLINE_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_REDLINE_1_1_166"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_ARINC_1_1" type="Float" comment="NP REDLINE from ENG 1">
+               <signal name="D_NP_REDLINE_ARINC_1_1_166" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP REDLINE from ENG 1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116610_O" type="BNR" labelNumber="166" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_REDLINE_2_1_SSM" type="status" comment="SSM of label: FW_NP_REDLINE_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_REDLINE_2_1_166"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_ARINC_2_1" type="Float" comment="NP REDLINE from ENG 2">
+               <signal name="D_NP_REDLINE_ARINC_2_1_166" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP REDLINE from ENG 2">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116611_O" type="BNR" labelNumber="166" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_NP_REDLINE_3_1_SSM" type="status" comment="SSM of label: FW_NP_REDLINE_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_NP_REDLINE_3_1_166"/>
+               </parameter>
+            </ssm>
+            <parameter name="NP_REDLINE_ARINC_3_1" type="Float" comment="NP REDLINE from ENG 3">
+               <signal name="D_NP_REDLINE_ARINC_3_1_166" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="NP REDLINE from ENG 3">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116700_O" type="BNR" labelNumber="167" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_ACTUAL_4_1_SSM" type="status" comment="SSM of label: FW_PWR_ACTUAL_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_ACTUAL_4_1_167"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_ACTUAL_ARINC_4_1" type="Float" comment="PWR ACTUAL from ENG 4">
+               <signal name="D_PWR_ACTUAL_ARINC_4_1_167" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR ACTUAL from ENG 4">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116701_O" type="BNR" labelNumber="167" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_ACTUAL_1_1_SSM" type="status" comment="SSM of label: FW_PWR_ACTUAL_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_ACTUAL_1_1_167"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_ACTUAL_ARINC_1_1" type="Float" comment="PWR ACTUAL from ENG 1">
+               <signal name="D_PWR_ACTUAL_ARINC_1_1_167" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR ACTUAL from ENG 1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116710_O" type="BNR" labelNumber="167" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_ACTUAL_2_1_SSM" type="status" comment="SSM of label: FW_PWR_ACTUAL_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_ACTUAL_2_1_167"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_ACTUAL_ARINC_2_1" type="Float" comment="PWR ACTUAL from ENG 2">
+               <signal name="D_PWR_ACTUAL_ARINC_2_1_167" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR ACTUAL from ENG 2">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_116711_O" type="BNR" labelNumber="167" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_ACTUAL_3_1_SSM" type="status" comment="SSM of label: FW_PWR_ACTUAL_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_ACTUAL_3_1_167"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_ACTUAL_ARINC_3_1" type="Float" comment="PWR ACTUAL from ENG 3">
+               <signal name="D_PWR_ACTUAL_ARINC_3_1_167" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR ACTUAL from ENG 3">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117300_O" type="BNR" labelNumber="173" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_AT_TOGA_4_1_SSM" type="status" comment="SSM of label: FW_PWR_AT_TOGA_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_AT_TOGA_4_1_173"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_AT_TOGA_ARINC_4_1" type="Float" comment="POWER CORRESP AT TOGA DETENT-ENG 4">
+               <signal name="D_PWR_AT_TOGA_ARINC_4_1_173" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER CORRESP AT TOGA DETENT-ENG 4">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117301_O" type="BNR" labelNumber="173" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_AT_TOGA_1_1_SSM" type="status" comment="SSM of label: FW_PWR_AT_TOGA_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_AT_TOGA_1_1_173"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_AT_TOGA_ARINC_1_1" type="Float" comment="POWER CORRESP AT TOGA DETENT-ENG 1">
+               <signal name="D_PWR_AT_TOGA_ARINC_1_1_173" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER CORRESP AT TOGA DETENT-ENG 1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117310_O" type="BNR" labelNumber="173" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_AT_TOGA_2_1_SSM" type="status" comment="SSM of label: FW_PWR_AT_TOGA_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_AT_TOGA_2_1_173"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_AT_TOGA_ARINC_2_1" type="Float" comment="POWER CORRESP AT TOGA DETENT-ENG 2">
+               <signal name="D_PWR_AT_TOGA_ARINC_2_1_173" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER CORRESP AT TOGA DETENT-ENG 2">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117311_O" type="BNR" labelNumber="173" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_AT_TOGA_3_1_SSM" type="status" comment="SSM of label: FW_PWR_AT_TOGA_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_AT_TOGA_3_1_173"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_AT_TOGA_ARINC_3_1" type="Float" comment="POWER CORRESP AT TOGA DETENT-ENG 3">
+               <signal name="D_PWR_AT_TOGA_ARINC_3_1_173" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER CORRESP AT TOGA DETENT-ENG 3">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117400_O" type="BNR" labelNumber="174" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_LIMIT_4_1_SSM" type="status" comment="SSM of label: FW_PWR_LIMIT_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_LIMIT_4_1_174"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_LIMIT_ARINC_4_1" type="Float" comment="POWER AT POWER LIMIT MODE from ENG 4">
+               <signal name="D_PWR_LIMIT_ARINC_4_1_174" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER AT POWER LIMIT MODE from ENG 4">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117401_O" type="BNR" labelNumber="174" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_LIMIT_1_1_SSM" type="status" comment="SSM of label: FW_PWR_LIMIT_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_LIMIT_1_1_174"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_LIMIT_ARINC_1_1" type="Float" comment="POWER AT POWER LIMIT MODE from ENG 1">
+               <signal name="D_PWR_LIMIT_ARINC_1_1_174" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER AT POWER LIMIT MODE from ENG 1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117410_O" type="BNR" labelNumber="174" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_LIMIT_2_1_SSM" type="status" comment="SSM of label: FW_PWR_LIMIT_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_LIMIT_2_1_174"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_LIMIT_ARINC_2_1" type="Float" comment="POWER AT POWER LIMIT MODE from ENG 2">
+               <signal name="D_PWR_LIMIT_ARINC_2_1_174" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER AT POWER LIMIT MODE from ENG 2">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117411_O" type="BNR" labelNumber="174" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_LIMIT_3_1_SSM" type="status" comment="SSM of label: FW_PWR_LIMIT_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_LIMIT_3_1_174"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_LIMIT_ARINC_3_1" type="Float" comment="POWER AT POWER LIMIT MODE from ENG 3">
+               <signal name="D_PWR_LIMIT_ARINC_3_1_174" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="POWER AT POWER LIMIT MODE from ENG 3">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117700_O" type="BNR" labelNumber="177" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_THROTTLE_4_1_SSM" type="status" comment="SSM of label: FW_PWR_THROTTLE_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_THROTTLE_4_1_177"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_THROTTLE_ARINC_4_1" type="Float" comment="PWR CORRESPOND TO THE THROTTLE-ENG 4">
+               <signal name="D_PWR_THROTTLE_ARINC_4_1_177" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR CORRESPOND TO THE THROTTLE-ENG 4">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117701_O" type="BNR" labelNumber="177" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_THROTTLE_1_1_SSM" type="status" comment="SSM of label: FW_PWR_THROTTLE_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_THROTTLE_1_1_177"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_THROTTLE_ARINC_1_1" type="Float" comment="PWR CORRESPOND TO THE THROTTLE-ENG 1">
+               <signal name="D_PWR_THROTTLE_ARINC_1_1_177" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR CORRESPOND TO THE THROTTLE-ENG 1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117710_O" type="BNR" labelNumber="177" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_THROTTLE_2_1_SSM" type="status" comment="SSM of label: FW_PWR_THROTTLE_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_THROTTLE_2_1_177"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_THROTTLE_ARINC_2_1" type="Float" comment="PWR CORRESPOND TO THE THROTTLE-ENG 2">
+               <signal name="D_PWR_THROTTLE_ARINC_2_1_177" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR CORRESPOND TO THE THROTTLE-ENG 2">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_117711_O" type="BNR" labelNumber="177" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PWR_THROTTLE_3_1_SSM" type="status" comment="SSM of label: FW_PWR_THROTTLE_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PWR_THROTTLE_3_1_177"/>
+               </parameter>
+            </ssm>
+            <parameter name="PWR_THROTTLE_ARINC_3_1" type="Float" comment="PWR CORRESPOND TO THE THROTTLE-ENG 3">
+               <signal name="D_PWR_THROTTLE_ARINC_3_1_177" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PWR CORRESPOND TO THE THROTTLE-ENG 3">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124100_O" type="BNR" labelNumber="241" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PITCH_ANGLE_4_1_SSM" type="status" comment="SSM of label: FW_PITCH_ANGLE_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PITCH_ANGLE_4_1_241"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCH_ANGLE_ARINC_4_1" type="Float" comment="PROP PITCH ANGLE from ENG 4">
+               <signal name="D_PROPELLER_PITCH_ANGLE_ARINC_4_1_241" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP PITCH ANGLE from ENG 4">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124101_O" type="BNR" labelNumber="241" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PITCH_ANGLE_1_1_SSM" type="status" comment="SSM of label: FW_PITCH_ANGLE_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PITCH_ANGLE_1_1_241"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCH_ANGLE_ARINC_1_1" type="Float" comment="PROP PITCH ANGLE from ENG 1">
+               <signal name="D_PROPELLER_PITCH_ANGLE_ARINC_1_1_241" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP PITCH ANGLE from ENG 1">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124110_O" type="BNR" labelNumber="241" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PITCH_ANGLE_2_1_SSM" type="status" comment="SSM of label: FW_PITCH_ANGLE_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PITCH_ANGLE_2_1_241"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCH_ANGLE_ARINC_2_1" type="Float" comment="PROP PITCH ANGLE From ENG 2">
+               <signal name="D_PROPELLER_PITCH_ANGLE_ARINC_2_1_241" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP PITCH ANGLE From ENG 2">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124111_O" type="BNR" labelNumber="241" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PITCH_ANGLE_3_1_SSM" type="status" comment="SSM of label: FW_PITCH_ANGLE_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PITCH_ANGLE_3_1_241"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_PITCH_ANGLE_ARINC_3_1" type="Float" comment="PROP PITCH ANGLE from ENG 3">
+               <signal name="D_PROPELLER_PITCH_ANGLE_ARINC_3_1_241" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP PITCH ANGLE from ENG 3">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124300_O" type="BNR" labelNumber="243" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_N1_ACTUAL_CDS_4_1_SSM" type="status" comment="SSM of label: FW_N1_ACTUAL_CDS_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_N1_ACTUAL_CDS_4_1_243"/>
+               </parameter>
+            </ssm>
+            <parameter name="N1_ACTUAL_SELECTED_CDS_ARINC_4_1" type="Float" comment="N1 ACTUAL fromo ENG 4 to CDS">
+               <signal name="D_N1_ACTUAL_SELECTED_CDS_ARINC_4_1_243" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="N1 ACTUAL fromo ENG 4 to CDS">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124301_O" type="BNR" labelNumber="243" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_N1_ACTUAL_CDS_1_1_SSM" type="status" comment="SSM of label: FW_N1_ACTUAL_CDS_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_N1_ACTUAL_CDS_1_1_243"/>
+               </parameter>
+            </ssm>
+            <parameter name="N1_ACTUAL_SELECTED_CDS_ARINC_1_1" type="Float" comment="N1 ACTUAL from ENG 1 to CDS">
+               <signal name="D_N1_ACTUAL_SELECTED_CDS_ARINC_1_1_243" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="N1 ACTUAL from ENG 1 to CDS">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124310_O" type="BNR" labelNumber="243" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_N1_ACTUAL_CDS_2_1_SSM" type="status" comment="SSM of label: FW_N1_ACTUAL_CDS_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_N1_ACTUAL_CDS_2_1_243"/>
+               </parameter>
+            </ssm>
+            <parameter name="N1_ACTUAL_SELECTED_CDS_ARINC_2_1" type="Float" comment="N1 ACTUAL from ENG 2 to CDS">
+               <signal name="D_N1_ACTUAL_SELECTED_CDS_ARINC_2_1_243" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="N1 ACTUAL from ENG 2 to CDS">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_124311_O" type="BNR" labelNumber="243" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_N1_ACTUAL_CDS_3_1_SSM" type="status" comment="SSM of label: FW_N1_ACTUAL_CDS_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_N1_ACTUAL_CDS_3_1_243"/>
+               </parameter>
+            </ssm>
+            <parameter name="N1_ACTUAL_SELECTED_CDS_ARINC_3_1" type="Float" comment="N1 ACTUAL from ENG 3 to CDS">
+               <signal name="D_N1_ACTUAL_SELECTED_CDS_ARINC_3_1_243" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="N1 ACTUAL from ENG 3 to CDS">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_125000_O" type="Discrete" labelNumber="250" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_FAILURES_4_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_FAILURES_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_FAILURES_4_1_250"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_4_1" type="logical" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG4">
+               <signal name="D_PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_4_1_250" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG4">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_125001_O" type="Discrete" labelNumber="250" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_FAILURES_1_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_FAILURES_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_FAILURES_1_1_250"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_1_1" type="logical" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG1">
+               <signal name="D_PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_1_1_250" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG1">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_125010_O" type="Discrete" labelNumber="250" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_FAILURES_2_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_FAILURES_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_FAILURES_2_1_250"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_2_1" type="logical" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG2">
+               <signal name="D_PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_2_1_250" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG2">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_125011_O" type="Discrete" labelNumber="250" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_FAILURES_3_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_FAILURES_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_FAILURES_3_1_250"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_3_1" type="logical" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG3">
+               <signal name="D_PROPELLER_OIL_TEMP_AMBER_LIMIT_EXCEEDED_ARINC_3_1_250" type="logical" nbBit="1" lsb="13" msb="13" startBit="13" comment="PROPELLER OIL TEMPERATURE OVER AMBER LIMIT FOR ENG3">
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_126000_O" type="BNR" labelNumber="260" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_TQ_ACTUAL_4_1_SSM" type="status" comment="SSM of label: FW_TQ_ACTUAL_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_TQ_ACTUAL_4_1_260"/>
+               </parameter>
+            </ssm>
+            <parameter name="TQ_ACTUAL_ARINC_4_1" type="Float">
+               <signal name="D_TQ_ACTUAL_ARINC_4_1_260" type="float" nbBit="15" lsb="14" msb="28" signed="1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_126001_O" type="BNR" labelNumber="260" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_TQ_ACTUAL_1_1_SSM" type="status" comment="SSM of label: FW_TQ_ACTUAL_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_TQ_ACTUAL_1_1_260"/>
+               </parameter>
+            </ssm>
+            <parameter name="TQ_ACTUAL_ARINC_1_1" type="Float">
+               <signal name="D_TQ_ACTUAL_ARINC_1_1_260" type="float" nbBit="15" lsb="14" msb="28" signed="1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_126010_O" type="BNR" labelNumber="260" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_TQ_ACTUAL_2_1_SSM" type="status" comment="SSM of label: FW_TQ_ACTUAL_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_TQ_ACTUAL_2_1_260"/>
+               </parameter>
+            </ssm>
+            <parameter name="TQ_ACTUAL_ARINC_2_1" type="Float">
+               <signal name="D_TQ_ACTUAL_ARINC_2_1_260" type="float" nbBit="15" lsb="14" msb="28" signed="1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_126011_O" type="BNR" labelNumber="260" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_TQ_ACTUAL_3_1_SSM" type="status" comment="SSM of label: FW_TQ_ACTUAL_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_TQ_ACTUAL_3_1_260"/>
+               </parameter>
+            </ssm>
+            <parameter name="TQ_ACTUAL_ARINC_3_1" type="Float">
+               <signal name="D_TQ_ACTUAL_ARINC_3_1_260" type="float" nbBit="15" lsb="14" msb="28" signed="1">
+               <float floatResolution="0.0078125" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131300_O" type="BNR" labelNumber="313" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_PRESSURE_SELECTED_4_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_PRESSURE_SELECTED_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_PRESSURE_SELECTED_4_1_313"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_PRESSURE_SELECTED_ARINC_4_1" type="Float" comment="ENGINE OIL PRESSURE SELECTED FOR ENG4">
+               <signal name="D_ENGINE_OIL_PRESSURE_SELECTED_ARINC_4_1_313" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="ENGINE OIL PRESSURE SELECTED FOR ENG4">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131301_O" type="BNR" labelNumber="313" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_PRESSURE_SELECTED_1_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_PRESSURE_SELECTED_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_PRESSURE_SELECTED_1_1_313"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_PRESSURE_SELECTED_ARINC_1_1" type="Float" comment="ENGINE OIL PRESSURE SELECTED FOR ENG1">
+               <signal name="D_ENGINE_OIL_PRESSURE_SELECTED_ARINC_1_1_313" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="ENGINE OIL PRESSURE SELECTED FOR ENG1">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131310_O" type="BNR" labelNumber="313" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_PRESSURE_SELECTED_2_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_PRESSURE_SELECTED_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_PRESSURE_SELECTED_2_1_313"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_PRESSURE_SELECTED_ARINC_2_1" type="Float" comment="ENGINE OIL PRESSURE SELECTED FOR ENG2">
+               <signal name="D_ENGINE_OIL_PRESSURE_SELECTED_ARINC_2_1_313" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="ENGINE OIL PRESSURE SELECTED FOR ENG2">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131311_O" type="BNR" labelNumber="313" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_PRESSURE_SELECTED_3_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_PRESSURE_SELECTED_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_PRESSURE_SELECTED_3_1_313"/>
+               </parameter>
+            </ssm>
+            <parameter name="ENGINE_OIL_PRESSURE_SELECTED_ARINC_3_1" type="Float" comment="ENGINE OIL PRESSURE SELECTED FOR ENG3">
+               <signal name="D_ENGINE_OIL_PRESSURE_SELECTED_ARINC_3_1_313" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="ENGINE OIL PRESSURE SELECTED FOR ENG3">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131500_O" type="BNR" labelNumber="315" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_PRESSURE_SELECTED_4_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_PRESSURE_SELECTED_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_PRESSURE_SELECTED_4_1_315"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_PRESSURE_SELECTED_ARINC_4_1" type="Float" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG4">
+               <signal name="D_PROPELLER_OIL_PRESSURE_SELECTED_ARINC_4_1_315" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG4">
+               <float floatResolution="0.15625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131501_O" type="BNR" labelNumber="315" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_PRESSURE_SELECTED_1_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_PRESSURE_SELECTED_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_PRESSURE_SELECTED_1_1_315"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_PRESSURE_SELECTED_ARINC_1_1" type="Float" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG1">
+               <signal name="D_PROPELLER_OIL_PRESSURE_SELECTED_ARINC_1_1_315" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG1">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131510_O" type="BNR" labelNumber="315" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_PRESSURE_SELECTED_2_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_PRESSURE_SELECTED_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_PRESSURE_SELECTED_2_1_315"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_PRESSURE_SELECTED_ARINC_2_1" type="Float" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG2">
+               <signal name="D_PROPELLER_OIL_PRESSURE_SELECTED_ARINC_2_1_315" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG2">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131511_O" type="BNR" labelNumber="315" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_PRESSURE_SELECTED_3_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_PRESSURE_SELECTED_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_PRESSURE_SELECTED_3_1_315"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROPELLER_OIL_PRESSURE_SELECTED_ARINC_3_1" type="Float" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG3">
+               <signal name="D_PROPELLER_OIL_PRESSURE_SELECTED_ARINC_3_1_315" type="float" nbBit="15" lsb="14" msb="28" startBit="14" comment="PROPELLER OIL PRESSURE COMPUTED BY THE ECU for ENG3">
+               <float floatResolution="0.15625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131600_O" type="BNR" labelNumber="316" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_4_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_TEMPERATURE_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_TEMPERATURE_4_1_316"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_4_1" type="Float" comment="ENGINE OIL TEMPERATURE from ENG 4">
+               <signal name="D_FW_ENGINE_OIL_TEMPERATURE_ARINC_4_1_316" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="ENGINE OIL TEMPERATURE from ENG 4">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131601_O" type="BNR" labelNumber="316" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_1_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_TEMPERATURE_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_TEMPERATURE_1_1_316"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_1_1" type="Float" comment="ENGINE OIL TEMPERATURE from ENG 1">
+               <signal name="D_FW_ENGINE_OIL_TEMPERATURE_ARINC_1_1_316" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="ENGINE OIL TEMPERATURE from ENG 1">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131610_O" type="BNR" labelNumber="316" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_2_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_TEMPERATURE_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_TEMPERATURE_2_1_316"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_2_1" type="Float" comment="ENGINE OIL TEMPERATURE from ENG 2">
+               <signal name="D_FW_ENGINE_OIL_TEMPERATURE_ARINC_2_1_316" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="ENGINE OIL TEMPERATURE from ENG 2">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131611_O" type="BNR" labelNumber="316" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_3_1_SSM" type="status" comment="SSM of label: FW_ENGINE_OIL_TEMPERATURE_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_ENGINE_OIL_TEMPERATURE_3_1_316"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_ENGINE_OIL_TEMPERATURE_3_1" type="Float" comment="ENGINE OIL TEMPERATURE from ENG 3">
+               <signal name="D_FW_ENGINE_OIL_TEMPERATURE_ARINC_3_1_316" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="ENGINE OIL TEMPERATURE from ENG 3">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131700_O" type="BNR" labelNumber="317" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_4_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_TEMPERATURE_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_TEMPERATURE_4_1_317"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_4_1" type="Float" comment="PROPELLER OIL TEMPERATURE from ENG 4">
+               <signal name="D_FW_PROPELLER_OIL_TEMPERATURE_ARINC_4_1_317" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROPELLER OIL TEMPERATURE from ENG 4">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131701_O" type="BNR" labelNumber="317" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_1_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_TEMPERATURE_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_TEMPERATURE_1_1_317"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_1_1" type="Float" comment="PROPELLER OIL TEMPERATURE from ENG 1">
+               <signal name="D_FW_PROPELLER_OIL_TEMPERATURE_ARINC_1_1_317" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROPELLER OIL TEMPERATURE from ENG 1">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131710_O" type="BNR" labelNumber="317" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_2_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_TEMPERATURE_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_TEMPERATURE_2_1_317"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_2_1" type="Float" comment="PROPELLER OIL TEMPERATURE from ENG 2">
+               <signal name="D_FW_PROPELLER_OIL_TEMPERATURE_ARINC_2_1_317" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROPELLER OIL TEMPERATURE from ENG 2">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_131711_O" type="BNR" labelNumber="317" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_3_1_SSM" type="status" comment="SSM of label: FW_PROPELLER_OIL_TEMPERATURE_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROPELLER_OIL_TEMPERATURE_3_1_317"/>
+               </parameter>
+            </ssm>
+            <parameter name="FW_PROPELLER_OIL_TEMPERATURE_3_1" type="Float" comment="PROPELLER OIL TEMPERATURE from ENG 3">
+               <signal name="D_FW_PROPELLER_OIL_TEMPERATURE_ARINC_3_1_317" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROPELLER OIL TEMPERATURE from ENG 3">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_132200_O" type="BNR" labelNumber="322" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_AIR_SPEED_4_1_SSM" type="status" comment="SSM of label: FW_AIR_SPEED_4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_AIR_SPEED_4_1_322"/>
+               </parameter>
+            </ssm>
+            <parameter name="AIR_SPEED_ARINC_4_1" type="Float" comment="CALIBRATED AIR SPEED from ENG 4">
+               <signal name="D_AIR_SPEED_ARINC_4_1_322" type="float" nbBit="15" lsb="14" msb="28" comment="CALIBRATED AIR SPEED from ENG 4">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_132201_O" type="BNR" labelNumber="322" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_AIR_SPEED_1_1_SSM" type="status" comment="SSM of label: FW_AIR_SPEED_1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_AIR_SPEED_1_1_322"/>
+               </parameter>
+            </ssm>
+            <parameter name="AIR_SPEED_ARINC_1_1" type="Float" comment="CALIBRATED AIR SPEED from ENG 1">
+               <signal name="D_AIR_SPEED_ARINC_1_1_322" type="float" nbBit="15" lsb="14" msb="28" comment="CALIBRATED AIR SPEED from ENG 1">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_132210_O" type="BNR" labelNumber="322" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_AIR_SPEED_2_1_SSM" type="status" comment="SSM of label: FW_AIR_SPEED_2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_AIR_SPEED_2_1_322"/>
+               </parameter>
+            </ssm>
+            <parameter name="AIR_SPEED_ARINC_2_1" type="Float" comment="CALIBRATED AIR SPEED from ENG 2">
+               <signal name="D_AIR_SPEED_ARINC_2_1_322" type="float" nbBit="15" lsb="14" msb="28" comment="CALIBRATED AIR SPEED from ENG 2">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_132211_O" type="BNR" labelNumber="322" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_AIR_SPEED_3_1_SSM" type="status" comment="SSM of label: FW_AIR_SPEED_3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_AIR_SPEED_3_1_322"/>
+               </parameter>
+            </ssm>
+            <parameter name="AIR_SPEED_ARINC_3_1" type="Float" comment="CALIBRATED AIR SPEED from ENG 3">
+               <signal name="D_AIR_SPEED_ARINC_3_1_322" type="float" nbBit="15" lsb="14" msb="28" comment="CALIBRATED AIR SPEED from ENG 3">
+               <float floatResolution="0.015625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_134600_O" type="BNR" labelNumber="346" sdi="00" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROP_LOW_PITCH_LIMIT_E4_1_SSM" type="status" comment="SSM of label: FW_PROP_LOW_PITCH_LIMIT_E4_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROP_LOW_PITCH_LIMIT_E4_1_346"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROP_LOW_PITCH_LIMIT_FW_4_1" type="Float" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 4">
+               <signal name="D_PROP_LOW_PITCH_LIMIT_FW_ARINC_4_1_346" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 4">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_134601_O" type="BNR" labelNumber="346" sdi="01" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROP_LOW_PITCH_LIMIT_E1_1_SSM" type="status" comment="SSM of label: FW_PROP_LOW_PITCH_LIMIT_E1_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROP_LOW_PITCH_LIMIT_E1_1_346"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROP_LOW_PITCH_LIMIT_FW_1_1" type="Float" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 1">
+               <signal name="D_PROP_LOW_PITCH_LIMIT_FW_ARINC_1_1_346" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 1">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_134610_O" type="BNR" labelNumber="346" sdi="10" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROP_LOW_PITCH_LIMIT_E2_1_SSM" type="status" comment="SSM of label: FW_PROP_LOW_PITCH_LIMIT_E2_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROP_LOW_PITCH_LIMIT_E2_1_346"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROP_LOW_PITCH_LIMIT_FW_2_1" type="Float" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 2">
+               <signal name="D_PROP_LOW_PITCH_LIMIT_FW_ARINC_2_1_346" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 2">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+      <A429Label name="A4FW_BACKUP_CDS_134611_O" type="BNR" labelNumber="346" sdi="11" refreshRate="300">
+            <ssm>
+            <parameter name="FW_PROP_LOW_PITCH_LIMIT_E3_1_SSM" type="status" comment="SSM of label: FW_PROP_LOW_PITCH_LIMIT_E3_1">
+               <signal name="SSM_FW_BACKUP_CDS_1_FW_PROP_LOW_PITCH_LIMIT_E3_1_346"/>
+               </parameter>
+            </ssm>
+            <parameter name="PROP_LOW_PITCH_LIMIT_FW_3_1" type="Float" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 3">
+               <signal name="D_PROP_LOW_PITCH_LIMIT_FW_ARINC_3_1_346" type="float" nbBit="15" lsb="14" msb="28" startBit="14" signed="1" comment="PROP_LOW_PITCH_LIMIT_ARINC from ENG 3">
+               <float floatResolution="0.00390625" floatCodingType="BNR"/>
+               </signal>
+            </parameter>
+      </A429Label>
+   </configurationEntity>
+</configurationTable>
