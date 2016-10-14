@@ -243,7 +243,7 @@ class A429ParamBNR(A429Parameter):
         self.nb_bits = int(nb_bits)
         self.range = float(range)
         self.resolution = float(resolution)
-        self.lsb = int(self.msb) - int(self.nb_bits)
+        self.lsb = int(self.msb) - int(self.nb_bits) + 1
         self._accuracy = None
         self._signed = "1"
 
@@ -264,7 +264,7 @@ class A429ParamBNR(A429Parameter):
     @signed.setter
     def signed(self, signed):
         convert_sign = str(signed)
-        print ("signe: "+str(signed))
+
         if signed:
             if (convert_sign == "yes") or (convert_sign =="O"):
                 self._signed = "1"
@@ -276,8 +276,6 @@ class A429ParamBNR(A429Parameter):
                 self._signed = "0"
         else:
             self._signed = "0"
-
-        print("\tsigne etabli: " + self._signed)
 
     def print(self):
         super(A429ParamBNR, self).print()
@@ -300,7 +298,7 @@ class A429ParamBCD(A429Parameter):
         self.codingtype = "int"
         self.msb = int(msb)
         self.nb_bits = int(nb_bits)
-        self.lsb = int(self.msb) - int(self.nb_bits)
+        self.lsb = int(self.msb) - int(self.nb_bits) + 1
         self.signed = "0"
 
         if len(re.findall("\s", range)) > 0:
@@ -327,12 +325,14 @@ class A429ParamOpaque(A429Parameter):
         A429Parameter.__init__(self, name, nature, label)
         self.codingtype = "int"
         self.msb = int(msb)
-        if(nb_bits):
+        if nb_bits:
             self.nb_bits = int(nb_bits)
+            self.lsb = int(self.msb) - int(self.nb_bits) + 1
         else:
             self.nb_bits = None
+            self.lsb = "1"
 
-        self.lsb = "1"
+
         self.signed = "0"
 
     def print(self):
@@ -352,6 +352,7 @@ class A429ParamISO5(A429Parameter):
         self.msb = int(msb)
         if(nb_bits):
             self.nb_bits = int(nb_bits)
+            self.lsb = int(self.msb) - int(self.nb_bits) + 1
         else:
             self.nb_bits = None
 

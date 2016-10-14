@@ -43,14 +43,30 @@ class FDEF_XML:
         _displaydate=str(_date.day)+"/"+str(_date.month)+"/"+str(_date.year)
 
         # set the document root name 'configurationTable'
-        self._RootElement = etree.Element('configurationTable', type=self.Type, generationDate=_displaydate, generationTool="outil perso")
+        self._RootElement = etree.Element(
+            'configurationTable',
+            type=self.Type,
+            generationDate=_displaydate,
+            generationTool="outil perso"
+        )
 
         # add configurationSources and sourceFile XML element into XML tree
-        _configSource = etree.SubElement(self._RootElement, "configurationSources")
-        etree.SubElement(_configSource, "sourceFile", type="", pathname="")
+        _configSource = etree.SubElement(
+                                            self._RootElement,
+                                            "configurationSources"
+                                         )
+        etree.SubElement(
+            _configSource,
+            "sourceFile",
+            type="",
+            pathname=""
+        )
 
         # create configurationEntity, it will be the root element of A429Label sub element
-        self._LabelRootElement = etree.SubElement(self._RootElement, "configurationEntity")
+        self._LabelRootElement = etree.SubElement(
+            self._RootElement,
+            "configurationEntity"
+        )
     #
     # Finalyse and write XML tree into output document
     #
@@ -63,17 +79,32 @@ class FDEF_XML:
 
     def AddLabel(self, labelObj):
 
+        # DW label type is identified as DIS label in FDEF XML file
+        if labelObj.labeltype == "DW":
+            _labelType = "DIS"
+        else:
+            _labelType = labelObj.labeltype
+
         self._LabelCurrentElement = etree.SubElement(
-                                                        self._LabelRootElement, "A429Label",
-                                                        name=labelObj.SimuFormattedName, type=labelObj.labeltype,
-                                                        labelNumber=str(labelObj.number), sdi=labelObj.sdi
+                                                        self._LabelRootElement,
+                                                        "A429Label",
+                                                        name=labelObj.SimuFormattedName,
+                                                        type=_labelType,
+                                                        labelNumber=str("%.3d" % labelObj.number),
+                                                        sdi=labelObj.sdi
                                                      )
 
-        _ssmElement=etree.SubElement(self._LabelCurrentElement, "ssm", type=self.getSsmType(labelObj))
+        _ssmElement=etree.SubElement(
+                                        self._LabelCurrentElement,
+                                        "ssm",
+                                        type=self.getSsmType(labelObj)
+                                     )
 
         _parameterElement=etree.SubElement(
-            _ssmElement, "parameter",
-            name=labelObj.SimuFormattedName+"_SSM", type="status",
+            _ssmElement,
+            "parameter",
+            name=labelObj.SimuFormattedName+"_SSM",
+            type="status",
             comment="SSM of label " + labelObj.SimuFormattedName
         )
 
@@ -83,7 +114,6 @@ class FDEF_XML:
         )
 
         for ParamObj in labelObj.ParameterList:
-
             self.AddParameter(ParamObj)
 
     def AddParameter(self, ParamObj):
@@ -91,11 +121,12 @@ class FDEF_XML:
         _parameterElement = etree.SubElement(
             self._LabelCurrentElement,
             "parameter",
-            name=ParamObj.parameter_def,
-            type=ParamObj.codingtype
+            name=ParamObj.name,
+            type=ParamObj.codingtype,
+            comment=ParamObj.parameter_def
         )
 
-        _signalElement=etree.SubElement(
+        _signalElement = etree.SubElement(
             _parameterElement,
             "signal",
             name=ParamObj.SimuPreFormattedName,
@@ -103,8 +134,38 @@ class FDEF_XML:
             nbBit=str(ParamObj.nb_bits),
             lsb=str(ParamObj.lsb),
             msb=str(ParamObj.msb),
-            signed=str(ParamObj.signed)
+            signed=str(ParamObj.signed),
+            startBit="1",
+            comment=ParamObj.parameter_def
         )
+
+        if isinstance(ParamObj, A429ParamBNR):
+            _paramType = "BNR"
+        elif isinstance(ParamObj, A429ParamBCD):
+            _paramType = "BCD"
+        else:
+            return None
+            #TODO : add other param type specification into XML
+
+        if ParamObj.codingtype == "float":
+            etree.SubElement(
+                _signalElement,
+                "float",
+                floatResolution=str(ParamObj.resolution),
+                floatCodingType=_paramType
+            )
+        elif ParamObj.codingtype == "int":
+            etree.SubElement(
+                _signalElement,
+                "integer",
+                integerResolution=str(ParamObj.resolution),
+                integerCodingType=_paramType
+            )
+        else:
+            print("[FDEF_XML]{AddPatameter] Unknwon param coding type: " + ParamObj.codingtype)
+
+
+
 
 
 
