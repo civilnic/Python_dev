@@ -35,7 +35,8 @@ def main():
     xml_file = FDEF_XML("test.xml", "A429")
 
     for labelObj in labelObjList:
-        xml_file.AddLabel(labelObj)
+        if len(labelObj.ParameterList) > 0:
+            xml_file.AddLabel(labelObj)
 
     xml_file.WriteAndClose()
 main()

@@ -67,13 +67,33 @@ class BDS_FWC(BDS):
         #
         try:
             BDSFILE = open(self.PathName,'r')
-
         except IOError:
             print('cannot open', self.PathName)
         else:
                 line = BDSFILE.readline()
                 line1 = re.sub('(\\s*)([A-Z0-9_.]+\\s+[0-9]+  [0-9]+  )', '!\\2', line)
                 BDSFILE_LIST = re.split('!', line1)
+
+        # specific case of SDAC source:
+        # contrarily of other systems as EIU1 and EIU2 that have one line per label/parameters from each
+        # SDAC 1 and 2 labels/parameters are not distinguished (there is only one line for both of them)
+        #  "INPUT PINS" field is equal to LMP04J,K,RMP04A,B for SDAC1/2
+        # in this case for each label that "INPUT PINS" field is equal to LMP04J,K,RMP04A,B
+        # we have to duplicate it into 2 labels/parameters one from SDAC1 pins=LMP04J,K one from SDAC2 pins=RMP04A,B
+        # we create here BDSFILE_NEW_LIST line list with duplicated line for SDAC1 and SDAC2
+
+        BDSFILE_NEW_LIST=[]
+        for line in BDSFILE_LIST:
+            _m = re.match(r'(.{66})(\w{6},\w),(\w{6},\w)(.*?)SDAC1/2(.*)', line)
+            if _m:
+                _newLine1=_m.group(1)+_m.group(2)+' '*9+_m.group(4)+'SDAC1'+' '*2+_m.group(5)
+                _newLine2=_m.group(1)+_m.group(3)+' '*9+_m.group(4)+'SDAC2'+' '*2+_m.group(5)
+                BDSFILE_NEW_LIST.append(_newLine1)
+                BDSFILE_NEW_LIST.append(_newLine2)
+            else:
+                BDSFILE_NEW_LIST.append(line)
+
+
 
         #
         # each line of input BDS file is arround 618 bytes
@@ -166,7 +186,7 @@ class BDS_FWC(BDS):
         # some fields of the line are unused that why we defined BDS_Parameters dictionary, it contains used field
         # to extract
         #
-        for line in BDSFILE_LIST:
+        for line in BDSFILE_NEW_LIST:
 
             # if empty line go to next line
             if not line:
@@ -294,11 +314,12 @@ class BDS_FWC(BDS):
 
     def AddInputLabel(self, DicoLine):
 
+        # label format is set with FORMAT field if not empty
         if DicoLine["FORMAT"]:
             label_format = DicoLine["FORMAT"]
+        # else in FWC BDS file an empty FORMAT is considered as a DW (Discrete Word) label
         else:
             label_format = "DW"
-
 
         LabelObj = A429Label(DicoLine["LABEL IN"], DicoLine["SDI IN"], label_format, DicoLine["NATURE"], DicoLine["SYSTEM"])
         LabelObj.input_trans_rate = DicoLine["INPUT TRANSMIT INTERVAL MIN/MAX"]
@@ -312,8 +333,10 @@ class BDS_FWC(BDS):
 
     def AddOutputLabel(self, DicoLine):
 
+        # label format is set with FORMAT field if not empty
         if DicoLine["FORMAT"]:
             label_format = DicoLine["FORMAT"]
+            # in FWC BDS file an empty FORMAT is considered as a DW (Discrete Word) label
         else:
             label_format = "DW"
 
