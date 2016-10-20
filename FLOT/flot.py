@@ -1,6 +1,10 @@
 import csv
 import pathlib
 import re
+import channel
+import port
+import modele
+import connexion
 
 class flot:
     """
@@ -14,16 +18,37 @@ class flot:
         _ path name of the file
         """
         self.pathName = flotFile
-        self.ports_conso = []
-        self.ports_prod = []
-        self.channels = []
-        self.models = []
         self.models_ref = dict()
         self.channel_ref = dict()
         self.consumers_ref = dict()
         self.producers_ref = dict()
 
         self.parseMexicoFlot()
+
+    @property
+    def ports_consum(self):
+        return self.ports_consum
+
+    @ports_consum.setter
+    def ports_consum(self, ports_consum):
+        self.ports_consum.append(ports_consum)
+
+    @property
+    def ports_prod(self):
+        return self.ports_prod
+
+    @ports_prod.setter
+    def ports_prod(self, ports_prod):
+        self.ports_prod.append(ports_prod)
+
+
+    @property
+    def ports_prod(self):
+        return self.ports_prod
+
+    @ports_prod.setter
+    def ports_prod(self, ports_prod):
+        self.ports_prod.append(ports_prod)
 
     def parseMexicoFlot(self):
 
