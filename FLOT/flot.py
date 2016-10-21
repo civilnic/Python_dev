@@ -1,9 +1,9 @@
 import csv
 import pathlib
 import re
-import channel
+from channel import channel
 import port
-import modele
+from modele import modele
 import connexion
 
 class flot:
@@ -101,11 +101,30 @@ class flot:
                 _signal = _testOnSignal.group(1)
                 _signalIndex = _testOnSignal.group(2)
 
-                _channelTabRef = self.addChannel(_signal)
+                # create a channel object and
+                # reference it n flot object
+                _channelObj = self.addChannel(channel(_signal))
 
-                if _testOnSignal.group(2):
-                    print (_testOnSignal.group(1))
-                    print (_testOnSignal.group(2))
+                # if a dimension is set on channel (signal)
+                if _signalIndex:
+
+                    # channel has no dimension yet, we initialise min and max to current index
+                    if not _channelObj.hasDimChannel():
+                        _channelObj.tabMin = _signalIndex
+                        _channelObj.tabMax = _signalIndex
+
+                    # a dimension is already set
+                    # we have to compare current index to min and max channel index
+                    else:
+
+                        if _channelObj.tabMax is not None:
+                            if int(_signalIndex) >= _channelObj.tabMax:
+                                _channelObj.tabMax = _signalIndex
+
+                        if _channelObj.tabMin is not None:
+                            if int(_signalIndex) <= _channelObj.tabMin:
+                                _channelObj.tabMin = _signalIndex
+
             else:
                 print('--------------->PROBLEME')
 
@@ -113,8 +132,30 @@ class flot:
         else:
             return None
 
+        # if init field is not empty
+        if _init:
+            _channelObj.init=_init
 
-    def addChannel(self, channel):
 
-        if channel in self.channel_ref.keys():
-            myList=channel_ref[]
+        # is there a producer model:
+        if _modOccProd:
+            _modProdObj=self.addModel(modele(_modOccProd))
+
+
+    def addChannel(self, channelObj):
+
+        _identifier=channelObj.getIdentifier()
+
+        if _identifier not in self.channel_ref.keys():
+            self.channel_ref[_identifier]=channelObj
+
+        return self.channel_ref[_identifier]
+
+
+    def addModel(self, modelObj):
+        _identifier = modelObj.getIdentifier()
+
+        if _identifier not in self.models_ref.keys():
+            self.models_ref[_identifier] = modelObj
+
+        return self.models_ref[_identifier]

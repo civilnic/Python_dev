@@ -9,48 +9,54 @@ class modele:
         Attributes are:
         _ path name of the file
         """
-        self.modocc = modocc
-        self.occurence = None
-        self.name = None
-        self.ports_consum = []
-        self.ports_prod = []
+        self._modocc = modocc
+        self._occurence = None
+        self._name = None
+        self._ports_consum = []
+        self._ports_prod = []
 
     @property
     def modocc(self):
-        return self.modocc
+        return self._modocc
 
     @modocc.setter
     def modocc(self, modocc):
-        self.modocc = modocc
+        self._modocc = modocc
 
     @property
     def occurence(self):
-        return self.occurence
+        return self._occurence
 
     @occurence.setter
     def occurence(self, occurence):
-        self.occurence = occurence
+        self._occurence = occurence
 
     @property
     def name(self):
-        return self.name
+        return self._name
 
     @name.setter
     def name(self, name):
-        self.name = name
+        self._name = name
 
     @property
     def ports_consum(self):
-        return self.ports_consum
+        return self._ports_consum
 
     @ports_consum.setter
     def ports_consum(self, ports_consum):
-        self.ports_consum.append(ports_consum)
+        self._ports_consum.append(ports_consum)
 
     @property
     def ports_prod(self):
-        return self.ports_prod
+        return self._ports_prod
 
     @ports_prod.setter
     def ports_prod(self, ports_prod):
-        self.ports_prod.append(ports_prod)
+        self._ports_prod.append(ports_prod)
+
+    def getIdentifier(self):
+        return str(self.modocc)
+
+    def pprint(self):
+        print("Modele name: "+self.modocc)

@@ -4,20 +4,19 @@ class port:
     """
 
 
-    def __init__(self, name):
+    def __init__(self, name, modocc):
         """
         Attributes are:
         _ path name of the file
         """
         self.name = name
+        self.modocc = modocc
         self.init_default = None
         self.type = None
         self.operator = None
         self.tabMin = None
         self.tabMax = None
         self.channel = None
-        self.modocc = None
-
 
     @property
     def name(self):
@@ -83,4 +82,5 @@ class port:
     def modocc(self, modocc):
         self.modocc = modocc
 
-    get
+    def getIdentifier(self):
+        return str(self.modocc+"/"+self.name)
