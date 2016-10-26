@@ -2,7 +2,7 @@ import csv
 import pathlib
 import re
 from channel import channel
-import port
+from port import port
 from modele import modele
 import connexion
 
@@ -134,20 +134,46 @@ class flot:
 
         # if init field is not empty
         if _init:
-            _channelObj.init=_init
+            _channelObj.init = _init
 
 
         # is there a producer model:
         if _modOccProd:
-            _modProdObj=self.addModel(modele(_modOccProd))
+            if _portProd:
+                _modProdObj = self.addModel(modele(_modOccProd))
+                _portProdObj = self.addPort(port(_portProd, _modProdObj.modocc), "producer")
+                _modProdObj.addPort(_portProdObj)
+                _channelObj.addPort(_portProdObj)
 
+                # there is an operator on producer port
+                if _opProd:
+                    _portProdObj.operator = _opProd
+            else:
+                return None
+
+
+
+        # is there a consumer model:
+        if _modOccCons:
+
+            if _portCons:
+                _modConsObj = self.addModel(modele(_modOccCons))
+                _portConsObj = self.addPort(port(_portCons, _modConsObj.modocc), "consumer")
+                _modConsObj.addPort(_portConsObj)
+                _channelObj.addPort(_portConsObj)
+
+                # there is an operator on producer port
+                if _opCons:
+                    _portConsObj.operator = _opCons
+            else:
+                return None
 
     def addChannel(self, channelObj):
 
-        _identifier=channelObj.getIdentifier()
+        _identifier = channelObj.getIdentifier()
 
         if _identifier not in self.channel_ref.keys():
-            self.channel_ref[_identifier]=channelObj
+            self.channel_ref[_identifier] = channelObj
 
         return self.channel_ref[_identifier]
 
@@ -159,3 +185,18 @@ class flot:
             self.models_ref[_identifier] = modelObj
 
         return self.models_ref[_identifier]
+
+
+    def addPort(self, portObj, portType):
+
+        _identifier = portObj.getIdentifier()
+        portObj.type = portType
+
+        if portType == "producer":
+            if _identifier not in self.models_ref.keys():
+                self.producers_ref[_identifier] = portObj
+        elif portType == "consumer":
+            if _identifier not in self.models_ref.keys():
+                self.consumers_ref[_identifier] = portObj
+
+        return portObj

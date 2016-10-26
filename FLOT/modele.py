@@ -60,3 +60,9 @@ class modele:
 
     def pprint(self):
         print("Modele name: "+self.modocc)
+
+    def addPort(self, portObj):
+        if portObj.type == "producer":
+            self._ports_prod.append(portObj)
+        elif portObj.type == "consumer":
+            self._ports_consum.append(portObj)

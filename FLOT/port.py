@@ -9,78 +9,81 @@ class port:
         Attributes are:
         _ path name of the file
         """
-        self.name = name
-        self.modocc = modocc
-        self.init_default = None
-        self.type = None
-        self.operator = None
-        self.tabMin = None
-        self.tabMax = None
-        self.channel = None
+        self._name = name
+        self._modocc = modocc
+        self._init_default = None
+        self._type = None
+        self._operator = None
+        self._tabMin = None
+        self._tabMax = None
+        self._channel = None
 
     @property
     def name(self):
-        return self.name
+        return self._name
 
     @name.setter
     def name(self, name):
-        self.name = name
+        self._name = name
 
     @property
     def init_default(self):
-        return self.init_default
+        return self._init_default
 
     @init_default.setter
     def init_default(self, init_default):
-        self.init_default = init_default
+        self._init_default = init_default
 
     @property
     def type(self):
-        return self.type
+        return self._type
 
     @type.setter
     def type(self, type):
-        self.type = type
+        self._type = type
 
     @property
     def operator(self):
-        return self.operator
+        return self._operator
 
     @operator.setter
     def operator(self, operator):
-        self.operator = operator
+        self._operator = operator
 
     @property
     def tabMin(self):
-        return self.tabMin
+        return self._tabMin
 
     @tabMin.setter
     def tabMin(self, tabMin):
-        self.tabMin = tabMin
+        self._tabMin = tabMin
 
     @property
     def tabMax(self):
-        return self.tabMax
+        return self._tabMax
 
     @tabMax.setter
     def tabMax(self, tabMax):
-        self.tabMax = tabMax
+        self._tabMax = tabMax
 
     @property
     def channel(self):
-        return self.channel
+        return self._channel
 
     @channel.setter
     def channel(self, channel):
-        self.channel = channel
+        self._channel = channel
 
     @property
     def modocc(self):
-        return self.modocc
+        return self._modocc
 
     @modocc.setter
     def modocc(self, modocc):
-        self.modocc = modocc
+        self._modocc = modocc
 
     def getIdentifier(self):
         return str(self.modocc+"/"+self.name)
+
+    def pprint(self):
+        print (self.getIdentifier())

@@ -85,3 +85,9 @@ class channel:
             print( "\t_tabMin: "+str(self._tabMin))
         if self._tabMin:
             print( "\t_tabMax: "+str(self._tabMax))
+
+    def addPort(self, portObj):
+        if portObj.type == "producer":
+            self._ports_prod.append(portObj)
+        elif portObj.type == "consumer":
+            self._ports_consum.append(portObj)
