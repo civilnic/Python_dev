@@ -200,3 +200,18 @@ class flot:
                 self.consumers_ref[_identifier] = portObj
 
         return portObj
+
+    def hasModele(self,modeleIdentifier):
+        if modeleIdentifier in self.models_ref.keys():
+            return True
+        else:
+            return False
+
+
+    def hasPort(self,portIdentifier):
+        if portIdentifier in self.consumers_ref.keys():
+            return True
+        elif portIdentifier in self.producers_ref.keys():
+            return True
+        else:
+            return False
