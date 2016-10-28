@@ -56,7 +56,7 @@ class port:
 
     @tabMin.setter
     def tabMin(self, tabMin):
-        self._tabMin = tabMin
+        self._tabMin = int(tabMin)
 
     @property
     def tabMax(self):
@@ -64,7 +64,7 @@ class port:
 
     @tabMax.setter
     def tabMax(self, tabMax):
-        self._tabMax = tabMax
+        self._tabMax = int(tabMax)
 
     @property
     def channel(self):
@@ -86,4 +86,24 @@ class port:
         return str(self.modocc+"/"+self.name)
 
     def pprint(self):
-        print (self.getIdentifier())
+
+        print(self.getIdentifier())
+        print("\ttype: " + str(self.type))
+
+        if self.operator:
+            print("\toperator: " + str(self.operator))
+        if self._tabMin:
+            print( "\t_tabMin: "+str(self._tabMin))
+        if self._tabMin:
+            print( "\t_tabMax: "+str(self._tabMax))
+
+
+
+    # method to know if a channel has a parameter tabMin or tabMax set
+    # i.e. if a channel is more than dim 1
+    # return type is a boolean
+    def hasDimPort(self):
+        if (self.tabMax is None) and (self.tabMin is None):
+            return False
+        else:
+            return True

@@ -19,10 +19,10 @@ def main():
         #     print (_channelObj.name+": "+str(_channelObj.tabMin)+","+str(_channelObj.tabMax))
 
 
-    for _model in myFlot.models_ref.keys():
-        _modelObj = myFlot.models_ref[_model]
-        _modelObj.pprint()
-        for _portObj in _modelObj._ports_consum:
-            _portObj.pprint()
+    #for _model in myFlot.models_ref.keys():
+    _modelObj = myFlot.models_ref["encap/1"]
+    _modelObj.pprint()
+    for _portObj in _modelObj._ports_consum:
+        _portObj.pprint()
 
 main()
