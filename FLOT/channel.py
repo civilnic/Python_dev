@@ -79,12 +79,12 @@ class channel:
 
     def pprint(self):
         print( "Channel Object: \n\t_name: "+self._name)
-        if self._init:
-            print( "\t_init: "+self._init)
-        if self._tabMin:
-            print( "\t_tabMin: "+str(self._tabMin))
-        if self._tabMin:
-            print( "\t_tabMax: "+str(self._tabMax))
+        if self.init is not None:
+            print( "\tinit: "+self.init)
+        if self.tabMin is not None:
+            print( "\ttabMin: "+str(self.tabMin))
+        if self.tabMin is not None:
+            print( "\ttabMax: "+str(self.tabMax))
 
     def addPort(self, portObj):
         if portObj.type == "producer":

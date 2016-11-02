@@ -90,13 +90,14 @@ class port:
         print(self.getIdentifier())
         print("\ttype: " + str(self.type))
 
+        if self.init_default:
+            print("\tinit_default: " + str(self.init_default))
         if self.operator:
             print("\toperator: " + str(self.operator))
-        if self._tabMin:
-            print( "\t_tabMin: "+str(self._tabMin))
-        if self._tabMin:
-            print( "\t_tabMax: "+str(self._tabMax))
-
+        if self.tabMin is not None:
+            print("\ttabMin: "+str(self.tabMin))
+        if self.tabMin is not None:
+            print("\ttabMax: "+str(self.tabMax))
 
 
     # method to know if a channel has a parameter tabMin or tabMax set

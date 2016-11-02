@@ -197,6 +197,10 @@ class flot:
                 # there is an operator on producer port
                 if _opProd:
                     _portProdObj.operator = _opProd
+
+                # if channel has an init value set port default value to it
+                if _channelObj.init is not None:
+                    _portProdObj.init_default = _channelObj.init
             else:
                 return None
 
@@ -234,6 +238,7 @@ class flot:
 
                         # channel has no dimension yet, we initialise min and max to current index
                         if not _portConsObj.hasDimPort():
+
                             _portConsObj.tabMin = _portConsIndex
                             _portConsObj.tabMax = _portConsIndex
 
@@ -255,6 +260,11 @@ class flot:
                 # there is an operator on producer port
                 if _opCons:
                     _portConsObj.operator = _opCons
+
+                # if channel has an init value set port default value to it
+                if _channelObj.init is not None:
+                    _portConsObj.init_default = _channelObj.init
+
             else:
                 return None
 
