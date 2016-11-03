@@ -25,8 +25,8 @@ class BDS2XML:
         _ path name of the file
         """
         self.PathName = path_name
-        self.Workbook =None
-        self.SheetAndIndex={}
+        self.Workbook = None
+        self.SheetAndIndex = {}
 
         if new is True:
             for sheet in BDS2XML.file_structure.keys():
