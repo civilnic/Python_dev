@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3ae01333-8315-4064-ac94-bd25719cee58" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../BDS/ICD_template.xls" afterPath="$PROJECT_DIR$/../BDS/ICD_template.xls" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../BDS/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../BDS/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MICD/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../MICD/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MICD/MICD.py" afterPath="$PROJECT_DIR$/../MICD/MICD.py" />
     </list>
     <ignored path="FLOT.iws" />
     <ignored path=".idea/workspace.xml" />

@@ -33,6 +33,9 @@ class MICD:
         self._version = modelversion
         self._newFile = newfile
         self._Workbook = None
+        self._PortIN = {}
+        self._PortOUT = {}
+        self._ACICD = {}
         self._SheetAndIndex = {}
 
         if self._newFile is True:
@@ -291,4 +294,15 @@ This variable is not refreshed in RUN mode.']
         :return True/False:
         """
         self._Workbook.save(self._pathName)
+
+    # add a port on MICD FUN_IN from a tab
+    def AddPortfromTab(self,lineTab,portType):
+        if portType == "IN":
+            _sheet = "FUN_IN"
+        elif portType == "OUT":
+            _sheet = "FUN_OUT"
+        else:
+            print("[AddPortfromTab] Unknown port Type !!")
+            return None
+
 
