@@ -33,6 +33,9 @@ class MICD:
         self._version = modelversion
         self._newFile = newfile
         self._Workbook = None
+        self._PortIN = {}
+        self._PortOUT = {}
+        self._ACICD = {}
         self._SheetAndIndex = {}
 
         if self._newFile is True:
@@ -60,7 +63,7 @@ class MICD:
         self._Workbook = xlwt.Workbook()
 
         # create file structure
-        for _sheet in self._SheetAndIndex:
+        for _sheet in sorted(self._SheetAndIndex):
 
             # add sheet in workbook
             self._SheetAndIndex[_sheet]['XlsSheet'] = self._Workbook.add_sheet(_sheet)
@@ -97,7 +100,7 @@ class MICD:
                        'VIT': '8.1'}
 
         # loop to write header cell
-        for _ident, _value in _headerDict.items():
+        for _ident, _value in sorted(_headerDict.items()):
 
             self.writeCell(_sheet, 'Identifier', _ident,True)
             self.writeCell(_sheet, 'Value', _value)
@@ -169,8 +172,13 @@ With this variable the Model will know which Simulator it is running on.\n\
 This variable is not refreshed in RUN mode.']
 
                           }
+        # increase col width
+        self._SheetAndIndex[_sheet]['XlsSheet'].col(self.file_structure[_sheet].index('Comment')).width = 20000
+
+
+
         # loop to write sim_ctrl_in cell
-        for _ident, _value in _simctrlinDict.items():
+        for _ident, _value in sorted(_simctrlinDict.items()):
 
             self.writeCell(_sheet, 'Name', _ident,True)
 
@@ -179,6 +187,82 @@ This variable is not refreshed in RUN mode.']
 
             self._SheetAndIndex[_sheet]['RowIndex'] += 1
             self._SheetAndIndex[_sheet]['RowNbr'] += 1
+
+        # fill header sheet
+        _sheet = 'SIM_CTRL_OUT'
+
+        # create and temp dictonnary it will be used to fill header sheet in a loop
+        _simctrloutDict = {'R_HOLD': ["boolean",
+                                     "",
+                                     "wu",
+                                     "HOLD mode return Flag",
+                                     'If HOLD mode is required (F_HOLD is true) then :\n\
+R_HOLD = TRUE means the model is successfully running in Hold mode\n\
+R_HOLD = FALSE means an error occurs in execution of HOLD mode tasks'],
+                          'R_INIT': ["boolean",
+                                     "",
+                                     "wu",
+                                     "INIT mode return Flag",
+                                     'If INIT mode is required (F_INIT is true) then :\n\
+R_INIT = TRUE means the model has successfully performed all INIT mode tasks.\n\
+R_INIT = FALSE means the model has not performed all INIT tasks required (further calculation steps are necessary).'],
+                          'R_LOAD': ["boolean",
+                                     "",
+                                     "wu",
+                                     "LOAD mode return Flag",
+                                     'If LOAD mode is required (F_LOAD is true) then :\n \
+R_LOAD = True means the model has successfully loaded the files and performed LOAD mode tasks.\n\
+R_LOAD = False means an error occurs in execution of LOAD mode tasks.'],
+                          'R_REINIT': ["boolean",
+                                       "",
+                                       "wu",
+                                       "REINIT mode return Flag",
+                                       'If REINIT mode is required (F_REINIT is true) then :\n\
+R_REINIT = TRUE means the model has successfully performed the level of stabilisation required.\n\
+R_REINIT = FALSE means the model has not yet reached the level of stabilisation required.'],
+                          'R_RUN': ["boolean",
+                                    "",
+                                    "wu",
+                                    "RUN mode return Flag",
+                                    'If RUN mode is required (F_RUN is true) then :\n\
+R_RUN = TRUE means the model is successfully running in Normal RUN mode.\n\
+R_RUN = FALSE means an error occurs in execution of RUN mode tasks.'],
+                          'R_UNLOAD': ["boolean",
+                                       "",
+                                       "wu",
+                                       "UNLOAD mode return Flag",
+                                       'If UNLOAD mode is required (F_UNLOAD is true) then :\n\
+R_UNLOAD = TRUE means the model has successfully completed the tasks of the UNLOAD mode.\n\
+R_UNLOAD = FALSE means an error occurs in execution of UNLOAD mode tasks.'],
+                          'V_CMTIME': ["double",
+                                       "",
+                                       "s",
+                                       "Current Simulation Model time",
+                                       'The current absolute time of the simulation model:\n\
+this input is only to be used to check synchronisation of the model and environment if required.\n\
+Passed before V_CETIME.'],
+                           'V_Model_Id': ["char",
+                                       "256",
+                                       "wu",
+                                       "Model Identification",
+                                       'Model identification sent from Models to Environment.\n\
+With this variable, the Environment or users can check the issue/date of models\n\
+This variable is not refreshed in RUN mode.']
+                          }
+        # loop to write sim_ctrl_in cell
+        for _ident, _value in sorted(_simctrloutDict.items()):
+
+            self.writeCell(_sheet, 'Name', _ident, True)
+
+            for _field in _value:
+                self.writeCell(_sheet, self.file_structure[_sheet][_value.index(_field) + 1], _field)
+
+            self._SheetAndIndex[_sheet]['RowIndex'] += 1
+            self._SheetAndIndex[_sheet]['RowNbr'] += 1
+
+        # increase col width
+        self._SheetAndIndex[_sheet]['XlsSheet'].col(self.file_structure[_sheet].index('Comment')).width = 20000
+
 
         return
 
@@ -210,4 +294,15 @@ This variable is not refreshed in RUN mode.']
         :return True/False:
         """
         self._Workbook.save(self._pathName)
+
+    # add a port on MICD FUN_IN from a tab
+    def AddPortfromTab(self,lineTab,portType):
+        if portType == "IN":
+            _sheet = "FUN_IN"
+        elif portType == "OUT":
+            _sheet = "FUN_OUT"
+        else:
+            print("[AddPortfromTab] Unknown port Type !!")
+            return None
+
 
