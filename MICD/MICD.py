@@ -1,6 +1,7 @@
 import pathlib
 import re
 from datetime import datetime
+from MICD_port import MICD_port
 import xlrd, xlwt
 
 class MICD:
@@ -304,5 +305,7 @@ This variable is not refreshed in RUN mode.']
         else:
             print("[AddPortfromTab] Unknown port Type !!")
             return None
+
+        _port = MICD_port(lineTab, portType)
 
 
