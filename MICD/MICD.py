@@ -20,11 +20,39 @@ class MICD:
         'SIMULATION_LEVEL': ('Platform Code', 'Simulation Level[1]'),
         'FUN_IN': ('Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode', 'From'
                    , "Refresh\nRate", 'Min', 'Max', 'Enum', 'Consumed If', 'Aircraft Signal Name', "Interface\nLevel",
-                   'Status (SSM/FS/Refresh)',"Simulation\nLevel[1]", 'Init Value', 'Custom', 'Comment'),
+                   'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Init Value', 'Custom', 'Comment',
+                   'Last Modification'),
         'FUN_OUT': ('Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode',
-                    'To', "Refresh\nRate",'Min', 'Max', 'Enum', 'Produced If', 'Aircraft Signal Name',"Interface\nLevel"
-                    , 'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Comment', 'Not Simulated Data',
-                    'Default Value')
+                    'To', "Refresh\nRate", 'Min', 'Max', 'Enum', 'Produced If', 'Aircraft Signal Name'
+                    , "Interface\nLevel", 'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Comment',
+                    'Not Simulated Data', 'Default Value', 'Last Modification'),
+        # tab to do the equivalence between col number and MICD_port object attributes
+        # so used to configure MICD_port object
+        'MICD_portObjectConfiguration': [
+            'name',
+            'codingtype',
+            'unit',
+            'description',
+            'convention',
+            'dim1',
+            'dim2',
+            'comformat',
+            'commode',
+            'fromto',
+            'resfreshrate',
+            'min',
+            'max',
+            'enum',
+            'prodconsif',
+            'aircraftsignalname',
+            'interfacelevel',
+            'status',
+            'simulationlevel',
+            'initdefaultvalue',
+            'notsimudatacustom',
+            'comment',
+            'lastmodification'
+        ]
     }
 
     def __init__(self, pathname, modelname=None, modelversion=None, newfile=None):
@@ -298,14 +326,65 @@ This variable is not refreshed in RUN mode.']
 
     # add a port on MICD FUN_IN from a tab
     def AddPortfromTab(self,lineTab,portType):
-        if portType == "IN":
+
+        _port = MICD_port(lineTab, portType, MICD.file_structure['MICD_portObjectConfiguration'])
+
+        self.AddPortfromPortObject(_port)
+
+    def AddPortfromPortObject(self, MICDportObject):
+
+        if MICDportObject.type == "IN":
             _sheet = "FUN_IN"
-        elif portType == "OUT":
+        elif MICDportObject.type == "OUT":
             _sheet = "FUN_OUT"
         else:
             print("[AddPortfromTab] Unknown port Type !!")
             return None
 
-        _port = MICD_port(lineTab, portType)
+        _portDict = {
+            'name': MICDportObject.name,
+            'codingtype': MICDportObject.codingtype,
+            'unit': MICDportObject.unit,
+            'description': MICDportObject.description,
+            'convention': MICDportObject.convention,
+            'dim1': MICDportObject.dim1,
+            'dim2': MICDportObject.dim2,
+            'comformat': MICDportObject.comformat,
+            'commode': MICDportObject.commode,
+            'fromto': MICDportObject.fromto,
+            'resfreshrate': MICDportObject.resfreshrate,
+            'min': MICDportObject.min,
+            'max': MICDportObject.max,
+            'enum': MICDportObject.enum,
+            'prodconsif': MICDportObject.prodconsif,
+            'aircraftsignalname': MICDportObject.aircraftsignalname,
+            'interfacelevel': MICDportObject.interfacelevel,
+            'status': MICDportObject.status,
+            'simulationlevel': MICDportObject.simulationlevel,
+            'initdefaultvalue': MICDportObject.initdefaultvalue,
+            'notsimudatacustom': MICDportObject.notsimudatacustom,
+            'comment': MICDportObject.comment,
+            'lastmodification': MICDportObject.lastmodification
+        }
 
 
+        # loop to write port obecjt attributes values in cell
+        for _MICDfield in self.file_structure[_sheet]:
+
+            _field = MICD.file_structure['MICD_portObjectConfiguration'][self.file_structure[_sheet].index(_MICDfield)]
+
+            # to escape empty fields
+            if _field is not None:
+
+                # retrieve port object attribute from field name with _portDict dictionnaries
+                if _field in _portDict.keys():
+                    _value = _portDict[_field]
+                else:
+                    _value = None
+            else:
+                _value = None
+
+            self.writeCell(_sheet, _MICDfield, _value)
+
+        self._SheetAndIndex[_sheet]['RowIndex'] += 1
+        self._SheetAndIndex[_sheet]['RowNbr'] += 1
