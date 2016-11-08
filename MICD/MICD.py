@@ -12,20 +12,24 @@ class MICD:
     xls_style_bold = xlwt.easyxf('font: name Arial, bold on, height 200; pattern: pattern solid, fore_color turquoise; border: top thin, right thin, bottom thin, left thin; align: horiz left;')
 
     file_structure = {
-        'HEADER': ('Identifier', 'Value'),
-        'SIM_CTRL_IN': ('Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment'),
-        'SIM_CTRL_OUT': ('Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment'),
-        'PROFILE': ('Name', 'Type', 'Dim1', 'Description'),
-        'AIRCRAFT_ICD': ('ICD Version', 'ICD File Name', 'Cross Ref File Name'),
-        'SIMULATION_LEVEL': ('Platform Code', 'Simulation Level[1]'),
-        'FUN_IN': ('Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode', 'From'
-                   , "Refresh\nRate", 'Min', 'Max', 'Enum', 'Consumed If', 'Aircraft Signal Name', "Interface\nLevel",
-                   'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Init Value', 'Custom', 'Comment',
-                   'Last Modification'),
-        'FUN_OUT': ('Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode',
-                    'To', "Refresh\nRate", 'Min', 'Max', 'Enum', 'Produced If', 'Aircraft Signal Name'
-                    , "Interface\nLevel", 'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Comment',
-                    'Not Simulated Data', 'Default Value', 'Last Modification'),
+        
+        'Excel_sheets':
+        {
+            'HEADER': ('Identifier', 'Value'),
+            'SIM_CTRL_IN': ('Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment'),
+            'SIM_CTRL_OUT': ('Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment'),
+            'PROFILE': ('Name', 'Type', 'Dim1', 'Description'),
+            'AIRCRAFT_ICD': ('ICD Version', 'ICD File Name', 'Cross Ref File Name'),
+            'SIMULATION_LEVEL': ('Platform Code', 'Simulation Level[1]'),
+            'FUN_IN': ('Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode', 'From'
+                       , "Refresh\nRate", 'Min', 'Max', 'Enum', 'Consumed If', 'Aircraft Signal Name', "Interface\nLevel",
+                       'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Init Value', 'Custom', 'Comment',
+                       'Last Modification'),
+            'FUN_OUT': ('Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode',
+                        'To', "Refresh\nRate", 'Min', 'Max', 'Enum', 'Produced If', 'Aircraft Signal Name'
+                        , "Interface\nLevel", 'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Comment',
+                        'Not Simulated Data', 'Default Value', 'Last Modification')
+        },
         # tab to do the equivalence between col number and MICD_port object attributes
         # so used to configure MICD_port object
         'MICD_portObjectConfiguration': [
@@ -69,13 +73,13 @@ class MICD:
 
         if self._newFile is True:
 
-            for sheet in MICD.file_structure.keys():
+            for sheet in MICD.file_structure['Excel_sheets'].keys():
                 self._SheetAndIndex[sheet] = {}
                 self._SheetAndIndex[sheet]['ColIndex'] = 0
-                self._SheetAndIndex[sheet]['ColNbr'] = len(list(MICD.file_structure[sheet]))
+                self._SheetAndIndex[sheet]['ColNbr'] = len(list(MICD.file_structure['Excel_sheets'][sheet]))
                 self._SheetAndIndex[sheet]['RowIndex'] = 0
                 self._SheetAndIndex[sheet]['RowNbr'] = 0
-                self._SheetAndIndex[sheet]['Header'] = list(MICD.file_structure[sheet])
+                self._SheetAndIndex[sheet]['Header'] = list(MICD.file_structure['Excel_sheets'][sheet])
                 self._SheetAndIndex[sheet]['XlsSheet'] = None
 
             self.createemptyfile()
@@ -83,6 +87,48 @@ class MICD:
             self.parse()
 
     def parse(self):
+
+        self._Workbook = xlrd.open_workbook(self._pathName)
+        print("[MICD]{parse] Parse excel file: "+self._pathName)
+
+        for _sheetname in self._Workbook.sheet_names():
+
+            _testOnSheetNameFUNIN = re.match(r'(FUN(_\w+)*_IN)', _sheetname)
+            _testOnSheetNameFUNOUT = re.match(r'(FUN(_\w+)*_OUT)', _sheetname)
+            print(_sheetname)
+            # sheet name match *_IN => it's a FUN_IN sheet name
+            # this test is usefull in case of multiple input port sheets
+            if _testOnSheetNameFUNIN:
+                _sheet = "FUN_IN"
+                _portType = "IN"
+
+            elif _testOnSheetNameFUNOUT:
+                _sheet = "FUN_OUT"
+                _portType = "OUT"
+
+            else:
+                continue
+            print(_sheet)
+
+            _sheet = self._Workbook.sheet_by_name(_sheetname)
+
+            self._SheetAndIndex[_sheetname] = {}
+            self._SheetAndIndex[_sheetname]['ColIndex'] = 0
+            self._SheetAndIndex[_sheetname]['ColNbr'] = _sheet.ncols
+            self._SheetAndIndex[_sheetname]['RowIndex'] = 0
+            self._SheetAndIndex[_sheetname]['RowNbr'] = _sheet.nrows
+            self._SheetAndIndex[_sheetname]['Header'] = _sheet.row_values(0)
+            self._SheetAndIndex[_sheetname]['XlsSheet'] = None
+
+            for _rowidx in range(1, _sheet.nrows):  # Iterate through rows
+
+                _line = _sheet.row_values(_rowidx)
+                print(_line)
+
+                _portObject = MICD_port(_line, _portType, MICD.file_structure['MICD_portObjectConfiguration'])
+
+                if not self.AddPort(_portObject):
+                    return False
         return
 
 
@@ -202,7 +248,7 @@ This variable is not refreshed in RUN mode.']
 
                           }
         # increase col width
-        self._SheetAndIndex[_sheet]['XlsSheet'].col(self.file_structure[_sheet].index('Comment')).width = 20000
+        self._SheetAndIndex[_sheet]['XlsSheet'].col(self.file_structure['Excel_sheets'][_sheet].index('Comment')).width = 20000
 
 
 
@@ -212,7 +258,7 @@ This variable is not refreshed in RUN mode.']
             self.writeCell(_sheet, 'Name', _ident,True)
 
             for _field in _value:
-                self.writeCell(_sheet, self.file_structure[_sheet][_value.index(_field)+1], _field)
+                self.writeCell(_sheet, self.file_structure['Excel_sheets'][_sheet][_value.index(_field)+1], _field)
 
             self._SheetAndIndex[_sheet]['RowIndex'] += 1
             self._SheetAndIndex[_sheet]['RowNbr'] += 1
@@ -284,13 +330,13 @@ This variable is not refreshed in RUN mode.']
             self.writeCell(_sheet, 'Name', _ident, True)
 
             for _field in _value:
-                self.writeCell(_sheet, self.file_structure[_sheet][_value.index(_field) + 1], _field)
+                self.writeCell(_sheet, self.file_structure['Excel_sheets'][_sheet][_value.index(_field) + 1], _field)
 
             self._SheetAndIndex[_sheet]['RowIndex'] += 1
             self._SheetAndIndex[_sheet]['RowNbr'] += 1
 
         # increase col width
-        self._SheetAndIndex[_sheet]['XlsSheet'].col(self.file_structure[_sheet].index('Comment')).width = 20000
+        self._SheetAndIndex[_sheet]['XlsSheet'].col(self.file_structure['Excel_sheets'][_sheet].index('Comment')).width = 20000
 
 
         return
@@ -305,7 +351,7 @@ This variable is not refreshed in RUN mode.']
             _styleToApply = MICD.xls_style_bold
         else:
             _styleToApply = None
-        _index = self.file_structure[sheet].index(field)
+        _index = self.file_structure['Excel_sheets'][sheet].index(field)
 
 
         self._SheetAndIndex[sheet]['XlsSheet'].write(self._SheetAndIndex[sheet]['RowIndex'],
@@ -333,13 +379,16 @@ This variable is not refreshed in RUN mode.']
 
     def AddPortfromPortObject(self, MICDportObject):
 
+        if not self.AddPort(MICDportObject):
+            return False
+
         if MICDportObject.type == "IN":
             _sheet = "FUN_IN"
         elif MICDportObject.type == "OUT":
             _sheet = "FUN_OUT"
         else:
-            print("[AddPortfromTab] Unknown port Type !!")
-            return None
+            print("[MICD][AddPortfromPortObject] Unknown port Type !!")
+            return False
 
         _portDict = {
             'name': MICDportObject.name,
@@ -369,9 +418,9 @@ This variable is not refreshed in RUN mode.']
 
 
         # loop to write port obecjt attributes values in cell
-        for _MICDfield in self.file_structure[_sheet]:
+        for _MICDfield in self.file_structure['Excel_sheets'][_sheet]:
 
-            _field = MICD.file_structure['MICD_portObjectConfiguration'][self.file_structure[_sheet].index(_MICDfield)]
+            _field = MICD.file_structure['MICD_portObjectConfiguration'][self.file_structure['Excel_sheets'][_sheet].index(_MICDfield)]
 
             # to escape empty fields
             if _field is not None:
@@ -388,3 +437,29 @@ This variable is not refreshed in RUN mode.']
 
         self._SheetAndIndex[_sheet]['RowIndex'] += 1
         self._SheetAndIndex[_sheet]['RowNbr'] += 1
+
+        return True
+
+    def AddPort(self,MICDportObject):
+
+        if MICDportObject.name == None:
+            print("[MICD][AddPortfromPortObject] Cannot add port into MICD: port name is not defined !!")
+            return False
+
+        if MICDportObject.type == "IN":
+
+            if MICDportObject.name not in self._PortIN.keys():
+                self._PortIN[MICDportObject.name] = MICDportObject
+
+        elif MICDportObject.type == "OUT":
+
+            if MICDportObject.name not in self._PortOUT.keys():
+                self._PortOUT[MICDportObject.name] = MICDportObject
+
+        return True
+
+    def getPortINList(self):
+        return self._PortIN.keys()
+
+    def getPortObjectList(self):
+        return self._PortIN.values()

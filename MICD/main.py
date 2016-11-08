@@ -5,6 +5,7 @@ import sys
 def main():
 
     monMicd = MICD('MICD_serge.xls','MODserge','V1.0',True)
+    autreMicd = MICD('ICD_PRIM_1A.xls','prim_a/1','V1.0')
 
 
     _port_in = [
@@ -61,5 +62,8 @@ def main():
     monMicd.AddPortfromTab(_port_in, "IN")
     monMicd.AddPortfromTab(_port_out, "OUT")
     monMicd.savefile()
+
+    for portobject in autreMicd.getPortObjectList():
+        print (portobject.getPortLineTab())
 
 main()
