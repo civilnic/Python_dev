@@ -94,13 +94,13 @@ class FDEF_XML:
                                                         sdi=labelObj.sdi
                                                      )
 
-        _ssmElement=etree.SubElement(
+        _ssmElement = etree.SubElement(
                                         self._LabelCurrentElement,
                                         "ssm",
                                         type=self.getSsmType(labelObj)
                                      )
 
-        _parameterElement=etree.SubElement(
+        _parameterElement = etree.SubElement(
             _ssmElement,
             "parameter",
             name=labelObj.SimuFormattedName+"_SSM",
