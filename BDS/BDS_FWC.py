@@ -1,7 +1,10 @@
 import re
-from .BDS import BDS
-from .A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
+
 from lxml import etree
+
+from A429.A429 import (A429Label, A429ParamDIS, A429ParamBNR, A429ParamBCD, A429ParamOpaque)
+from .BDS import BDS
+
 
 class BDS_FWC(BDS):
     """
@@ -240,17 +243,23 @@ class BDS_FWC(BDS):
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    ParamObj= self.AddParameter(DicoLine, LabelObj)
+                    DicoLine["NATURE"] = "ENTREE"   # force nature field to "ENTREE" for param object creatio
+                                                    # only ENTREE or SORTIE values for nature
+                                                    #  are possible for parameter creation
+                    ParamObj = self.AddParameter(DicoLine, LabelObj)
                     self.add_Parameter(ParamObj)
 
                     # add output label
                     LabelObj = self.AddOutputLabel(DicoLine)
                     LabelObj.nature = "SORTIE"
-                    LabelObj.LinkToInput=labelnum
+                    LabelObj.LinkToInput = labelnum
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    ParamObj= self.AddParameter(DicoLine, LabelObj)
+                    DicoLine["NATURE"] = "SORTIE"   # force nature field to "ENTREE" for param object creatio
+                                                    # only ENTREE or SORTIE values for nature
+                                                    #  are possible for parameter creation
+                    ParamObj = self.AddParameter(DicoLine, LabelObj)
                     self.add_Parameter(ParamObj)
                 #else:
                     #print("Label nature not defined:"+nature)

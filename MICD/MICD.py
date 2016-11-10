@@ -422,7 +422,7 @@ This variable is not refreshed in RUN mode.']
             _sheet = "FUN_OUT"
             _micd_config = 'MICD_portObjectConfigurationOUT'
         else:
-            print("[MICD][AddPortfromPortObject] Unknown port Type !!")
+            print("[MICD][AddPortfromPortObject] Unknown port Type: "+str(MICDportObject.type)+" !!")
             return False
 
         _portDict = {

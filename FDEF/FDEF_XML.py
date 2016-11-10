@@ -1,6 +1,9 @@
-from lxml import etree
 from datetime import datetime
-from .A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
+
+from lxml import etree
+
+from A429.A429 import (A429ParamBNR, A429ParamBCD)
+
 
 class FDEF_XML:
     """
