@@ -5,7 +5,7 @@ class MICD_port:
     """
 
 
-    def __init__(self, portTab,type,configTab):
+    def __init__(self, portTab=None, type=None, configTab=None):
 
         _refTab = configTab
         
@@ -34,52 +34,53 @@ class MICD_port:
         self.lastmodification = None
         
         self._type = type
-        if portTab[_refTab.index('name')]:
-            self._name = portTab[_refTab.index('name')]
-        if portTab[_refTab.index('codingtype')]:
-            self._codingtype = portTab[_refTab.index('codingtype')]
-        if portTab[_refTab.index('unit')]:
-            self._unit = portTab[_refTab.index('unit')]
-        if portTab[_refTab.index('description')]:
-            self._description = portTab[_refTab.index('description')]
-        if portTab[_refTab.index('convention')]:
-            self._convention = portTab[_refTab.index('convention')]
-        if portTab[_refTab.index('dim1')]:
-            self._dim1 = portTab[_refTab.index('dim1')]
-        if portTab[_refTab.index('dim2')]:
-            self._dim2 = portTab[_refTab.index('dim2')]
-        if portTab[_refTab.index('comformat')]:
-            self._comformat = portTab[_refTab.index('comformat')]
-        if portTab[_refTab.index('commode')]:
-            self._comformat = portTab[_refTab.index('commode')]
-        if portTab[_refTab.index('fromto')]:
-            self._fromto = portTab[_refTab.index('fromto')]
-        if portTab[_refTab.index('resfreshrate')]:
-            self._resfreshrate = portTab[_refTab.index('resfreshrate')]
-        if portTab[_refTab.index('min')]:
-            self._min = portTab[_refTab.index('min')]
-        if portTab[_refTab.index('max')]:
-            self._max = portTab[_refTab.index('max')]
-        if portTab[_refTab.index('enum')]:
-            self._enum = portTab[_refTab.index('enum')]
-        if portTab[_refTab.index('prodconsif')]:
-            self._prodconsif = portTab[_refTab.index('prodconsif')]
-        if portTab[_refTab.index('aircraftsignalname')]:
-            self._aircraftsignalname = portTab[_refTab.index('aircraftsignalname')]
-        if portTab[_refTab.index('interfacelevel')]:
-            self._interfacelevel = portTab[_refTab.index('interfacelevel')]
-        if portTab[_refTab.index('status')]:
-            self._status = portTab[_refTab.index('status')]
-        if portTab[_refTab.index('simulationlevel')]:
-            self._simulationlevel = portTab[_refTab.index('simulationlevel')]
-        if portTab[_refTab.index('initdefaultvalue')]:
-            self._initdefaultvalue = portTab[_refTab.index('initdefaultvalue')]
-        if portTab[_refTab.index('notsimudatacustom')]:
-            self._notsimudatacustom = portTab[_refTab.index('notsimudatacustom')]
-        if portTab[_refTab.index('comment')]:
-            self._comment = portTab[_refTab.index('comment')]
-        if portTab[_refTab.index('lastmodification')]:
-            self._lastmodification = portTab[_refTab.index('lastmodification')]
+        if (portTab is not None) and (_refTab is not None):
+            if portTab[_refTab.index('name')]:
+                self._name = portTab[_refTab.index('name')]
+            if portTab[_refTab.index('codingtype')]:
+                self._codingtype = portTab[_refTab.index('codingtype')]
+            if portTab[_refTab.index('unit')]:
+                self._unit = portTab[_refTab.index('unit')]
+            if portTab[_refTab.index('description')]:
+                self._description = portTab[_refTab.index('description')]
+            if portTab[_refTab.index('convention')]:
+                self._convention = portTab[_refTab.index('convention')]
+            if portTab[_refTab.index('dim1')]:
+                self._dim1 = portTab[_refTab.index('dim1')]
+            if portTab[_refTab.index('dim2')]:
+                self._dim2 = portTab[_refTab.index('dim2')]
+            if portTab[_refTab.index('comformat')]:
+                self._comformat = portTab[_refTab.index('comformat')]
+            if portTab[_refTab.index('commode')]:
+                self._comformat = portTab[_refTab.index('commode')]
+            if portTab[_refTab.index('fromto')]:
+                self._fromto = portTab[_refTab.index('fromto')]
+            if portTab[_refTab.index('resfreshrate')]:
+                self._resfreshrate = portTab[_refTab.index('resfreshrate')]
+            if portTab[_refTab.index('min')]:
+                self._min = portTab[_refTab.index('min')]
+            if portTab[_refTab.index('max')]:
+                self._max = portTab[_refTab.index('max')]
+            if portTab[_refTab.index('enum')]:
+                self._enum = portTab[_refTab.index('enum')]
+            if portTab[_refTab.index('prodconsif')]:
+                self._prodconsif = portTab[_refTab.index('prodconsif')]
+            if portTab[_refTab.index('aircraftsignalname')]:
+                self._aircraftsignalname = portTab[_refTab.index('aircraftsignalname')]
+            if portTab[_refTab.index('interfacelevel')]:
+                self._interfacelevel = portTab[_refTab.index('interfacelevel')]
+            if portTab[_refTab.index('status')]:
+                self._status = portTab[_refTab.index('status')]
+            if portTab[_refTab.index('simulationlevel')]:
+                self._simulationlevel = portTab[_refTab.index('simulationlevel')]
+            if portTab[_refTab.index('initdefaultvalue')]:
+                self._initdefaultvalue = portTab[_refTab.index('initdefaultvalue')]
+            if portTab[_refTab.index('notsimudatacustom')]:
+                self._notsimudatacustom = portTab[_refTab.index('notsimudatacustom')]
+            if portTab[_refTab.index('comment')]:
+                self._comment = portTab[_refTab.index('comment')]
+            if portTab[_refTab.index('lastmodification')]:
+                self._lastmodification = portTab[_refTab.index('lastmodification')]
 
 
     @property

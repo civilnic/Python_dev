@@ -3,7 +3,7 @@ from BDS_FWC import BDS_FWC
 from BDS_EIS import BDS_EIS
 from FDEF_XML import FDEF_XML
 
-from MICD import MICD
+#from MICD import MICD
 
 import sys
 

@@ -1,7 +1,7 @@
 import pathlib
 import re
 from datetime import datetime
-from MICD_port import MICD_port
+from .MICD_port import MICD_port
 import xlrd, xlwt
 
 class MICD:
@@ -32,7 +32,7 @@ class MICD:
         },
         # tab to do the equivalence between col number and MICD_port object attributes
         # so used to configure MICD_port object
-        'MICD_portObjectConfiguration': [
+        'MICD_portObjectConfigurationIN': [
             'name',
             'codingtype',
             'unit',
@@ -55,6 +55,31 @@ class MICD:
             'initdefaultvalue',
             'notsimudatacustom',
             'comment',
+            'lastmodification'
+        ],
+        'MICD_portObjectConfigurationOUT': [
+            'name',
+            'codingtype',
+            'unit',
+            'description',
+            'convention',
+            'dim1',
+            'dim2',
+            'comformat',
+            'commode',
+            'fromto',
+            'resfreshrate',
+            'min',
+            'max',
+            'enum',
+            'prodconsif',
+            'aircraftsignalname',
+            'interfacelevel',
+            'status',
+            'simulationlevel',
+            'comment',
+            'notsimudatacustom',
+            'initdefaultvalue',
             'lastmodification'
         ]
     }
@@ -124,8 +149,11 @@ class MICD:
 
                 _line = _sheet.row_values(_rowidx)
                 print(_line)
-
-                _portObject = MICD_port(_line, _portType, MICD.file_structure['MICD_portObjectConfiguration'])
+                if _portType == "IN":
+                    _micd_config = 'MICD_portObjectConfigurationIN'
+                else:
+                    _micd_config = 'MICD_portObjectConfigurationOUT'
+                _portObject = MICD_port(_line, _portType, MICD.file_structure[_micd_config])
 
                 if not self.AddPort(_portObject):
                     return False
@@ -373,7 +401,12 @@ This variable is not refreshed in RUN mode.']
     # add a port on MICD FUN_IN from a tab
     def AddPortfromTab(self,lineTab,portType):
 
-        _port = MICD_port(lineTab, portType, MICD.file_structure['MICD_portObjectConfiguration'])
+        if portType == "IN":
+            _micd_config = 'MICD_portObjectConfigurationIN'
+        else:
+            _micd_config = 'MICD_portObjectConfigurationOUT'
+
+        _port = MICD_port(lineTab, portType, MICD.file_structure[_micd_config])
 
         self.AddPortfromPortObject(_port)
 
@@ -384,8 +417,10 @@ This variable is not refreshed in RUN mode.']
 
         if MICDportObject.type == "IN":
             _sheet = "FUN_IN"
+            _micd_config = 'MICD_portObjectConfigurationIN'
         elif MICDportObject.type == "OUT":
             _sheet = "FUN_OUT"
+            _micd_config = 'MICD_portObjectConfigurationOUT'
         else:
             print("[MICD][AddPortfromPortObject] Unknown port Type !!")
             return False
@@ -420,7 +455,7 @@ This variable is not refreshed in RUN mode.']
         # loop to write port obecjt attributes values in cell
         for _MICDfield in self.file_structure['Excel_sheets'][_sheet]:
 
-            _field = MICD.file_structure['MICD_portObjectConfiguration'][self.file_structure['Excel_sheets'][_sheet].index(_MICDfield)]
+            _field = MICD.file_structure[_micd_config][self.file_structure['Excel_sheets'][_sheet].index(_MICDfield)]
 
             # to escape empty fields
             if _field is not None:

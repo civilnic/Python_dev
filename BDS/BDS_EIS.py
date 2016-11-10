@@ -1,6 +1,6 @@
 import csv
-from BDS import (BDS)
-from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque,A429ParamISO5)
+from .BDS import (BDS)
+from .A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque,A429ParamISO5)
 
 class BDS_EIS(BDS):
     """

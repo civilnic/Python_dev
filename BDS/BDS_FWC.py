@@ -1,8 +1,7 @@
 import re
-from BDS import BDS
-from A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
+from .BDS import BDS
+from .A429 import (A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
 from lxml import etree
-from BDS2XML import (BDS2XML)
 
 class BDS_FWC(BDS):
     """
