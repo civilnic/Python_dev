@@ -1,6 +1,7 @@
-import xlrd, xlwt
 import re
-from .A429 import (A429Parameter,A429Label,A429ParamDIS,A429ParamBNR,A429ParamBCD,A429ParamOpaque)
+
+import xlwt
+
 
 class BDS2XML:
     """
