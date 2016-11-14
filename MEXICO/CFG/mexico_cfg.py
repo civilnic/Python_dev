@@ -10,7 +10,7 @@ class mexicoConfig:
             with open(pathname):
                 pass
         except IOError:
-            print ("[mexicoConfig][init] Cannot open MEXICO config file: "+str(pathname))
+            print("[mexicoConfig][init] Cannot open MEXICO config file: "+str(pathname))
 
         self.fileName = os.path.basename(pathname)
         self.filePath = os.path.dirname(pathname)
@@ -18,8 +18,8 @@ class mexicoConfig:
 
         self._mexicoRootPath = None
         self._actors = []
-        self._initFile = {}
-        self._ssdbFiles = {}
+        self._initFile = []
+        self._ssdbFiles = []
 
 
         print("fileName: " + self.fileName)
@@ -44,12 +44,8 @@ class mexicoConfig:
             # ssdb file are listed in Base elements
             if element.tag == "Base":
 
-                if element.attrib['fileName'] and element.attrib['type']:
-
-                    self.addSSDB(element.attrib['fileName'], element.attrib['type'])
-
-                else:
-                    continue
+                _ssdbfileObj = mexicoSSDBFile(element.attrib['fileName'], element.attrib['type'], self._mexicoRootPath)
+                self.addSSDB(_ssdbfileObj)
 
             #  model tag are named Actor
             if element.tag == "Actor":
@@ -66,8 +62,7 @@ class mexicoConfig:
 
                 for _micdelement in _micdelementList:
 
-                    _MICDObj = mexicoMICDFile(_micdelement.attrib['fileName'],_micdelement.attrib['type'],_actorObj)
-
+                    _MICDObj = mexicoMICDFile(_micdelement.attrib['fileName'], _micdelement.attrib['type'] ,_actorObj)
                     _actorObj.addMICD(_MICDObj)
 
                     _couplingElementList = _micdelement.getchildren()
@@ -81,40 +76,27 @@ class mexicoConfig:
                         _MICDObj.addCoupling(_couplingObj)
             #rint(element.attrib)
 
+    def addSSDB(self,ssdbObj):
+        if ssdbObj not in self._ssdbFiles:
+            self._ssdbFiles.append(ssdbObj)
 
     def addActor(self,actorObj):
         if actorObj not in self._actors:
             self._actors.append(actorObj)
 
+    def getActor(self,actorName):
+        for _actorObj in self.getActorList():
+            if _actorObj.name == actorName:
+                return _actorObj
+            else:
+                _actorObj = None
+                pass
 
+    def getActorList(self):
+        return self._actors
 
-    def isSSDB(self,ssdb):
-
-        _fullPath = os.path.abspath(ssdb)
-
-        if _fullPath in self._ssdbFiles.keys():
-            return True
-        else:
-            return False
-
-    def addSSDB(self,ssdb,type):
-
-        _filename = os.path.basename(ssdb)
-        _relativPath = os.path.dirname(ssdb)
-        _fullPath = os.path.abspath(self._mexicoRootPath + "\\" + _relativPath + "\\" + _filename)
-
-        if not self.isSSDB(_fullPath):
-            self._ssdbFiles[_fullPath] = {
-                'filename': _filename,
-                'relativPath': _relativPath,
-                'type': type
-            }
-            return True
-        else:
-            return False
-
-
-
+    def getNbActor(self):
+        return len(self._actors)
 
 
 class Actor:
@@ -140,6 +122,8 @@ class Actor:
         if micdObj not in self._micds:
             self._micds.append(micdObj)
 
+    def getMICDList(self):
+        return self._micds
 
 class mexicoMICDFile:
 
@@ -168,6 +152,8 @@ class mexicoMICDFile:
         if couplingObj not in self._couplingFiles:
             self._couplingFiles.append(couplingObj)
 
+    def getCouplingObjList(self):
+        return self._couplingFiles
 
 class mexicoCouplingFile:
 
@@ -190,3 +176,21 @@ class mexicoCouplingFile:
     @property
     def writable(self):
         return self._writable
+
+
+
+class mexicoSSDBFile:
+
+    def __init__(self, ssdbname,type, mexicoRootPath):
+
+        self._filename = os.path.basename(ssdbname)
+        self._relativPath = os.path.dirname(ssdbname)
+        self. _fullPathName = os.path.abspath(mexicoRootPath + "\\" + self._relativPath + "\\" + self._filename)
+
+    @property
+    def fullPathName(self):
+        return self._fullPathName
+
+    @property
+    def type(self):
+        return self._type
