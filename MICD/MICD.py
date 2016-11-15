@@ -91,8 +91,7 @@ class MICD:
         self._version = modelversion
         self._newFile = newfile
         self._Workbook = None
-        self._PortIN = {}
-        self._PortOUT = {}
+        self._Ports = {}
         self._ACICD = {}
         self._SheetAndIndex = {}
 
@@ -120,7 +119,7 @@ class MICD:
 
             _testOnSheetNameFUNIN = re.match(r'(FUN(_\w+)*_IN)', _sheetname)
             _testOnSheetNameFUNOUT = re.match(r'(FUN(_\w+)*_OUT)', _sheetname)
-            print(_sheetname)
+
             # sheet name match *_IN => it's a FUN_IN sheet name
             # this test is usefull in case of multiple input port sheets
             if _testOnSheetNameFUNIN:
@@ -133,7 +132,7 @@ class MICD:
 
             else:
                 continue
-            print(_sheet)
+
 
             _sheet = self._Workbook.sheet_by_name(_sheetname)
 
@@ -148,7 +147,7 @@ class MICD:
             for _rowidx in range(1, _sheet.nrows):  # Iterate through rows
 
                 _line = _sheet.row_values(_rowidx)
-                print(_line)
+
                 if _portType == "IN":
                     _micd_config = 'MICD_portObjectConfigurationIN'
                 else:
@@ -481,20 +480,25 @@ This variable is not refreshed in RUN mode.']
             print("[MICD][AddPortfromPortObject] Cannot add port into MICD: port name is not defined !!")
             return False
 
-        if MICDportObject.type == "IN":
-
-            if MICDportObject.name not in self._PortIN.keys():
-                self._PortIN[MICDportObject.name] = MICDportObject
-
-        elif MICDportObject.type == "OUT":
-
-            if MICDportObject.name not in self._PortOUT.keys():
-                self._PortOUT[MICDportObject.name] = MICDportObject
+        if MICDportObject.name not in self._Ports.keys():
+            self._Ports[MICDportObject.name] = MICDportObject
 
         return True
 
-    def getPortINList(self):
-        return self._PortIN.keys()
+    def getPortNameList(self):
+        return self._Ports.keys()
 
     def getPortObjectList(self):
-        return self._PortIN.values()
+        return list(self._Ports.values())
+
+    def hasPort(self, portName):
+        if portName in self._Ports:
+            return True
+        else:
+            return False
+
+    def getPortObject(self, portName):
+        if self.hasPort(portName):
+            return self._Ports[portName]
+        else:
+            return None
