@@ -7,6 +7,7 @@ def main():
     MexicoCplFile=sys.argv[1]
 
     _cpl = mexico_coupling(MexicoCplFile)
+    _testcpl = None
 
     for aliasObj in _cpl.getAliasObj():
         if aliasObj.hasOperator() and aliasObj.hasIndice():
@@ -16,7 +17,7 @@ def main():
             aliasObj.indice = 5
             _testcpl = _cpl
             _testcpl.pathname = './toto.csv'
-
-    _testcpl.write()
+    if _testcpl:
+        _testcpl.write()
 
 main()

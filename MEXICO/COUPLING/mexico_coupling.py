@@ -8,7 +8,7 @@ class mexico_coupling:
     """
     Class to parse and analyze mexico coupling files
     """
-    fieldnames = ['ICD Name', 'Signal Name', ' Last Modification', ' Comment', ' Sheet Name']
+    fieldnames = ['ICD Name', 'Signal Name', 'Last Modification', 'Comment', 'Sheet Name']
 
     def __init__(self, pathname):
 
@@ -65,6 +65,12 @@ class mexico_coupling:
 
     def ParseCSVLine(self, row):
 
+        # test if line begin with '#'
+        # in this case line is not analyzed
+        _testLine = re.match(r'(?P<signal_name>^(#).*)', row[mexico_coupling.fieldnames[0]])
+        if _testLine:
+            return False
+
         aliasObj = Alias(row[mexico_coupling.fieldnames[0]],
                          row[mexico_coupling.fieldnames[1]],
                          row[mexico_coupling.fieldnames[4]],
@@ -73,7 +79,7 @@ class mexico_coupling:
                          )
         self.addaliasObj(aliasObj)
 
-
+        return True
 
     def write(self):
 
@@ -111,11 +117,22 @@ class Alias:
         # signal_name{indice]#operator
 
         _testOnSignal = re.match(r'(?P<signal_name>\w+)(?:\[(?P<indice>\d+)\])*(?:#(?P<operator>\w+))*', channelname)
-
+        print("_testOnSignal: "+channelname)
         if _testOnSignal:
-            self._signal = _testOnSignal.group("signal_name")
-            self._indice = _testOnSignal.group("indice")
-            self._operator = _testOnSignal.group("operator")
+            if _testOnSignal.group("signal_name"):
+                self._signal = _testOnSignal.group("signal_name")
+            else:
+                self._signal = channelname
+
+            if _testOnSignal.group("indice"):
+                self._indice = _testOnSignal.group("indice")
+            else:
+                self._indice = None
+
+            if _testOnSignal.group("operator"):
+                self._operator = _testOnSignal.group("operator")
+            else:
+                self._operator = None
 
         self._sheetname = sheetName
 

@@ -84,7 +84,7 @@ class MICD:
         ]
     }
 
-    def __init__(self, pathname, modelname=None, modelversion=None, newfile=None):
+    def __init__(self, pathname, modelname=None, modelversion=None, newfile=False):
 
         self._pathName = pathname
         self._modelName = modelname
