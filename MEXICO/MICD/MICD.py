@@ -1,8 +1,10 @@
-import pathlib
 import re
+from MEXICO.MICD.MICD_port import MICD_port
 from datetime import datetime
-from .MICD_port import MICD_port
-import xlrd, xlwt
+
+import xlrd
+import xlwt
+
 
 class MICD:
     """

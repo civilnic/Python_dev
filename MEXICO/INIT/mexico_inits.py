@@ -1,7 +1,4 @@
-import re
-import xlrd
-import os
-from MICD.MICD import MICD
+from MEXICO.MICD.MICD import MICD
 
 class Mexico_Init_File(MICD):
 

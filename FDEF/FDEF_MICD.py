@@ -1,5 +1,5 @@
-from MICD.MICD import MICD
-from MICD.MICD import MICD_port
+from MEXICO.MICD.MICD import MICD
+from MEXICO.MICD.MICD import MICD_port
 
 
 class FDEF_MICD(MICD):

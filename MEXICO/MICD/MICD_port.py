@@ -8,8 +8,7 @@ class MICD_port:
     def __init__(self, portTab=None, type=None, configTab=None):
 
         _refTab = configTab
-        print(_refTab)
-        print(portTab)
+
         self.name = None
         self.codingtype = None
         self.unit = None
