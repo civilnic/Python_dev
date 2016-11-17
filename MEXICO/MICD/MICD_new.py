@@ -88,7 +88,7 @@ class MICD_new:
         self._modelName = modelname
         self._version = modelversion
         self._newFile = newfile
-        self._Workbook = None
+        self._dataframe = None
         self._Ports = {}
         self._ACICD = {}
         self._SheetAndIndex = {}
