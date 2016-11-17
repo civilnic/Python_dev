@@ -4,9 +4,10 @@ import sys
 
 def main():
 
-    monMicd = MICD(sys.argv[1], 'MODserge', 'V1.0', True)
+    #monMicd = MICD(sys.argv[1], 'MODserge', 'V1.0', True)
     #autreMicd = MICD(sys.argv[2],'prim_a/1','V1.0')
 
+    monMicd = MICD_new(sys.argv[1], 'MODserge', 'V1.0', True)
     autreMicd = MICD_new(sys.argv[2])
 
 
@@ -61,9 +62,9 @@ def main():
         ''
     ]
 
-    monMicd.AddPortfromTab(_port_in, "IN")
-    monMicd.AddPortfromTab(_port_out, "OUT")
-    monMicd.savefile()
+    #monMicd.AddPortfromTab(_port_in, "IN")
+    #monMicd.AddPortfromTab(_port_out, "OUT")
+    #monMicd.savefile()
 
 #    for portobject in autreMicd.getPortObjectList():
 #        print (portobject.getPortLineTab())
