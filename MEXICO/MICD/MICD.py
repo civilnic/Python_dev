@@ -476,7 +476,7 @@ This variable is not refreshed in RUN mode.']
 
         return True
 
-    def AddPort(self,MICDportObject):
+    def AddPort(self, MICDportObject):
 
         if MICDportObject.name == None:
             print("[MICD][AddPortfromPortObject] Cannot add port into MICD: port name is not defined !!")

@@ -257,19 +257,42 @@ This variable is not refreshed in RUN mode.'
             # pandas dataframe of the sheet
             self._SheetAndDataFrame[_sheet]['DataFrame'] = _xl.parse(_sheet)  # create pandas dataframe
 
-        row = next(self._SheetAndDataFrame["FUN_IN"]['DataFrame'].iterrows())[1]
-        for i in range(0, len(self._SheetAndDataFrame["FUN_IN"]['DataFrame'])):
-            pass
-            #print(self._SheetAndDataFrame["FUN_IN"]['DataFrame'].iloc[i])
+            # create corresponding dictionnary for column name
+            self._SheetAndDataFrame[_sheet]['ColNameEquiv'] = self.ColumNameEquiv(_sheet)
 
-    def hasPort(self, portName):
-        print("Port recherche: " + portName)
-        if portName in list(self._SheetAndDataFrame["FUN_IN"]['DataFrame']['Name']):
-            print("Port trouve: "+portName)
-        pass
 
-    def getportObj(self,portName):
-        pass
+    def getPortRow(self, portName):
+
+        # we search a port on both dataframe IN and OUT
+        for _sheet in ["FUN_IN", "FUN_OUT"]:
+
+            # sheet data frame
+            _df = self._SheetAndDataFrame[_sheet]['DataFrame']
+
+            # column name dict equivalence
+            _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
+
+            # port name list of current dataframe
+            _portList = list(_df[_dict['Name']])
+
+            if portName in _portList:
+                return _df.iloc[_portList.index(portName)]
+
+        # if not found return None
+        return None
+
+
+    def getPortObj(self, portName):
+
+        # get port row
+        _portRow = self.getPortRow(portName)
+
+        # if port is not found return None
+        if _portRow is None:
+            return None
+
+        return True
+
 
 
 
@@ -284,5 +307,33 @@ This variable is not refreshed in RUN mode.'
             for _header in _dataFrame.keys():
                 print(_header)
 
-    def DataFrameHeaderToPortObjAttribute(self):
-        pass
+    def ColumNameEquiv(self,sheet):
+
+        def callback(str):
+            str = str.lower()
+            str = str.strip()
+            str = re.sub(r'\s','',str)
+            str = re.sub(r'\n','',str)
+            str = re.sub(r'\t','',str)
+            return str
+
+        # dictionnary to fill in this function
+        _dict = {}
+
+        # current dataframe
+        _df = self._SheetAndDataFrame[sheet]['DataFrame']
+
+        # create a list of current data frame col title without spaces, newline character etc ...
+        _dfTitles = list(_df.columns.values)
+        _dfTestTitles = list(map(callback, _dfTitles))
+
+        # create the same kind of list on structure file column names
+        _colTitles = MICD_new.file_structure['Excel_sheets'][sheet]
+        _colTestTitles = list(map(callback,_colTitles))
+
+        # test each value of configuration table
+        for _index,_testTitle in enumerate(_colTestTitles):
+            if _testTitle in _dfTestTitles:
+                _dict[_colTitles[_index]] = _dfTitles[_dfTestTitles.index(_testTitle)]
+
+        return _dict

@@ -34,6 +34,9 @@ class MICD_port:
         self.lastmodification = None
         
         self._type = type
+        self._micdDf = type
+
+
         if (portTab is not None) and (_refTab is not None):
             if 'name' in _refTab:
                 if portTab[_refTab.index('name')]:

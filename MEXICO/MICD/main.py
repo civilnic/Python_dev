@@ -9,7 +9,8 @@ def main():
 
     monMicd = MICD_new(sys.argv[1], 'MODserge', 'V1.0', newfile=True)
     autreMicd = MICD_new(sys.argv[2])
-    autreMicd.hasPort("ax_s_9066_52")
+    #print(autreMicd.getPortRow("ax_s_9066_52"))
+    print(autreMicd.getPortObj("ax_s_9066_52"))
 
     #monMicd.write()
     _port_in = [
