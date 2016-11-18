@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
-import xlwt
+import xlwt, xlrd
+import re
 # from xltable import CellStyle,Table,Workbook,Worksheet
 
 class MICD_new:
@@ -95,7 +96,9 @@ class MICD_new:
         self._Workbook = None
 
         if self._newFile is True:
+            print("[MICD_new] Create Empty File")
             self.createemptyfile()
+
         else:
             self.parse()
 
@@ -108,7 +111,6 @@ class MICD_new:
         self._Workbook = xlwt.Workbook()
 
         for _sheet in MICD_new.file_structure['Excel_sheets'].keys():
-
             self._SheetAndDataFrame[_sheet] = {}
             self._SheetAndDataFrame[_sheet]['XlsSheet'] = None
             self._SheetAndDataFrame[_sheet]['DataFrame'] = pd.DataFrame()
@@ -227,21 +229,60 @@ This variable is not refreshed in RUN mode.'
     def parse(self):
 
         print("[MICD]{parse] Parse excel file: " + self._pathName)
-        self._dataframe = pd.read_excel(self._pathName)
 
-        print(self._dataframe.index)
-        print(self._dataframe.columns)
+        # open with xlrd
+        #self._Workbook = xlrd.open_workbook(self._pathName)
+        #_sheet = self._Workbook.sheet_by_name(_sheetname)
 
-        xl = pd.ExcelFile(self._pathName)
-        print(xl.sheet_names)
+        # parse MICD file with pandas
+        _xl = pd.ExcelFile(self._pathName)
+        print(_xl.sheet_names)
+        print(MICD_new.file_structure.keys())
+        # loop over MICD sheets name to create dataframe
+        for _sheet in _xl.sheet_names:
+
+            # we assume here that MICD sheet name are always the same and equal to
+            # MICD_new.file_structure
+            # if sheet name is not recognize it's not parsed
+            if _sheet not in MICD_new.file_structure['Excel_sheets'].keys():
+                print("[MICD] unknown _sheet name: "+_sheet)
+                continue
+
+            # create empty dictionnary to store informations
+            self._SheetAndDataFrame[_sheet] = {}
+
+            # to store xlrd workbook if write is needed
+            self._SheetAndDataFrame[_sheet]['XlsSheet'] = None
+
+            # pandas dataframe of the sheet
+            self._SheetAndDataFrame[_sheet]['DataFrame'] = _xl.parse(_sheet)  # create pandas dataframe
+
+        row = next(self._SheetAndDataFrame["FUN_IN"]['DataFrame'].iterrows())[1]
+        for i in range(0, len(self._SheetAndDataFrame["FUN_IN"]['DataFrame'])):
+            pass
+            #print(self._SheetAndDataFrame["FUN_IN"]['DataFrame'].iloc[i])
+
+    def hasPort(self, portName):
+        print("Port recherche: " + portName)
+        if portName in list(self._SheetAndDataFrame["FUN_IN"]['DataFrame']['Name']):
+            print("Port trouve: "+portName)
+        pass
+
+    def getportObj(self,portName):
+        pass
+
 
 
     def write(self):
 
         for _sheet in self._SheetAndDataFrame:
+            print("*** [MICD_new] Write: " + _sheet)
             _worksheet = self._SheetAndDataFrame[_sheet]['XlsSheet']
             _dataFrame = self._SheetAndDataFrame[_sheet]['DataFrame']
 
+            print(_dataFrame)
             for _header in _dataFrame.keys():
                 print(_header)
+
+    def DataFrameHeaderToPortObjAttribute(self):
         pass
