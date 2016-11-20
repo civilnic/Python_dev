@@ -2,6 +2,8 @@ import pandas as pd
 from datetime import datetime
 import xlwt, xlrd
 import re
+from MEXICO.MICD.MICD_port import MICD_port
+
 # from xltable import CellStyle,Table,Workbook,Worksheet
 
 class MICD_new:
@@ -261,10 +263,66 @@ This variable is not refreshed in RUN mode.'
             self._SheetAndDataFrame[_sheet]['ColNameEquiv'] = self.ColumNameEquiv(_sheet)
 
 
-    def getPortRow(self, portName):
+    def getPortRow(self, portName, type):
 
-        # we search a port on both dataframe IN and OUT
+        # the parameter type set research sheet
+        if type == "IN":
+            _sheet = "FUN_IN"
+        elif type == "OUT":
+            _sheet = "FUN_OUT"
+        elif type == "PRF":
+            _sheet = "PROFILE"
+        else:
+            return None
+
+        # sheet data frame
+        _df = self._SheetAndDataFrame[_sheet]['DataFrame']
+
+        # column name dict equivalence
+        _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
+
+        # port name list of current dataframe
+        _portList = list(_df[_dict['Name']])
+
+        if portName in _portList:
+            return _df.iloc[_portList.index(portName)]
+        else:
+            # if not found return None
+            return None
+
+
+
+
+    def getPortObj(self, portName):
+
+        _sheet = None
+
         for _sheet in ["FUN_IN", "FUN_OUT"]:
+
+            # define port type following sheet name
+            _type = getPortType(_sheet)
+
+            # get port row
+            _portRow = self.getPortRow(portName, _type)
+
+            if _portRow is None:
+                continue
+            else:
+                break
+
+        # if port is not found return None
+        if _portRow is None:
+            return None
+
+        return self.createPortObj(_portRow, _sheet)
+
+
+    def getPortObjList(self):
+
+        for _sheet in ["FUN_IN", "FUN_OUT"]:
+
+            # define port type following sheet name
+            _type = getPortType(_sheet)
 
             # sheet data frame
             _df = self._SheetAndDataFrame[_sheet]['DataFrame']
@@ -273,28 +331,40 @@ This variable is not refreshed in RUN mode.'
             _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
 
             # port name list of current dataframe
-            _portList = list(_df[_dict['Name']])
+            _portList = list(_df.values)
 
-            if portName in _portList:
-                return _df.iloc[_portList.index(portName)]
-
-        # if not found return None
-        return None
+            print(_portList[3])
 
 
-    def getPortObj(self, portName):
+    def createPortObj(self, rowDataFrame,sheet):
 
-        # get port row
-        _portRow = self.getPortRow(portName)
+        # tab to create port Object initialization
+        _portTab = []
 
-        # if port is not found return None
-        if _portRow is None:
-            return None
+        # tab to configure sheet
+        _cfgTAb = getSheetCfgTab(sheet)
 
-        return True
+        # define port type following sheet name
+        _type = getPortType(sheet)
 
+        # to create port obj we extract from DataFrame only corresponding fields
+        # of MICD_portObjectConfigurationIN configuration tab elements
+        for _field in MICD_new.file_structure[_cfgTAb]:
 
+            # local var for tab
+            _tab = MICD_new.file_structure['Excel_sheets'][sheet]
 
+            # column name dict equivalence
+            _dict = self._SheetAndDataFrame[sheet]['ColNameEquiv']
+
+            _index = MICD_new.file_structure[_cfgTAb].index(_field)
+
+            # add
+            _portTab.append(rowDataFrame[_dict[_tab[_index]]])
+
+        _portObj = MICD_port(_portTab, _type, MICD_new.file_structure[_cfgTAb])
+
+        return _portObj
 
     def write(self):
 
@@ -337,3 +407,20 @@ This variable is not refreshed in RUN mode.'
                 _dict[_colTitles[_index]] = _dfTitles[_dfTestTitles.index(_testTitle)]
 
         return _dict
+
+
+def getSheetCfgTab(sheet):
+    _cfgTAb = None
+    if sheet == "FUN_IN":
+        _cfgTAb = 'MICD_portObjectConfigurationIN'
+    elif sheet == "FUN_OUT":
+        _cfgTAb = 'MICD_portObjectConfigurationOUT'
+    return _cfgTAb
+
+def getPortType(sheet):
+    _type = None
+    if sheet == "FUN_IN":
+        _type = "IN"
+    elif sheet == "FUN_OUT":
+        _type = "OUT"
+    return _type
