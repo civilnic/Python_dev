@@ -238,8 +238,7 @@ This variable is not refreshed in RUN mode.'
 
         # parse MICD file with pandas
         _xl = pd.ExcelFile(self._pathName)
-        print(_xl.sheet_names)
-        print(MICD_new.file_structure.keys())
+
         # loop over MICD sheets name to create dataframe
         for _sheet in _xl.sheet_names:
 
@@ -319,22 +318,18 @@ This variable is not refreshed in RUN mode.'
 
     def getPortObjList(self):
 
-        for _sheet in ["FUN_IN", "FUN_OUT"]:
+        _PortObjList = []
 
-            # define port type following sheet name
-            _type = getPortType(_sheet)
+        for _sheet in ["FUN_IN", "FUN_OUT"]:
 
             # sheet data frame
             _df = self._SheetAndDataFrame[_sheet]['DataFrame']
 
-            # column name dict equivalence
-            _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
+            # base on previous list create port object to export
+            for _index, _row in _df.iterrows():
+                _PortObjList.append(self.createPortObj(_row, _sheet))
 
-            # port name list of current dataframe
-            _portList = list(_df.values)
-
-            print(_portList[3])
-
+        return _PortObjList
 
     def createPortObj(self, rowDataFrame,sheet):
 
@@ -357,10 +352,11 @@ This variable is not refreshed in RUN mode.'
             # column name dict equivalence
             _dict = self._SheetAndDataFrame[sheet]['ColNameEquiv']
 
+            # index of current _field in column tab
             _index = MICD_new.file_structure[_cfgTAb].index(_field)
 
             # add
-            _portTab.append(rowDataFrame[_dict[_tab[_index]]])
+            _portTab.append(rowDataFrame[_dict[_tab[int(_index)]]])
 
         _portObj = MICD_port(_portTab, _type, MICD_new.file_structure[_cfgTAb])
 
@@ -405,6 +401,7 @@ This variable is not refreshed in RUN mode.'
         for _index,_testTitle in enumerate(_colTestTitles):
             if _testTitle in _dfTestTitles:
                 _dict[_colTitles[_index]] = _dfTitles[_dfTestTitles.index(_testTitle)]
+
 
         return _dict
 
