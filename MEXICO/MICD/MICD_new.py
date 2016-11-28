@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime
 import xlwt, xlrd
 import re
+import sys
 from MEXICO.MICD.MICD_port import MICD_port
 
 # from xltable import CellStyle,Table,Workbook,Worksheet
@@ -10,79 +11,94 @@ class MICD_new:
     """
     Class to parse/create MICD
     """
-    file_structure = {
 
-        'Excel_sheets':
-            {
-                'HEADER': ('Identifier', 'Value'),
-                'SIM_CTRL_IN': ('Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment'),
-                'SIM_CTRL_OUT': ('Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment'),
-                'PROFILE': ('Name', 'Type', 'Dim1', 'Description'),
-                'AIRCRAFT_ICD': ('ICD Version', 'ICD File Name', 'Cross Ref File Name'),
-                'SIMULATION_LEVEL': ('Platform Code', 'Simulation Level[1]'),
-                'FUN_IN': (
-                'Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode', 'From'
-                , "Refresh\nRate", 'Min', 'Max', 'Enum', 'Consumed If', 'Aircraft Signal Name', "Interface\nLevel",
-                'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Init Value', 'Custom', 'Comment',
-                'Last Modification'),
-                'FUN_OUT': (
-                'Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode',
-                'To', "Refresh\nRate", 'Min', 'Max', 'Enum', 'Produced If', 'Aircraft Signal Name'
-                , "Interface\nLevel", 'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Comment',
-                'Not Simulated Data', 'Default Value', 'Last Modification')
-            },
-        # tab to do the equivalence between col number and MICD_port object attributes
-        # so used to configure MICD_port object
-        'MICD_portObjectConfigurationIN': [
-            'name',
-            'codingtype',
-            'unit',
-            'description',
-            'convention',
-            'dim1',
-            'dim2',
-            'comformat',
-            'commode',
-            'fromto',
-            'resfreshrate',
-            'min',
-            'max',
-            'enum',
-            'prodconsif',
-            'aircraftsignalname',
-            'interfacelevel',
-            'status',
-            'simulationlevel',
-            'initdefaultvalue',
-            'notsimudatacustom',
-            'comment',
-            'lastmodification'
-        ],
-        'MICD_portObjectConfigurationOUT': [
-            'name',
-            'codingtype',
-            'unit',
-            'description',
-            'convention',
-            'dim1',
-            'dim2',
-            'comformat',
-            'commode',
-            'fromto',
-            'resfreshrate',
-            'min',
-            'max',
-            'enum',
-            'prodconsif',
-            'aircraftsignalname',
-            'interfacelevel',
-            'status',
-            'simulationlevel',
-            'comment',
-            'notsimudatacustom',
-            'initdefaultvalue',
-            'lastmodification'
-        ]
+    xls_style = xlwt.easyxf('font: name Arial, bold off, height 200; align: horiz justified, shrink_to_fit true, wrap on;border: top thin, right thin, bottom thin, left thin;')
+    xls_style_bold = xlwt.easyxf('font: name Arial, bold on, height 200; pattern: pattern solid, fore_color turquoise; border: top thin, right thin, bottom thin, left thin; align: horiz left;')
+
+
+    file_structure = {
+            'HEADER': {
+                        'Header_name': ['Identifier', 'Value']
+                      },
+            'SIM_CTRL_IN': {
+                            'Header_name': ['Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment']
+                            },
+            'SIM_CTRL_OUT': {
+                            'Header_name': ['Name', 'Type', 'Dim1', 'Unit', 'Description', 'Comment']
+                            },
+            'PROFILE':      {
+                            'Header_name': ['Name', 'Type', 'Dim1', 'Description']
+                            },
+            'AIRCRAFT_ICD': {
+                            'Header_name': ['ICD Version', 'ICD File Name', 'Cross Ref File Name']
+                            },
+            'SIMULATION_LEVEL': {
+                            'Header_name': ['Platform Code', 'Simulation Level[1]']
+                            },
+            'FUN_IN':  {
+                            'Header_name': [
+            'Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode', 'From'
+            , "Refresh\nRate", 'Min', 'Max', 'Enum', 'Consumed If', 'Aircraft Signal Name', "Interface\nLevel",
+            'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Init Value', 'Custom', 'Comment',
+            'Last Modification'],
+                            'PortObject_Attrib_Equiv': [
+                                'name',
+                                'codingtype',
+                                'unit',
+                                'description',
+                                'convention',
+                                'dim1',
+                                'dim2',
+                                'comformat',
+                                'commode',
+                                'fromto',
+                                'resfreshrate',
+                                'min',
+                                'max',
+                                'enum',
+                                'prodconsif',
+                                'aircraftsignalname',
+                                'interfacelevel',
+                                'status',
+                                'simulationlevel',
+                                'initdefaultvalue',
+                                'notsimudatacustom',
+                                'comment',
+                                'lastmodification'
+                            ]
+                         },
+            'FUN_OUT': {
+                            'Header_name': [
+            'Name', 'Type', 'Unit', 'Description', 'Convention', 'Dim1', 'Dim2', 'Com Format', 'Com Mode',
+            'To', "Refresh\nRate", 'Min', 'Max', 'Enum', 'Produced If', 'Aircraft Signal Name'
+            , "Interface\nLevel", 'Status (SSM/FS/Refresh)', "Simulation\nLevel[1]", 'Comment',
+            'Not Simulated Data', 'Default Value', 'Last Modification'],
+                        'PortObject_Attrib_Equiv': [
+                            'name',
+                            'codingtype',
+                            'unit',
+                            'description',
+                            'convention',
+                            'dim1',
+                            'dim2',
+                            'comformat',
+                            'commode',
+                            'fromto',
+                            'resfreshrate',
+                            'min',
+                            'max',
+                            'enum',
+                            'prodconsif',
+                            'aircraftsignalname',
+                            'interfacelevel',
+                            'status',
+                            'simulationlevel',
+                            'comment',
+                            'notsimudatacustom',
+                            'initdefaultvalue',
+                            'lastmodification'
+                        ]
+                     }
     }
 
 
@@ -112,12 +128,12 @@ class MICD_new:
         # create excel workbook
         self._Workbook = xlwt.Workbook()
 
-        for _sheet in MICD_new.file_structure['Excel_sheets'].keys():
+        for _sheet in MICD_new.file_structure.keys():
             self._SheetAndDataFrame[_sheet] = {}
             self._SheetAndDataFrame[_sheet]['XlsSheet'] = None
             self._SheetAndDataFrame[_sheet]['DataFrame'] = pd.DataFrame()
 
-            for _colTitle in MICD_new.file_structure['Excel_sheets'][_sheet]:
+            for _colTitle in MICD_new.file_structure[_sheet]['Header_name']:
                 _dataFrame = self._SheetAndDataFrame[_sheet]['DataFrame']
                 _dataFrame[_colTitle] = ''
 
@@ -132,7 +148,7 @@ class MICD_new:
 
         # date computation for information
         _date = datetime.now()
-        _displaydate = str(_date.day)+"/"+str(_date.month)+"/"+str(_date.year)
+        _displaydate = str(_date.day) + "/" + str(_date.month) + "/" + str(_date.year)
 
         # Create a Pandas dataframe from some data.
         _df['Identifier'] = ['ACI', 'APP', 'DAT', 'MOD', 'ORG', 'REF', 'VER', 'VIT']
@@ -245,7 +261,7 @@ This variable is not refreshed in RUN mode.'
             # we assume here that MICD sheet name are always the same and equal to
             # MICD_new.file_structure
             # if sheet name is not recognize it's not parsed
-            if _sheet not in MICD_new.file_structure['Excel_sheets'].keys():
+            if _sheet not in MICD_new.file_structure.keys():
                 print("[MICD] unknown _sheet name: "+_sheet)
                 continue
 
@@ -331,47 +347,95 @@ This variable is not refreshed in RUN mode.'
 
         return _PortObjList
 
+
+    def AddPort(self,PortObj,sheet):
+        pass
+
+    def AddPortfromTab(self,PortObj,sheet):
+        pass
+
+
+
     def createPortObj(self, rowDataFrame,sheet):
 
         # tab to create port Object initialization
         _portTab = []
 
-        # tab to configure sheet
-        _cfgTAb = getSheetCfgTab(sheet)
-
         # define port type following sheet name
         _type = getPortType(sheet)
 
+        # local array of theorical header col names in MICD
+        _headerTab = MICD_new.file_structure[sheet]['Header_name']
+
+        # dictionnary of name equivalences between configuration array content
+        # i.e MICD_new.file_structure[sheet]['PortObject_Attrib_Equiv']
+        # and real sheet header in MICD
+        _dict = self._SheetAndDataFrame[sheet]['ColNameEquiv']
+
         # to create port obj we extract from DataFrame only corresponding fields
-        # of MICD_portObjectConfigurationIN configuration tab elements
-        for _field in MICD_new.file_structure[_cfgTAb]:
-
-            # local var for tab
-            _tab = MICD_new.file_structure['Excel_sheets'][sheet]
-
-            # column name dict equivalence
-            _dict = self._SheetAndDataFrame[sheet]['ColNameEquiv']
+        # of MICD_portObjectConfigurationIN configuration tab
+        for _field in MICD_new.file_structure[sheet]['PortObject_Attrib_Equiv']:
 
             # index of current _field in column tab
-            _index = MICD_new.file_structure[_cfgTAb].index(_field)
+            _index = MICD_new.file_structure[sheet]['PortObject_Attrib_Equiv'].index(_field)
 
             # add
-            _portTab.append(rowDataFrame[_dict[_tab[int(_index)]]])
+            _portTab.append(rowDataFrame[_dict[_headerTab[int(_index)]]])
 
-        _portObj = MICD_port(_portTab, _type, MICD_new.file_structure[_cfgTAb])
+        _portObj = MICD_port(_portTab, _type, MICD_new.file_structure[sheet]['PortObject_Attrib_Equiv'])
 
         return _portObj
 
-    def write(self):
+
+
+
+    def writeWorkbook(self):
 
         for _sheet in self._SheetAndDataFrame:
-            print("*** [MICD_new] Write: " + _sheet)
-            _worksheet = self._SheetAndDataFrame[_sheet]['XlsSheet']
-            _dataFrame = self._SheetAndDataFrame[_sheet]['DataFrame']
 
-            print(_dataFrame)
-            for _header in _dataFrame.keys():
-                print(_header)
+            _df = self._SheetAndDataFrame[_sheet]['DataFrame']
+
+            # write file
+            for j, _colName in enumerate(_df.columns):
+                self.writeCell(_sheet, 0, j, _colName, titleStyle=True)
+                for i, value in enumerate(_df[_colName]):
+                    self.writeCell(_sheet,i+1,j, value, titleStyle=False)
+
+
+
+
+    # function to save current MICD object (pathname attribute
+    # is used to save the file
+    def savefile(self):
+        """
+        Method to save a BDS2XML tool input file from BDS2XML current object
+        :return True/False:
+        """
+        # write workbook
+        self.writeWorkbook()
+
+        # increase col width of comment field
+        self._SheetAndDataFrame['SIM_CTRL_IN']['XlsSheet'].col(self.file_structure['SIM_CTRL_IN']['Header_name'].index('Comment')).width = 20000
+        self._SheetAndDataFrame['SIM_CTRL_OUT']['XlsSheet'].col(self.file_structure['SIM_CTRL_OUT']['Header_name'].index('Comment')).width = 20000
+
+        print("[MICD_new] Save file to: "+self._pathName)
+        self._Workbook.save(self._pathName)
+
+
+    def writeCell(self,sheet,row_index,col_index,value,titleStyle=False):
+
+        if titleStyle is False:
+            _styleToApply = MICD_new.xls_style
+        elif titleStyle is True:
+            _styleToApply = MICD_new.xls_style_bold
+        else:
+            _styleToApply = MICD_new.xls_style
+
+        self._SheetAndDataFrame[sheet]['XlsSheet'].write(row_index, col_index, value, _styleToApply)
+
+
+
+
 
     def ColumNameEquiv(self,sheet):
 
@@ -394,7 +458,7 @@ This variable is not refreshed in RUN mode.'
         _dfTestTitles = list(map(callback, _dfTitles))
 
         # create the same kind of list on structure file column names
-        _colTitles = MICD_new.file_structure['Excel_sheets'][sheet]
+        _colTitles = MICD_new.file_structure[sheet]['Header_name']
         _colTestTitles = list(map(callback,_colTitles))
 
         # test each value of configuration table
@@ -405,14 +469,6 @@ This variable is not refreshed in RUN mode.'
 
         return _dict
 
-
-def getSheetCfgTab(sheet):
-    _cfgTAb = None
-    if sheet == "FUN_IN":
-        _cfgTAb = 'MICD_portObjectConfigurationIN'
-    elif sheet == "FUN_OUT":
-        _cfgTAb = 'MICD_portObjectConfigurationOUT'
-    return _cfgTAb
 
 def getPortType(sheet):
     _type = None

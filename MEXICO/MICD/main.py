@@ -15,12 +15,12 @@ def main():
     print(_PortObj.type)
     print(_PortObj.codingtype)
 
-    _portObjList = autreMicd.getPortObjList()
+    #_portObjList = autreMicd.getPortObjList()
 
-    print(_portObjList[0].name)
-    print(_portObjList[0].comformat )
+    #print(_portObjList[0].name)
+    #print(_portObjList[0].comformat )
 
-    #monMicd.write()
+
     _port_in = [
         'ax_s_10230_121',
         'int',
@@ -72,9 +72,9 @@ def main():
         ''
     ]
 
-    #monMicd.AddPortfromTab(_port_in, "IN")
-    #monMicd.AddPortfromTab(_port_out, "OUT")
-    #monMicd.savefile()
+    monMicd.AddPortfromTab(_port_in, "IN")
+    monMicd.AddPortfromTab(_port_out, "OUT")
+    monMicd.savefile()
 
 #    for portobject in autreMicd.getPortObjectList():
 #        print (portobject.getPortLineTab())
