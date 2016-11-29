@@ -332,6 +332,7 @@ class MICD_port:
         _portLine.append(self.convention)
         _portLine.append(self.dim1)
         _portLine.append(self.dim2)
+        _portLine.append(self.commode)
         _portLine.append(self.comformat)
         _portLine.append(self.fromto)
         _portLine.append(self.resfreshrate)

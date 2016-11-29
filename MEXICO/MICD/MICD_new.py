@@ -297,7 +297,7 @@ This variable is not refreshed in RUN mode.'
         _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
 
         # port name list of current dataframe
-        _portList = list(_df[_dict['Name']])
+        _portList = list(_df[_dict['API2MICD']['Name']])
 
         if portName in _portList:
             return _df.iloc[_portList.index(portName)]
@@ -351,9 +351,52 @@ This variable is not refreshed in RUN mode.'
     def AddPort(self,PortObj,sheet):
         pass
 
-    def AddPortfromTab(self,PortObj,sheet):
-        pass
 
+    # add a port on MICD FUN_IN from a tab
+    def AddPortfromTab(self,lineTab,sheetName):
+
+        _arrayConfig = MICD_new.file_structure[sheetName]['PortObject_Attrib_Equiv']
+
+        _port = MICD_port(lineTab, getPortType(sheetName), _arrayConfig)
+
+        self.AddPortfromPortObject(_port,sheetName)
+
+
+
+    def AddPortfromPortObject(self, MICDportObject,sheetName):
+
+        if 'ColNameEquiv' not in list(self._SheetAndDataFrame[sheetName].keys()):
+
+            # create corresponding dictionnary for column name
+            self._SheetAndDataFrame[sheetName]['ColNameEquiv'] = self.ColumNameEquiv(sheetName)
+
+        _dict = self._SheetAndDataFrame[sheetName]['ColNameEquiv']
+
+        _dfColumnName = []
+
+        for _headerName in self.file_structure[sheetName]['Header_name']:
+
+            _dfconvertedName = _dict['API2MICD'][_headerName]
+
+            _dfColumnName.append(_dfconvertedName)
+
+        # _portArray is a list of list for pandas dataframe creation function
+        # 1 x len of header tab
+        _portArray = [MICDportObject.getPortLineTab()]
+
+        _portdf = pd.DataFrame(_portArray, columns=_dfColumnName)
+
+        # MICD dataframe merge
+        _micdDf = self._SheetAndDataFrame[sheetName]['DataFrame']
+
+        _frames = [_micdDf,_portdf]
+
+        self._SheetAndDataFrame[sheetName]['DataFrame'] = pd.concat(_frames)
+
+        #line = DataFrame({"onset": 30.0, "length": 1.3}, index=[3])
+        #df2 = concat([df.ix[:2], line, df.ix[3:]]).reset_index(drop=True)
+
+        return True
 
 
     def createPortObj(self, rowDataFrame,sheet):
@@ -380,7 +423,7 @@ This variable is not refreshed in RUN mode.'
             _index = MICD_new.file_structure[sheet]['PortObject_Attrib_Equiv'].index(_field)
 
             # add
-            _portTab.append(rowDataFrame[_dict[_headerTab[int(_index)]]])
+            _portTab.append(rowDataFrame[_dict['API2MICD'][_headerTab[int(_index)]]])
 
         _portObj = MICD_port(_portTab, _type, MICD_new.file_structure[sheet]['PortObject_Attrib_Equiv'])
 
@@ -449,6 +492,8 @@ This variable is not refreshed in RUN mode.'
 
         # dictionnary to fill in this function
         _dict = {}
+        _dict['API2MICD'] = {}
+        _dict['MICD2API'] = {}
 
         # current dataframe
         _df = self._SheetAndDataFrame[sheet]['DataFrame']
@@ -464,7 +509,8 @@ This variable is not refreshed in RUN mode.'
         # test each value of configuration table
         for _index,_testTitle in enumerate(_colTestTitles):
             if _testTitle in _dfTestTitles:
-                _dict[_colTitles[_index]] = _dfTitles[_dfTestTitles.index(_testTitle)]
+                _dict['API2MICD'][_colTitles[_index]] = _dfTitles[_dfTestTitles.index(_testTitle)]
+                _dict['MICD2API'][_dfTitles[_dfTestTitles.index(_testTitle)]] = _colTitles[_index]
 
 
         return _dict

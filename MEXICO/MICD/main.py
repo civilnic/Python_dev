@@ -71,9 +71,35 @@ def main():
         '',
         ''
     ]
+    _port_serge = [
+        'toto',
+        'float',
+        'deg',
+        'Speed Brake lever position',
+        '',
+        '1',
+        '1',
+        'AFDX',
+        'S',
+        '',
+        '24',
+        '- 3',
+        '57',
+        '',
+        'True',
+        'VL_PRIM1A_SERVICE:PRIMA_ABPOSOUT_Common_Frame_sg',
+        'pipo',
+        'False',
+        'True',
+        'NFF5010',
+        'False',
+        '',
+        ''
+    ]
 
-    monMicd.AddPortfromTab(_port_in, "IN")
-    monMicd.AddPortfromTab(_port_out, "OUT")
+    monMicd.AddPortfromTab(_port_in, "FUN_IN")
+    monMicd.AddPortfromTab(_port_out, "FUN_IN")
+    monMicd.AddPortfromTab(_port_serge, "FUN_OUT")
     monMicd.savefile()
 
 #    for portobject in autreMicd.getPortObjectList():
