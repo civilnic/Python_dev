@@ -23,18 +23,16 @@ from PyQt5.QtQuick import QQuickView
     # sys.exit()
     #
 
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtQml import QQmlApplicationEngine
 
-# Main Function
-if __name__ == '__main__':
-    # Create main app
-    myApp = QApplication(sys.argv)
-    # Create a label and set its properties
-    appLabel = QQuickView()
-    appLabel.setSource(QUrl('basic.qml'))
-
-    # Show the Label
-    appLabel.show()
-
-    # Execute the Application and Exit
-    myApp.exec_()
-    sys.exit()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    engine = QQmlApplicationEngine()
+    engine.load('cell.qml')
+    win = engine.rootObjects()[0]
+    win.show()
+    sys.exit(app.exec_())
