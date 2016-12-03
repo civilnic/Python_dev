@@ -175,6 +175,25 @@ class A429Parameter:
     def codingtype(self, codingtype):
         self._codingtype = codingtype
 
+    @property
+    def signed(self):
+        return self._signed
+    @signed.setter
+    def signed(self, signed):
+        convert_sign = str(signed)
+
+        if signed:
+            if (convert_sign == "yes") or (convert_sign =="O"):
+                self._signed = "1"
+            elif (convert_sign == "no") or (convert_sign =="N"):
+                self._signed = "0"
+            elif convert_sign == "True":
+                self._signed = "1"
+            else:
+                self._signed = "0"
+        else:
+            self._signed = "0"
+
     def print(self):
         print("\t\tParameter name: " + str(self.name))
         print("\t\t\tParameter nature: " + str(self.nature))
@@ -258,25 +277,6 @@ class A429ParamBNR(A429Parameter):
                 self._accuracy = float(accuracy)
             else:
                 self.accuracy = None
-
-    @property
-    def signed(self):
-        return self._signed
-    @signed.setter
-    def signed(self, signed):
-        convert_sign = str(signed)
-
-        if signed:
-            if (convert_sign == "yes") or (convert_sign =="O"):
-                self._signed = "1"
-            elif (convert_sign == "no") or (convert_sign =="N"):
-                self._signed = "0"
-            elif convert_sign == "True":
-                self._signed = "1"
-            else:
-                self._signed = "0"
-        else:
-            self._signed = "0"
 
     def print(self):
         super(A429ParamBNR, self).print()

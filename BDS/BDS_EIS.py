@@ -98,7 +98,7 @@ class BDS_EIS(BDS):
         ParamObj.nombloc = DicoLine["NOM_BLOC"]
         ParamObj.libbloc = DicoLine["LIB_BLOC"]
         ParamObj.comments = DicoLine["LIB_PARAM"]
-        ParamObj.parameter_def = DicoLine["NOM_TYPE"]
+        ParamObj.parameter_def = DicoLine["LIB_PARAM"]
         ParamObj.unit = DicoLine["UNITE"]
 
         LabelObj.refParameter(ParamObj)

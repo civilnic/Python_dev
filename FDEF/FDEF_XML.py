@@ -2,7 +2,7 @@ from datetime import datetime
 
 from lxml import etree
 
-from A429.A429 import (A429ParamBNR, A429ParamBCD)
+from A429.A429 import (A429ParamBNR, A429ParamBCD, A429ParamISO5)
 
 
 class FDEF_XML:
@@ -128,19 +128,32 @@ class FDEF_XML:
             type=ParamObj.codingtype,
             comment=ParamObj.parameter_def
         )
-
-        _signalElement = etree.SubElement(
-            _parameterElement,
-            "signal",
-            name=ParamObj.SimuPreFormattedName,
-            type=ParamObj.codingtype,
-            nbBit=str(ParamObj.nb_bits),
-            lsb=str(ParamObj.lsb),
-            msb=str(ParamObj.msb),
-            signed=str(ParamObj.signed),
-            startBit="1",
-            comment=ParamObj.parameter_def
-        )
+        if isinstance(ParamObj, A429ParamISO5):
+            _signalElement = etree.SubElement(
+                _parameterElement,
+                "signal",
+                name=ParamObj.SimuPreFormattedName,
+                type=ParamObj.codingtype,
+                nbBit=str(ParamObj.nb_bits),
+                lsb=str(ParamObj.lsb),
+                msb=str(ParamObj.msb),
+                signed="0",
+                startBit="1",
+                comment=ParamObj.parameter_def
+            )
+        else:
+            _signalElement = etree.SubElement(
+                _parameterElement,
+                "signal",
+                name=ParamObj.SimuPreFormattedName,
+                type=ParamObj.codingtype,
+                nbBit=str(ParamObj.nb_bits),
+                lsb=str(ParamObj.lsb),
+                msb=str(ParamObj.msb),
+                signed=str(ParamObj.signed),
+                startBit="1",
+                comment=ParamObj.parameter_def
+            )
 
         if isinstance(ParamObj, A429ParamBNR):
             _paramType = "BNR"
