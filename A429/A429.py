@@ -88,6 +88,7 @@ class A429Label:
         print ("\tLabel type: "+str(self.labeltype))
         print ("\tLabel of system: "+str(self.system))
         print ("\tLabel source: "+str(self._source))
+        print ("\tLabel pins: "+str(self.pins))
         print ("\tLabel nature: "+str(self.nature))
         print ("\tLabel _ssmtype: "+str(self._ssmtype))
         if(DisplayParam is True):

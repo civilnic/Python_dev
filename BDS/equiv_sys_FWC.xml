@@ -53,8 +53,8 @@
 	<input type="A429" connector="RMP05G,H" source="ECP" idfwc="WT3"/>
 	<input type="A429" connector="LMP05J,K" source="OPP_FWC" idfwc="WW4"/>
 	<input type="A429" connector="RMP06C,D" source="SPE_FWC" idfwc="undef"/>
-	<input type="A429" connector="LTP13B,C,D" source="SYNC.L.FLP" idfwc="undef"/>
-	<input type="A429" connector="LTP13G,H,J" source="SYNC.L.SLT" idfwc="undef"/>
-	<input type="A429" connector="RTP13F,G,H" source="SYNC.R.FLP" idfwc="undef"/>
-	<input type="A429" connector="RTP13A,B,C" source="SYNC.R.SLT" idfwc="undef"/>
+	<input type="A429" connector="LTP13B,C,D" source="SYNC_L_FLP" idfwc="WE"/>
+	<input type="A429" connector="LTP13G,H,J" source="SYNC_L_SLT" idfwc="WE"/>
+	<input type="A429" connector="RTP13F,G,H" source="SYNC_R_FLP" idfwc="WE"/>
+	<input type="A429" connector="RTP13A,B,C" source="SYNC_R_SLT" idfwc="WE"/>
 </FWC_connector_map>

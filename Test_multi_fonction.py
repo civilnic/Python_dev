@@ -15,26 +15,34 @@ def main():
     print(sys.argv[1])
 
     bdsFWC = BDS_FWC(sys.argv[1], sys.argv[5])
-    bds2xml_file = BDS2XML(sys.argv[2],True)
-    bdsEis = BDS_EIS(sys.argv[3],sys.argv[4])
+    bds2xml_file = BDS2XML("_tests_results/"+sys.argv[2],True)
+#    bdsEis = BDS_EIS(sys.argv[3],sys.argv[4])
+#    print ("**EIS**")
 
-    print ("**EIS**")
-    xml_file = FDEF_XML("test.xml", "A429")
-    micdFile = FDEF_MICD("FDEF.xls", "fdef_FWC", 'V1.0')
+    xml_conso_file = FDEF_XML("_tests_results/A429_conso_fdef_fwc.xml", "A429")
+    xml_prod_file = FDEF_XML("_tests_results/A429_prod_fdef_fwc.xml", "A429")
+    micdFile = FDEF_MICD("_tests_results/FDEF_FWC.xls", "fdef_FWC", 'V1.0')
 
-    labelObjList = bdsFWC.get_LabelObjList(nature="IN", system="FWC")
+    labelObjList = bdsFWC.get_LabelObjList(nature="IN", system="FWC", source=r"EEC..|EIU.|ADC.|LGCIU.|FQI.A_.B|ILS.|RA.|GPS.|GPS..|SDCU.|SYNC_\w_\w{3}")
+    #labelObjList = bdsFWC.get_LabelObjList(nature="IN|OUT", system="FWC", source=r"SYNC\.\w\.\w{3}")
 
     for labelObj in labelObjList:
+
         if len(labelObj.ParameterList) > 0:
+             micdFile.AddLabelToMICD(labelObj)
+             xml_prod_file.AddLabel(labelObj)
+             for parameterObj in labelObj.getParameterList():
+                 bds2xml_file.AddLine(parameterObj)
 
-            micdFile.AddLabelToMICD(labelObj)
 
-            xml_file.AddLabel(labelObj)
-            for parameterObj in labelObj.getParameterList():
-                bds2xml_file.AddLine(parameterObj)
-
+    print("**bds2xml_file save file**")
     bds2xml_file.savefile()
-    xml_file.WriteAndClose()
+
+    print("**xml_file save file**")
+    xml_conso_file.WriteAndClose()
+    xml_prod_file.WriteAndClose()
+
+    print("**micdFile save file**")
     micdFile.savefile()
 
 main()

@@ -1,4 +1,5 @@
 import re
+import copy
 
 from lxml import etree
 
@@ -243,7 +244,7 @@ class BDS_FWC(BDS):
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    DicoLine["NATURE"] = "ENTREE"   # force nature field to "ENTREE" for param object creatio
+                    DicoLine["NATURE"] = "ENTREE"   # force nature field to "SORTIE" for param object creation
                                                     # only ENTREE or SORTIE values for nature
                                                     #  are possible for parameter creation
                     ParamObj = self.AddParameter(DicoLine, LabelObj)
@@ -256,7 +257,7 @@ class BDS_FWC(BDS):
                     LabelObj = self.add_Label(LabelObj)
 
                     # add associate parameter
-                    DicoLine["NATURE"] = "SORTIE"   # force nature field to "ENTREE" for param object creatio
+                    DicoLine["NATURE"] = "SORTIE"   # force nature field to "ENTREE" for param object creation
                                                     # only ENTREE or SORTIE values for nature
                                                     #  are possible for parameter creation
                     ParamObj = self.AddParameter(DicoLine, LabelObj)
@@ -264,6 +265,58 @@ class BDS_FWC(BDS):
                 #else:
                     #print("Label nature not defined:"+nature)
 
+            # case of SYNCHRO label .i.e label in FWC input transmitted without modification on FWC output (same label
+            # number and characteristisc
+
+            elif(typeIO == "SYNCHRO"):
+
+                if (nature == "E/S"):
+
+                    # we suppose here that only output label information (number, sdi ...) are filled
+                    # we create first an output label number and copy it as an input label
+
+                    # add associate parameter
+                    DicoLine["NATURE"] = "SORTIE"   # force nature field to "SORTIE" for param object creation
+                                                    # only ENTREE or SORTIE values for nature
+                                                    #  are possible for parameter creation
+
+                    # add output label
+                    LabelObj = self.AddOutputLabel(DicoLine)
+                    LabelObj.nature = "SORTIE"
+                    # weird things on BDS
+                    # only inputs pins are filled for SYNCHRO label despite all other label informations are set
+                    # by output fields
+                    LabelObj.pins = DicoLine["INPUT PINS"]
+                    LabelObj.LinkToInput = LabelObj.number
+                    # to update formmatted name
+                    self.SetLabelFormattedName(LabelObj)
+                    LabelObj = self.add_Label(LabelObj)
+
+
+                    ParamObj = self.AddParameter(DicoLine, LabelObj)
+                    self.add_Parameter(ParamObj)
+
+
+
+                    # create here the same label in input
+                    _LabelObjIN = copy.copy(LabelObj)
+
+                    # add new input label
+                    _LabelObjIN.nature = "ENTREE"
+                    _LabelObjIN = self.add_Label(_LabelObjIN)
+                    # to update formmatted name
+                    self.SetLabelFormattedName(LabelObj)
+                    # add associate parameter
+                    DicoLine["NATURE"] = "ENTREE"   # force nature field to "ENTREE" for param object creation
+                                                    # only ENTREE or SORTIE values for nature
+                                                    #  are possible for parameter creation
+                    ParamObj = self.AddParameter(DicoLine, _LabelObjIN)
+                    self.add_Parameter(ParamObj)
+
+
+                # this case is not possible due to label SYNCHRO nature
+                else:
+                    pass
             # case of discrete data
             elif(typeIO == "DISCRET"):
                 pass
@@ -335,6 +388,8 @@ class BDS_FWC(BDS):
         LabelObj.pins = DicoLine["INPUT PINS"]
         LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"].replace("/", "_")
 
+        LabelObj.source = re.sub(r'\.', '_',  LabelObj.source)
+
         self.SetLabelFormattedName(LabelObj)
 
         return LabelObj
@@ -352,7 +407,10 @@ class BDS_FWC(BDS):
         LabelObj.input_trans_rate = DicoLine["OUTPUT TRANSMIT INTERVAL"]
         LabelObj.originATA = DicoLine["ORIGIN ATA"]
         LabelObj.pins = DicoLine["OUTPUT PINS"]
+
         LabelObj.source = DicoLine["SOURCE OR UPSTREAM COMPUTER NAME"].replace("/", "_")
+
+        LabelObj.source = re.sub(r'\.', '_',  LabelObj.source)
 
         self.SetLabelFormattedName(LabelObj)
 

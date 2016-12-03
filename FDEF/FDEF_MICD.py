@@ -18,8 +18,10 @@ class FDEF_MICD(MICD):
         # IN => OUT ,  OUT => IN
         if labelObj.nature == "IN":
             _micdPortType = "OUT"
+            _sheet_name = "FUN_OUT"
         else:
             _micdPortType = "IN"
+            _sheet_name = "FUN_IN"
 
         # port corresponding to label
         _micdPort = MICD_port(None, _micdPortType, None)
@@ -42,7 +44,7 @@ class FDEF_MICD(MICD):
         _micdPort.interfacelevel = "format"
 
         # add label data to MICD
-        self.AddPortfromPortObject(_micdPort)
+        self.AddPortfromPortObject(_micdPort,_sheet_name)
 
         # associated port corresponding to label refresh
         _micdPort.description = "refresh of Label: " + str(_micdPort.name)
@@ -52,13 +54,15 @@ class FDEF_MICD(MICD):
         _micdPort.status = "True"
 
         # add refresh data to MICD
-        self.AddPortfromPortObject(_micdPort)
+        self.AddPortfromPortObject(_micdPort,_sheet_name)
 
         # invert micd port type to write preformatted data
         if _micdPortType == "IN":
             _micdPortType = "OUT"
+            _sheet_name = "FUN_OUT"
         else:
             _micdPortType = "IN"
+            _sheet_name = "FUN_IN"
         _micdPort.type = _micdPortType
         _micdPort.name = labelObj.SimuFormattedName+"_SSM"
         _micdPort.codingtype = "int"
@@ -69,15 +73,15 @@ class FDEF_MICD(MICD):
         _micdPort.interfacelevel = "preformat"
 
         # add refresh data to MICD
-        self.AddPortfromPortObject(_micdPort)
+        self.AddPortfromPortObject(_micdPort,_sheet_name)
 
         for parameterObj in labelObj.getParameterList():
-            AddParameterToMICD(self, parameterObj)
+            AddParameterToMICD(self, parameterObj,_sheet_name)
 
         return True
 
 
-def AddParameterToMICD(micdFile, ParameterObj):
+def AddParameterToMICD(micdFile, ParameterObj,sheet_name):
 
     # label object corresponding to parameter
     _labelObj = ParameterObj.labelObj
@@ -121,6 +125,6 @@ def AddParameterToMICD(micdFile, ParameterObj):
             if hasattr(ParameterObj, "range"):
                 _micdPort.convention = _micdPort.convention + "\n range: " + str(ParameterObj.range)
 
-    micdFile.AddPortfromPortObject(_micdPort)
+    micdFile.AddPortfromPortObject(_micdPort,sheet_name)
 
     return True
