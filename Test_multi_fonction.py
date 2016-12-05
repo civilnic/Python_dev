@@ -15,7 +15,7 @@ def main():
     print(sys.argv[1])
 
     bdsFWC = BDS_FWC(sys.argv[1], sys.argv[5])
-    bds2xml_file = BDS2XML("_tests_results/"+sys.argv[2],True)
+    bds2xml_file = BDS2XML(sys.argv[2],True)
     bdsEis = BDS_EIS(sys.argv[3],sys.argv[4])
 #    print ("**EIS**")
 

@@ -4,7 +4,7 @@ import copy
 from lxml import etree
 
 from A429.A429 import (A429Label, A429ParamDIS, A429ParamBNR, A429ParamBCD, A429ParamOpaque)
-from .BDS import BDS
+from BDS.BDS import BDS
 
 
 class BDS_FWC(BDS):
