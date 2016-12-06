@@ -22,7 +22,7 @@ def main():
     for _model in myFlot.models_ref.keys():
         _modelObj = myFlot.models_ref[_model]
         _modelObj.pprint()
-        for _portObj in _modelObj._ports_consum:
-            _portObj.pprint()
+        #for _portObj in _modelObj._ports_consum:
+      #      _portObj.pprint()
 
 main()

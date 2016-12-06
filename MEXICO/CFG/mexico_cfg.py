@@ -16,16 +16,17 @@ class mexicoConfig:
         self.filePath = os.path.dirname(pathname)
         self.pathName = pathname
 
-        self._mexicoRootPath = None
+        self._mexicoRootPath = None     # set during parsing
+        self._flowFile = None           # set during parsing
+        self._flowFileName = "ALL_SIMU_FLOW.csv"
+        self._flowFilePath = None       # set during parsing
+
         self._actors = []
         self._initFile = []
         self._ssdbFiles = []
 
-
-        print("fileName: " + self.fileName)
-        print("filePath: " + self.filePath)
-
         self.parse()
+
 
     def parse(self):
 
@@ -40,6 +41,10 @@ class mexicoConfig:
 
                 if element.attrib['dataDirWin']:
                     self._mexicoRootPath = os.path.abspath(self.filePath+"\\"+element.attrib['dataDirWin'])
+
+                    if element.attrib['outputDirWin']:
+                        self._flowFilePath = os.path.abspath(self._mexicoRootPath+"\\"+element.attrib['outputDirWin'])
+                        self._flowFile = self._flowFilePath+"\\"+self._flowFileName
 
             # ssdb file are listed in Base elements
             if element.tag == "Base":
@@ -97,6 +102,12 @@ class mexicoConfig:
 
     def getNbActor(self):
         return len(self._actors)
+
+    def getMexicoRootPath(self):
+        return self._mexicoRootPath
+
+    def getFlowFile(self):
+        return self._flowFile
 
 
 class Actor:
@@ -157,7 +168,7 @@ class mexicoMICDFile:
 
 class mexicoCouplingFile:
 
-    def __init__(self, couplingname,type,writable,micd):
+    def __init__(self, couplingname, type, writable, micd):
         self._filename = os.path.basename(couplingname)
         self._relativPath = os.path.dirname(couplingname)
         self._micd = micd
