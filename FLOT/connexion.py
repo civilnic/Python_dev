@@ -1,8 +1,8 @@
 from FLOT.port import port
 from FLOT.channel import channel
-from FLOT.alias import alias
+from FLOT.alias import Alias
 
-class connexion:
+class Connexion:
     """
     Class to represent connexion in ASPIC, MEXICO or DSS data flot
     """
@@ -102,6 +102,33 @@ class connexion:
     def tabCons(self, tabCons):
         self._tabCons = tabCons
 
+    def compare(self, other):
+
+        tab = [False] * 10
+
+        if self.modoccProd != other.modoccProd:
+            tab[0] = True
+        if self.portProd != other.portProd:
+            tab[1] = True
+        if self.operatorProd != other.operatorProd:
+            tab[2] = True
+        if self.tabProd != other.tabProd:
+            tab[3] = True
+        if self.Channel != other.Channel:
+            tab[4] = True
+        if self.init != other.init:
+            tab[5] = True
+        if self.modoccCons != other.modoccCons:
+            tab[6] = True
+        if self.portCons != other.portCons:
+            tab[7] = True
+        if self.operatorCons != other.operatorCons:
+            tab[8] = True
+        if self.tabCons != other.tabCons:
+            tab[9] = True
+
+        return tab
+
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return (self.modoccProd == other.modoccProd) and \
@@ -123,6 +150,12 @@ class connexion:
         else:
             return NotImplemented
 
+    def __str__(self):
+        return "Connexion object:\n\n\tModProd/Occ/PortProd: {}/{}\n\toperatorProd: {}\n\ttabProd: {}\n\n\tChannel: {}\n" \
+               "\tInit: {}\n\n\tModCons/Occ/PortCons: {}/{}\n\toperatorCons: {}\n\ttabCons: {}\n".format(
+            self.modoccProd, self.portProd, self.operatorProd, self.tabProd, self.Channel, self.init, self.modoccCons,
+            self.portCons, self.operatorCons, self.tabCons
+        )
 
     def getTab(self):
 
@@ -141,36 +174,55 @@ class connexion:
 
         return tab
 
-class connexionFromObj(connexion):
+    def getProdTriplet(self):
+        if self.modoccProd and self.portProd:
+            return self.modoccProd+"/"+self.portProd
+        else:
+            return None
+
+    def getConsTriplet(self):
+        if self.modoccCons and self.portCons:
+            return self.modoccCons+"/"+self.portCons
+        else:
+            return None
+
+    def getProdAlias(self):
+        return Alias(self.portProd, self.Channel, self.tabProd, self.operatorProd)
+
+    def getConsAlias(self):
+        return Alias(self.portCons, self.Channel, self.tabCons, self.operatorCons)
+
+
+
+
+class ConnexionFromObj(Connexion):
     """
     Connexion element created from  port and channel object
     """
     def __init__(self, producerObj=None, channelObj=None, consummerObj=None):
 
-        connexion.__init__(self)
+        Connexion.__init__(self)
 
-        self.modoccProd = producerObj.modocc
-        self.portProd = producerObj.name
-        self.operatorProd = producerObj.operator
-        self.tabProd = None
-        self.Channel = channelObj.name
-        self.init = channelObj.init
-        self.modoccCons = consummerObj.modocc
-        self.portCons = consummerObj.name
-        self.operatorCons = consummerObj.operator
-        self.tabCons = None
+        if producerObj:
+            self.modoccProd = producerObj.modocc
+            self.portProd = producerObj.name
+            self.operatorProd = producerObj.operator
+        if channelObj:
+            self.Channel = channelObj.name
+            self.init = channelObj.init
+        if consummerObj:
+            self.modoccCons = consummerObj.modocc
+            self.portCons = consummerObj.name
+            self.operatorCons = consummerObj.operator
 
 
 
-class connexionFromAliasObj(connexion):
+
+class ConnexionFromAliasObj(Connexion):
 
     def __init__(self, aliasProbObj, aliasConsObj):
-        """
-        Attributes are:
-        _ path name of the file
-        """
 
-        connexion.__init__(self)
+        Connexion.__init__(self)
 
         if aliasProbObj.getChannelName == aliasConsObj.getChannelName:
             self.modoccProd = aliasProbObj.port.modocc
@@ -185,15 +237,15 @@ class connexionFromAliasObj(connexion):
             self.tabCons = aliasConsObj.index
 
 
-class connexionFromTab(connexion):
+#
+# to create a connexion object from a tab[10]
+#
+
+class ConnexionFromTab(Connexion):
 
     def __init__(self, tab):
-        """
-        Attributes are:
-        _ path name of the file
-        """
 
-        connexion.__init__(self)
+        Connexion.__init__(self)
 
         if tab.len() == 10:
             self.modoccProd = tab[0]
@@ -207,3 +259,49 @@ class connexionFromTab(connexion):
             self.operatorCons = tab[8]
             self.tabCons = tab[9]
 
+
+#
+# a class to defined potential connexion: it's possible to evaluate/compare connexion without specifying a channel name
+# permit to evaluate if a connexion is done or not on a flow file
+#
+class PotentialConnexionFromTab(Connexion):
+
+    def __init__(self, tab):
+
+        Connexion.__init__(self)
+
+        if len(tab) == 10:
+            self.modoccProd = tab[0]
+            self.portProd = tab[1]
+            self.operatorProd = tab[2]
+            self.tabProd = tab[3]
+
+            self.init = tab[5]
+            self.modoccCons = tab[6]
+            self.portCons = tab[7]
+            self.operatorCons = tab[8]
+            self.tabCons = tab[9]
+
+            # a channel name is specified it is taken from flot
+            # if channel name is not specified, it's computed from
+            # producer model and port with rule:  channelName = portProdName_modelName_modelOccurence
+            # if no producer information are set the rule is channelName = portConsName
+            #
+            if tab[4]:
+                self.Channel = tab[4]
+            else:
+                if self.portProd and self.modoccProd:
+                    self.Channel = self.portProd
+                    self.Channel += "_"
+                    self.Channel += self.modoccProd
+                    self.Channel = self.Channel.replace("/", "_")
+                elif self.portCons and self.modoccCons:
+                    self.Channel = self.portCons
+                else:
+                    self.Channel = None
+
+
+class PotentialConnexionFromAliasObj(Connexion):
+    pass
+class PotentialConnexionFromObj(Connexion):
+    pass

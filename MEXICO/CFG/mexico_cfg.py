@@ -18,7 +18,7 @@ class mexicoConfig:
 
         self._mexicoRootPath = None     # set during parsing
         self._flowFile = None           # set during parsing
-        self._flowFileName = "ALL_SIMU_FLOW.csv"
+        self._flowFileName = "ALL-SIMU_FLOW.csv"
         self._flowFilePath = None       # set during parsing
 
         self._actors = []
@@ -44,7 +44,7 @@ class mexicoConfig:
 
                     if element.attrib['outputDirWin']:
                         self._flowFilePath = os.path.abspath(self._mexicoRootPath+"\\"+element.attrib['outputDirWin'])
-                        self._flowFile = self._flowFilePath+"\\"+self._flowFileName
+                        self._flowFile = self._flowFilePath+"\\CNXFLOW\\"+self._flowFileName
 
             # ssdb file are listed in Base elements
             if element.tag == "Base":

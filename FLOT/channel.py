@@ -91,3 +91,13 @@ class channel:
             self._ports_prod.append(portObj)
         elif portObj.type == "consumer":
             self._ports_consum.append(portObj)
+
+    #
+    # getProducer function
+    #  return the port object of channel producer
+    #  we assume there is only one producer for signal
+    #  so the function return only the first element of channel
+    #  object _ports_prod tab.
+    #
+    def getProducer(self):
+        return self._ports_prod[0]

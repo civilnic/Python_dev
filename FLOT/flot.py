@@ -1,10 +1,10 @@
 import csv
 import pathlib
 import re
-from channel import channel
-from port import port
-from modele import modele
-import connexion
+from FLOT.channel import channel
+from FLOT.port import port
+from FLOT.modele import modele
+from FLOT.connexion import ConnexionFromObj
 
 class flot:
     """
@@ -171,6 +171,9 @@ class flot:
                     # reference producer port object in channel object
                     _channelObj.addPort(_portProdObj)
 
+                    # reference channelObj in port object
+                    _portProdObj.channel = _channelObj
+
                     # if a dimension is set on channel (signal)
                     if _portProdIndex:
 
@@ -233,6 +236,9 @@ class flot:
                     # reference consumer port object in channel object
                     _channelObj.addPort(_portConsObj)
 
+                    # reference channelObj in port object
+                    _portConsObj.channel = _channelObj
+
                     # if a dimension is set on channel (signal)
                     if _portConsIndex:
 
@@ -288,7 +294,6 @@ class flot:
 
         return self.models_ref[_identifier]
 
-
     def addPort(self, portObj, portType):
 
         _identifier = portObj.getIdentifier()
@@ -306,18 +311,73 @@ class flot:
 
             return self.consumers_ref[_identifier]
 
-
-    def hasModele(self,modeleIdentifier):
+    def hasModele(self, modeleIdentifier):
         if modeleIdentifier in self.models_ref.keys():
             return True
         else:
             return False
 
-
-    def hasPort(self,portIdentifier):
+    def hasPort(self, portIdentifier):
         if portIdentifier in self.consumers_ref.keys():
             return True
         elif portIdentifier in self.producers_ref.keys():
             return True
         else:
             return False
+
+    def getPort(self, portIdentifier):
+        if portIdentifier in self.consumers_ref.keys():
+            return self.consumers_ref[portIdentifier]
+        elif portIdentifier in self.producers_ref.keys():
+            return self.producers_ref[portIdentifier]
+        else:
+            return None
+
+    def getCnxForPort(self, portIdentifier):
+
+        # if portIdentifier is present in the flow
+        if self.hasPort(portIdentifier):
+            _portObj = self.getPort(portIdentifier)
+            _channelObj = _portObj.channel
+
+            # consummer case
+            if _portObj.type == "consumer":
+                _portProdObj = _channelObj.getProducer()
+                _cnxObj = ConnexionFromObj(_portProdObj, _channelObj, _portObj)
+
+            # producer case
+            elif _portObj.type == "producer":
+                _cnxObj = ConnexionFromObj(_portObj, _channelObj)
+            else:
+                _cnxObj = None
+
+            return _cnxObj
+        # else port not found in flow return None
+        else:
+            return None
+    #
+    # evaluate _cnxObj in flow
+    #  _ get the corresponding cnx Obj in current flow
+    #    this connexion is created first from consummer port
+    #    if present else from producer port
+    #
+    def compCnx(self, _cnxObj):
+
+
+        # if consummer port is present in cnxObj
+        if _cnxObj.modoccCons and _cnxObj.portCons:
+            _consPortIdentidier = _cnxObj.getConsTriplet()
+            _flowCxnObj = self.getCnxForPort(_consPortIdentidier)
+        elif _cnxObj.modoccProd and _cnxObj.portProd:
+            _ProdPortIdentidier = _cnxObj.getProdTriplet()
+            _flowCxnObj = self.getCnxForPort(_ProdPortIdentidier)
+        else:
+            return None
+
+        # return cnx comparison
+        if _flowCxnObj:
+            print(_flowCxnObj)
+
+            return _flowCxnObj.compare(_cnxObj)
+        else:
+            return None
