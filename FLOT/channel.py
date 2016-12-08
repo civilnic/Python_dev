@@ -100,4 +100,19 @@ class channel:
     #  object _ports_prod tab.
     #
     def getProducer(self):
-        return self._ports_prod[0]
+        if self._ports_prod[0]:
+            return self._ports_prod[0]
+        else:
+            return None
+
+    def getProducerTriplet(self):
+        if self._ports_prod[0]:
+            return self._ports_prod[0].getIdentifier()
+        else:
+            return None
+
+    def getConsumerList(self):
+        if len(self._ports_consum) > 0:
+            return self._ports_consum
+        else:
+            return None

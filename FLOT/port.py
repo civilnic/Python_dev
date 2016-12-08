@@ -16,7 +16,16 @@ class port:
         self._operator = None
         self._tabMin = None
         self._tabMax = None
+        self._index = None
         self._channel = None
+
+    @property
+    def index(self):
+        return self._index
+
+    @index .setter
+    def index(self, index):
+        self._index = index
 
     @property
     def name(self):

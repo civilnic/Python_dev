@@ -2,19 +2,37 @@ import sys
 import csv
 import logging
 from logging.handlers import RotatingFileHandler,BaseRotatingHandler
+from datetime import datetime
 
 from optparse import OptionParser
 from MEXICO.CFG.mexico_cfg import mexicoConfig
 from FLOT.connexion import PotentialConnexionFromTab
 from FLOT.flot import flot
+from FLOT.alias import Alias,MexicoAlias
 
-# création de l'objet logger qui va nous servir à écrire dans les logs
-logger = logging.getLogger()
-
-# EYC channel naming rules flag
-channelEYCName = False
+global logger
+global channelEYCNameFlag
+global forceChannelNameFlag
+global signalPatchString
+global displayDate
 
 def main():
+
+    # date computation for information
+    _date = datetime.now()
+    displayDate = str(_date.day) + "/" + str(_date.month) + "/" + str(_date.year)
+
+    # création de l'objet logger qui va nous servir à écrire dans les logs
+    logger = logging.getLogger()
+
+    # EYC channel naming rules flag
+    channelEYCNameFlag = False
+
+    # force channel renaming flag
+    forceChannelNameFlag = False
+
+    # string to suffix patched signal names
+    signalPatchString = "_PATCH_MEXINT"
 
     # on met le niveau du logger à DEBUG, comme ça il écrit tout
     logger.setLevel(logging.DEBUG)
@@ -171,13 +189,6 @@ def parseCsvFile(csvFile, flowFile):
             # if tab is filled with False => there is no difference => nothing to do
             _testTab = _flotObj.compCnx(_cnxCSVObj)
 
-            # if EYC channel name option is activated
-            # channel difference is taken into account even if channel name is not specified into CSV file (i.e.
-            # _csvConfTab[4] = False)
-            # to consider channel name difference _csvConfTab[4] if forced to True
-            if channelEYCName:
-                _csvConfTab[4] = True
-
             # differences analysis and translation in term of aliases on modele/port
             if _testTab != [False] * 10:
 
@@ -193,33 +204,101 @@ def parseCsvFile(csvFile, flowFile):
                     continue
 
 
-                # a difference on one of these fields MODOCC_PROD;PORT_PROD;OP_PROD;TAB_PROD;SIGNAL
+                # a difference on one of these fields MODOCC_PROD;PORT_PROD;SIGNAL
                 # implies a modification on model producer coupling file
                 # and maybe on several other consumer coupling file
                 if (_testTab[0] and _csvConfTab[0]) or (_testTab[1] and _csvConfTab[1]) or \
-                        (_testTab[2]  and _csvConfTab[2]) or (_testTab[3] and _csvConfTab[3]) or \
                         (_testTab[4] and _csvConfTab[4]):
 
-                    # there is a channel name difference
-                    if _testTab[4] and _csvConfTab[4]:
+                    # compute targetted signal name depending on options
+                    _signalTargetObj = computeTargetSignal(_flotObj, _cnxCSVObj, _csvConfTab[4], reader.line_num)
 
-                        # there is a difference on producer model
-                        if _testTab[0] and _csvConfTab[0]:
+                    # if targetted signal already exist in flow
+                    if _signalTargetObj:
 
-                            #
-                            # if difference concern only signal name => it's only a channel renaming
-                            #
+                        # we test here if targetted signal is link to targetted producer port in flow
+                        # if the same, producer triplet issued from CSV and FLOW must be equal
+                        # equality case: nothing to change on producer coupling.
+                        # if producer are not the same => there is a patch to be done on other ports
+                        # the behavior will depend on forceChannelNameFlag option
+                        if _cnxCSVObj.getProdTriplet() != _signalTargetObj.getProducerTriplet():
 
+                            # force channel rename option is activated
+                            # we patch signal name for producer and other consumer than current consumer
+                            # linked to targetted signal in flow (_signalTargetObj)
+                            if forceChannelNameFlag:
 
+                                #
+                                # if targetted signal is produced in current flow
+                                # we have to patch the alias on it on coupling file to avoid multi produced signals
+                                #
+                                if _signalTargetObj.getProducerTriplet():
+
+                                    # get current alias on producer port
+                                    _aliasProdCurrentFlow = _flotObj.getAliasForPort(
+                                                                                _signalTargetObj.getProducerTriplet())
+
+                                    # create a corresponding MEXICO alias object
+                                    _aliasProdCurrentFlow = MexicoAlias(_aliasProdCurrentFlow)
+
+                                    # patch alias
+                                    _aliasProdCurrentFlow.channel = _aliasProdCurrentFlow.channel+signalPatchString
+                                    _aliasProdCurrentFlow.comment = "[MEXICO_INTG] patch signal name"
+                                    _aliasProdCurrentFlow.date = displayDate
+
+                                #
+                                # treat here the currently linked to targetted channel consummers
+                                # we add a patch on coupling (to rename channel) except for current consumer.
+                                for _portConsObjCurrentFlow in _signalTargetObj.getConsumerList():
+
+                                    # exclude current consumer i..e consumer from CSV
+                                    if _portConsObjCurrentFlow.getIdentifier() == _cnxCSVObj.getConsTriplet():
+                                        continue
+                                    else:
+                                        # get current alias on consumer port
+                                        _aliasConsCurrentFlow = _flotObj.getAliasForPort(
+                                                                            _portConsObjCurrentFlow.getIdentifier())
+
+                                        # create a corresponding MEXICO alias object
+                                        _aliasConsCurrentFlow = MexicoAlias(_aliasConsCurrentFlow)
+
+                                        # patch alias
+                                        _aliasConsCurrentFlow.channel = _aliasConsCurrentFlow.channel+signalPatchString
+                                        _aliasConsCurrentFlow.comment = "[MEXICO_INTG] patch signal name"
+                                        _aliasConsCurrentFlow.date = displayDate
+
+                            # forceChannelNameFlag is not set
+                            # channel cannot be modified without impact on other coupling
+                            # => signal targetted is maintained to signal link to targetted producer port in current
+                            # flow
+                            else:
+
+                                # get the targetted producer port object in current flow
+                                # (the linked channel name will be used for target signal name)
+                                _prodTmpObj = _flotObj.getPort(_cnxCSVObj.getProdTriplet())
+
+                                # warn that targetted signal name could not be reached
+                                logger.warning("[CheckCSV][line " + str(
+                                    reader.line_num) + "] -- force Channel Name option is not activated --\n\t\t "
+                                    "the following signal name: " + _signalTargetObj + " could not be set without "
+                                    "modification on other coupling. Channel "+_prodTmpObj.channel+" will be used "
+                                                                                    "instead of " + _cnxCSVObj.Channel)
+
+                                # modify the targetted signal name object
+                                _signalTargetObj = _flotObj.getChannel(_prodTmpObj.channel)
+
+                        # targetted producer port is already link to targetted signal in current flow
+                        # no path to apply no modification on producer alias
+                        else:
                             pass
-                    # no difference on signal name
-                    # signal name used is flow signal name
+                    # targetted signal doesn't exist in flow
+                    # => no other signal to patch
+                    # targetted signal will be created by alias on producer port
                     else:
-
                         pass
 
 
-
+                    # modify
 
 
                     # if model is not referenced in dictionary => add it
@@ -263,6 +342,30 @@ def parseCsvFile(csvFile, flowFile):
     finally:
         file.close()
 
+
+def computeTargetSignal(_flotObj, _cnxCSVObj, channelIsSpecifiedOnCsv, line_num):
+
+    _TargetProdTriplet = _cnxCSVObj.getProdTriplet()
+    _TargetProdTripletObjInFlow = _flotObj.getPort(_TargetProdTriplet)
+
+    if not channelEYCNameFlag:
+        if channelIsSpecifiedOnCsv:
+            _TargetSignal = _cnxCSVObj.Channel
+        else:
+            _TargetSignal = _TargetProdTripletObjInFlow.channel
+    else:
+        _signalNameEYC = _TargetProdTripletObjInFlow.name
+        _signalNameEYC += "_"
+        _signalNameEYC += _TargetProdTripletObjInFlow.channel
+        _signalNameEYC = _signalNameEYC.replace("/", "_")
+        if _cnxCSVObj.Channel != _signalNameEYC:
+            logger.warning("[CheckCSV][line " + str(line_num) + "] -- EYC channel name option activated --\n\t\t "
+                                                            "the following signal name: "+_signalNameEYC+" will be "
+                                                            "used instead of "+_cnxCSVObj.Channel)
+        _TargetSignal = _signalNameEYC
+
+    return _flotObj.getChannel(_TargetSignal)
+
 def getCsvParameterTab(headerTab):
 
     # set possible header in CSV file
@@ -274,7 +377,7 @@ def getCsvParameterTab(headerTab):
     _mandatoryFieldIndex = [0, 1, 6, 7]
 
     # output tab initialization
-    _configurationTab = []
+    _configurationTab = [False]*10
 
     for _index, _field in enumerate(_possibleField):
         if _field in headerTab:

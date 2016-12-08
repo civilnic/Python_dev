@@ -5,6 +5,7 @@ from FLOT.channel import channel
 from FLOT.port import port
 from FLOT.modele import modele
 from FLOT.connexion import ConnexionFromObj
+from FLOT.alias import Alias
 
 class flot:
     """
@@ -333,6 +334,25 @@ class flot:
         else:
             return None
 
+    def getChannel(self, channelIdentifier):
+        if channelIdentifier in self.channel_ref.keys():
+            return self.channel_ref[channelIdentifier]
+        else:
+            return None
+
+    def getAliasForPort(self, portIdentifier):
+
+        # if portIdentifier is present in the flow
+        if self.hasPort(portIdentifier):
+            _portObj = self.getPort(portIdentifier)
+            _aliasObj = Alias(_portObj.name, _portObj.channel,  _portObj.index,  _portObj.operator)
+
+            return _aliasObj
+        # else port not found in flow return None
+        else:
+            return None
+
+
     def getCnxForPort(self, portIdentifier):
 
         # if portIdentifier is present in the flow
@@ -362,7 +382,6 @@ class flot:
     #    if present else from producer port
     #
     def compCnx(self, _cnxObj):
-
 
         # if consummer port is present in cnxObj
         if _cnxObj.modoccCons and _cnxObj.portCons:

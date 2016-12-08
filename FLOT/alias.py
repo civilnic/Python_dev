@@ -95,3 +95,45 @@ class AliasObj(Alias):
     def __init__(self, portObj, channelObj,index=None, operator=None):
 
         Alias.__init__(portObj.name, channelObj.name, index, operator)
+
+
+class MexicoAlias(Alias):
+    """
+    Class to represent alias in MEXICO data flot
+    """
+    def __init__(self, AliasObj=None, port=None, channel=None, index=None, operator=None,
+                 sheet=None, date=None, comment=None):
+
+        if AliasObj:
+            Alias.__init__(AliasObj.port, AliasObj.channel, AliasObj.index, AliasObj.operator)
+        else:
+            Alias.__init__(port, channel, index, operator)
+
+        self._sheet = sheet
+        self._date = date
+        self._comment = comment
+
+    @property
+    def sheet(self):
+        return self._sheet
+
+    @sheet.setter
+    def sheet(self, sheet):
+        self._sheet = sheet
+
+
+    @property
+    def date(self):
+        return self._date
+
+    @date.setter
+    def date(self, date):
+        self._date = date
+
+    @property
+    def comment(self):
+        return self._comment
+
+    @comment.setter
+    def comment(self, comment):
+        self._comment = comment
