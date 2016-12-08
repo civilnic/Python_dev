@@ -15,9 +15,10 @@ class mexicoConfig:
         self.fileName = os.path.basename(pathname)
         self.filePath = os.path.dirname(pathname)
         self.pathName = pathname
+        self._conceptionFile = None
 
         self._mexicoRootPath = None     # set during parsing
-        self._flowFile = None           # set during parsing
+        self._flowFilePathName = None           # set during parsing
         self._flowFileName = "ALL-SIMU_FLOW.csv"
         self._flowFilePath = None       # set during parsing
 
@@ -26,6 +27,47 @@ class mexicoConfig:
         self._ssdbFiles = []
 
         self.parse()
+
+    @property
+    def conceptionFile(self):
+        return self._conceptionFile
+
+    @conceptionFile.setter
+    def conceptionFile(self, conceptionFile):
+        self._conceptionFile = conceptionFile
+        _flowRelativPath = self.conception()
+
+        self._flowFilePath = os.path.abspath(self._mexicoRootPath + '\\' + _flowRelativPath)
+        self._flowFilePathName = self._flowFilePath + "\\" + self._flowFileName
+
+    # function to get flow relativ path
+    def conception(self):
+        try:
+            with open(self.conceptionFile):
+                pass
+        except IOError:
+            print("[mexicoConfig][conception] Cannot open MEXICO conception file: "+str(self.conceptionFile))
+
+        tree = etree.parse(self.conceptionFile)
+
+        root = tree.getroot()
+
+        for element in root.iter("*"):
+
+            #  model tag are named Actor
+            if element.tag == "Template":
+
+                # cnx flow
+                if element.attrib['name'] == "cnxflow":
+
+                    # get MICD element list
+                    for subElement in element.iter("*"):
+
+                        #  model tag are named Actor
+                        if subElement.tag == "Outputs":
+
+                            return subElement.attrib['dirWin']
+
 
 
     def parse(self):
@@ -41,10 +83,6 @@ class mexicoConfig:
 
                 if element.attrib['dataDirWin']:
                     self._mexicoRootPath = os.path.abspath(self.filePath+"\\"+element.attrib['dataDirWin'])
-
-                    if element.attrib['outputDirWin']:
-                        self._flowFilePath = os.path.abspath(self._mexicoRootPath+"\\"+element.attrib['outputDirWin'])
-                        self._flowFile = self._flowFilePath+"\\CNXFLOW\\"+self._flowFileName
 
             # ssdb file are listed in Base elements
             if element.tag == "Base":
@@ -107,8 +145,11 @@ class mexicoConfig:
         return self._mexicoRootPath
 
     def getFlowFile(self):
-        return self._flowFile
 
+        if self._flowFilePathName:
+            return self._flowFilePathName
+        else:
+            return None
 
 class Actor:
 

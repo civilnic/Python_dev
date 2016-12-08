@@ -10,29 +10,24 @@ from FLOT.connexion import PotentialConnexionFromTab
 from FLOT.flot import flot
 from FLOT.alias import Alias,MexicoAlias
 
-global logger
-global channelEYCNameFlag
-global forceChannelNameFlag
-global signalPatchString
-global displayDate
+# date computation for information
+_date = datetime.now()
+displayDate = str(_date.day) + "/" + str(_date.month) + "/" + str(_date.year)
+
+# création de l'objet logger qui va nous servir à écrire dans les logs
+logger = logging.getLogger()
+
+# EYC channel naming rules flag
+channelEYCNameFlag = False
+
+# force channel renaming flag
+forceChannelNameFlag = False
+
+# string to suffix patched signal names
+signalPatchString = "_PATCH_MEXINT"
+
 
 def main():
-
-    # date computation for information
-    _date = datetime.now()
-    displayDate = str(_date.day) + "/" + str(_date.month) + "/" + str(_date.year)
-
-    # création de l'objet logger qui va nous servir à écrire dans les logs
-    logger = logging.getLogger()
-
-    # EYC channel naming rules flag
-    channelEYCNameFlag = False
-
-    # force channel renaming flag
-    forceChannelNameFlag = False
-
-    # string to suffix patched signal names
-    signalPatchString = "_PATCH_MEXINT"
 
     # on met le niveau du logger à DEBUG, comme ça il écrit tout
     logger.setLevel(logging.DEBUG)
@@ -57,12 +52,13 @@ def main():
     logger.addHandler(steam_handler)
 
     # command line treatment
-    parser = OptionParser("usage: %prog --csv <csvFile> --mexico <mexicoCfgFile>")
-    parser.add_option("-c","--csv", dest="csvFile", help="CSV file containing connexions/inits to integer",
+    parser = OptionParser("usage: %prog --csv <csvFile> --mexico <mexicoCfgFile> --cp <mexicoconceptionFile>")
+    parser.add_option("--csv", dest="csvFile", help="CSV file containing connexions/inits to integer",
                       type="string", metavar="FILE")
-    parser.add_option("-x","--mexico", dest="mexicoCfgFile", help="Mexico configuration file (.xml)",
+    parser.add_option("--mexico", dest="mexicoCfgFile", help="Mexico configuration file (.xml)",
                       type="string", metavar="FILE")
-
+    parser.add_option("--cp", dest="mexicoConceptionFile", help="Mexico conception file (.xml)",
+                      type="string", metavar="FILE")
     (options, args) = parser.parse_args()
 
     if len(args) != 0:
@@ -71,6 +67,8 @@ def main():
 
     _csvFile = options.csvFile
     _mexicoCfgFile = options.mexicoCfgFile
+    _conceptionFile = options.mexicoConceptionFile
+
 
     logger.info("_csvFile: "+_csvFile)
     logger.info("_mexicoCfgFile: "+_mexicoCfgFile)
@@ -83,6 +81,7 @@ def main():
     #                           => I/O of each of them
 
     _mexicoCfgObj = mexicoConfig(_mexicoCfgFile)
+    _mexicoCfgObj.conceptionFile = _conceptionFile
 
     _mexicoFlowFile = _mexicoCfgObj.getFlowFile()
 
@@ -295,6 +294,8 @@ def parseCsvFile(csvFile, flowFile):
                     # => no other signal to patch
                     # targetted signal will be created by alias on producer port
                     else:
+
+
                         pass
 
 
@@ -387,6 +388,7 @@ def getCsvParameterTab(headerTab):
 
             # check here if mandatory field is present
             if _index in _mandatoryFieldIndex:
+                global logger
                 logger.error(
                     "[CSV HEADER ERROR] CSV file Header must contains at least: MODOCC_PROD;PORT_PROD;MODOCC_CONSO;PORT_CONSUM;")
                 return False
