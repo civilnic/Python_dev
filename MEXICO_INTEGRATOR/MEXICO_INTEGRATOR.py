@@ -12,7 +12,7 @@ from FLOT.flot import flot
 logger = logging.getLogger()
 
 # EYC channel naming rules flag
-channelRenameFlag = False
+channelEYCName = False
 
 def main():
 
@@ -171,6 +171,13 @@ def parseCsvFile(csvFile, flowFile):
             # if tab is filled with False => there is no difference => nothing to do
             _testTab = _flotObj.compCnx(_cnxCSVObj)
 
+            # if EYC channel name option is activated
+            # channel difference is taken into account even if channel name is not specified into CSV file (i.e.
+            # _csvConfTab[4] = False)
+            # to consider channel name difference _csvConfTab[4] if forced to True
+            if channelEYCName:
+                _csvConfTab[4] = True
+
             # differences analysis and translation in term of aliases on modele/port
             if _testTab != [False] * 10:
 
@@ -180,14 +187,56 @@ def parseCsvFile(csvFile, flowFile):
                 # a differnce on MOD_CONS or PORT_CONS is not possible
                 # due to the cnxObj comparison nature (it construct from the same
                 # MOD_CONS and PROD_CONS)
-                if _testTab[6] or _testTab[7]:
+                if (_testTab[6] and _csvConfTab[6]) or (_testTab[7] and _csvConfTab[7]):
                     logger.error("[CheckCSV][line " + str(reader.line_num) + "] -- ERROR on Treatment: this case is"
                                                                              "not possible --")
                     continue
 
+
+                # a difference on one of these fields MODOCC_PROD;PORT_PROD;OP_PROD;TAB_PROD;SIGNAL
+                # implies a modification on model producer coupling file
+                # and maybe on several other consumer coupling file
+                if (_testTab[0] and _csvConfTab[0]) or (_testTab[1] and _csvConfTab[1]) or \
+                        (_testTab[2]  and _csvConfTab[2]) or (_testTab[3] and _csvConfTab[3]) or \
+                        (_testTab[4] and _csvConfTab[4]):
+
+                    # there is a channel name difference
+                    if _testTab[4] and _csvConfTab[4]:
+
+                        # there is a difference on producer model
+                        if _testTab[0] and _csvConfTab[0]:
+
+                            #
+                            # if difference concern only signal name => it's only a channel renaming
+                            #
+
+
+                            pass
+                    # no difference on signal name
+                    # signal name used is flow signal name
+                    else:
+
+                        pass
+
+
+
+
+
+                    # if model is not referenced in dictionary => add it
+                    if _cnxCSVObj.modoccProd not in _aliasTodoProd.keys():
+                        _aliasTodoProd[_cnxCSVObj.modoccProd]=[]
+
+                    # add alias object in tab
+                    if _cnxCSVObj.getConsAlias() not in _aliasTodoProd[_cnxCSVObj.modoccProd]:
+                        _aliasTodoProd[_cnxCSVObj.modoccProd].append(_cnxCSVObj.getProdAlias())
+
+                    pass
+
+
                 # a difference on SIGNAL or OP_CONS or TAB_CONS fields
                 # implies a modification on model consumer coupling file
-                if _testTab[4] or _testTab[8] or _testTab[9]:
+                if (_testTab[4] and _csvConfTab[4]) or (_testTab[8] and _csvConfTab[8]) or\
+                        (_testTab[9] and _csvConfTab[9]):
 
                     # if model is not referenced in dictionary => add it
                     if _cnxCSVObj.modoccCons not in _aliasTodoCons.keys():
@@ -199,20 +248,7 @@ def parseCsvFile(csvFile, flowFile):
 
                     pass
 
-                # a difference on one of these fields MODOCC_PROD;PORT_PROD;OP_PROD;TAB_PROD;SIGNAL
-                # implies a modification on model producer coupling file
-                # and maybe on several other consumer coupling file
-                if _testTab[0] or _testTab[1] or _testTab[2] or _testTab[3] or _testTab[4]:
 
-                    # if model is not referenced in dictionary => add it
-                    if _cnxCSVObj.modoccProd not in _aliasTodoProd.keys():
-                        _aliasTodoProd[_cnxCSVObj.modoccProd]=[]
-
-                    # add alias object in tab
-                    if _cnxCSVObj.getConsAlias() not in _aliasTodoProd[_cnxCSVObj.modoccProd]:
-                        _aliasTodoProd[_cnxCSVObj.modoccProd].append(_cnxCSVObj.getProdAlias())
-
-                    pass
 
                 # a difference on INIT field
                 # implies a modification on initflot file
