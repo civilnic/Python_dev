@@ -86,6 +86,9 @@ class Alias:
         else:
             return NotImplemented
 
+    def __str__(self):
+        return "Alias object:\n\tPort: {}\n\tSignal: {}\n\tindex: {}\n\topertor: {}\n".format(
+            self.port, self.channel, self.index, self.operator)
 
 class AliasObj(Alias):
     """
@@ -93,8 +96,7 @@ class AliasObj(Alias):
     """
 
     def __init__(self, portObj, channelObj,index=None, operator=None):
-
-        Alias.__init__(portObj.name, channelObj.name, index, operator)
+        super().__init__(portObj.name, channelObj.name, index, operator)
 
 
 class MexicoAlias(Alias):
@@ -104,10 +106,10 @@ class MexicoAlias(Alias):
     def __init__(self, AliasObj=None, port=None, channel=None, index=None, operator=None,
                  sheet=None, date=None, comment=None):
 
-        if AliasObj:
-            Alias.__init__(AliasObj.port, AliasObj.channel, AliasObj.index, AliasObj.operator)
+        if AliasObj is not None:
+            super().__init__( AliasObj.port, AliasObj.channel, AliasObj.index, AliasObj.operator)
         else:
-            Alias.__init__(port, channel, index, operator)
+            super().__init__(port, channel, index, operator)
 
         self._sheet = sheet
         self._date = date

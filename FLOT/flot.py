@@ -345,7 +345,7 @@ class flot:
         # if portIdentifier is present in the flow
         if self.hasPort(portIdentifier):
             _portObj = self.getPort(portIdentifier)
-            _aliasObj = Alias(_portObj.name, _portObj.channel,  _portObj.index,  _portObj.operator)
+            _aliasObj = Alias(_portObj.name, _portObj.channel.name,  _portObj.index,  _portObj.operator)
 
             return _aliasObj
         # else port not found in flow return None
@@ -395,8 +395,6 @@ class flot:
 
         # return cnx comparison
         if _flowCxnObj:
-            print(_flowCxnObj)
-
             return _flowCxnObj.compare(_cnxObj)
         else:
             return None
