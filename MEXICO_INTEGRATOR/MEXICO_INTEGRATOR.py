@@ -206,10 +206,7 @@ def parseCsvFile(csvFile, flowFile):
             # differences analysis and translation in term of aliases on modele/port
             if _testTab != [False] * 10:
 
-                # get equivalent (for the same consummer model/port) cnx object in flow file
-                _cnxFLOWObj = _flotObj.getCnxForPort(_cnxCSVObj.getConsTriplet())
-
-                # a differnce on MOD_CONS or PORT_CONS is not possible
+                # a difference on MOD_CONS or PORT_CONS is not possible
                 # due to the cnxObj comparison nature (it construct from the same
                 # MOD_CONS and PROD_CONS)
                 if (_testTab[6] and _csvConfTab[6]) or (_testTab[7] and _csvConfTab[7]):
@@ -225,159 +222,37 @@ def parseCsvFile(csvFile, flowFile):
                 if (_testTab[0] and _csvConfTab[0]) or (_testTab[1] and _csvConfTab[1]) or \
                         (_testTab[4] and _csvConfTab[4]):
 
-                    # compute targetted signal name depending on options
-                    _signalTargetName = computeTargetSignal(_flotObj, _cnxCSVObj, _csvConfTab[4])
+                    #
+                    # No producer model and/or port has been set on CSV
+                    # it could be :
+                    #       a dcnx
+                    #       an simple initialization
+                    #       a aliaa on signal
+                    if _cnxCSVObj.getProdTriplet() is None:
+                        print(_csvConfTab)
+                        #
+                        # if SIGNAL column is present in CSV
+                        # its a simple initialization and/or an alias
+                        # this test not use _csvConfTab[4] because it can be forced to TRUE with EYC name option
+                        if _possibleField[4] in row.keys():
 
-                    # get signal Obj from flot (None if not exist)
-                    _signalTargetObj = _flotObj.getChannel(_signalTargetName)
+                            # if S_USER from CSV if not None
+                            # It's a simple alias case
+                            if row[_possibleField[4]]:
+                                print (_cnxCSVObj.modoccCons)
+                                print (_cnxCSVObj.Channel)
 
-                    # if targetted signal already exist in flow
-                    if _signalTargetObj:
+                                # check S_USER existence in flow
 
-                        # we test here if targetted signal is link to targetted producer port in flow
-                        # if the same, producer triplet issued from CSV and FLOW must be equal
-                        # equality case: nothing to change on producer coupling.
-                        # if producer are not the same => there is a patch to be done on other ports
-                        # the behavior will depend on forceChannelNameFlag option
-                        print('SignalTarget exist dans le flot: '+_signalTargetObj.name)
-                        if _cnxCSVObj.getProdTriplet() != _signalTargetObj.getProducerTriplet():
-                            print('Le port prod lie a SignalTarget n est pas celui desire dans le CSV')
-                            print('\tSignalTarget; '+_signalTargetObj.getProducerTriplet()+
-                                  '\tCSV:'+ _cnxCSVObj.getProdTriplet())
 
-                            # force channel rename option is activated
-                            # we patch signal name for producer and other consumer than current consumer
-                            # linked to targetted signal in flow (_signalTargetObj)
-                            if forceChannelNameFlag:
-
-                                #
-                                # if targetted signal is produced in current flow
-                                # we have to patch the alias on it on coupling file to avoid multi produced signals
-                                #
-                                #  patch of producer port of targetted signal in current flow
-                                #
-                                if _signalTargetObj.getProducerTriplet():
-
-                                    # get current alias on producer port
-                                    _aliasProdCurrentFlow = _flotObj.getAliasForPort(
-                                                                                _signalTargetObj.getProducerTriplet())
-
-                                    # create a corresponding MEXICO alias object
-                                    _aliasProdCurrentFlow = MexicoAlias(AliasObj=_aliasProdCurrentFlow)
-
-                                    # patch alias
-
-                                    _aliasProdCurrentFlow.channel += signalPatchString
-                                    _aliasProdCurrentFlow.comment = "[MEXICO_INTG] patch signal name"
-                                    _aliasProdCurrentFlow.date = displayDate
-
-                                    # add alias in dictionary of alias to be done
-                                    ListCouplingToBeDone(_aliasProdCurrentFlow,
-                                                         _flotObj.getPort(_signalTargetObj.getProducerTriplet()),
-                                                         _aliasTodoProd
-                                                         )
-                                #
-                                # treat here the currently linked to targetted channel consummers
-                                # we add a patch on coupling (to rename channel) except for current consumer.
-                                #
-                                # patch of all consummers linked to tagetted signal in current flow
-                                #
-                                for _portConsObjCurrentFlow in _signalTargetObj.getConsumerList():
-
-                                    # exclude current consumer i.e consumer from CSV
-                                    if _portConsObjCurrentFlow.getIdentifier() == _cnxCSVObj.getConsTriplet():
-                                        continue
-                                    else:
-                                        # get current alias on consumer port
-                                        _aliasConsCurrentFlow = _flotObj.getAliasForPort(
-                                                                            _portConsObjCurrentFlow.getIdentifier())
-
-                                        # create a corresponding MEXICO alias object
-                                        _aliasConsCurrentFlow = MexicoAlias(AliasObj=_aliasConsCurrentFlow)
-
-                                        # patch alias
-                                        _aliasConsCurrentFlow.channel += signalPatchString
-                                        _aliasConsCurrentFlow.comment = "[MEXICO_INTG] patch signal name"
-                                        _aliasConsCurrentFlow.date = displayDate
-
-                                        # add alias in dictionary of alias to be done
-                                        ListCouplingToBeDone(_aliasConsCurrentFlow,
-                                                             _flotObj.getPort(_portConsObjCurrentFlow.getIdentifier()),
-                                                             _aliasTodoCons
-                                                             )
-
-                            # forceChannelNameFlag is not set
-                            # channel cannot be modified without impact on other coupling
-                            # => signal target name is not modified to keep link with target producer port
-                            # flow
-                            else:
-
-                                # get the targetted producer port object in current flow
-                                # (the linked channel name will be used for target signal name)
-                                _prodTmpObj = _flotObj.getPort(_cnxCSVObj.getProdTriplet())
-
-                                # warn that targetted signal name could not be reached
-                                logger.warning("[CheckCSV][line " + str(line_num) +
-                                    "] -- force Channel Name option is not activated --\n\t\t "
-                                    "The following signal name: " + _signalTargetObj.name + " could not be set without "
-                                    "modification on other coupling because it already exist in flow.\n\t\t"
-                                    " Channel "+ _prodTmpObj.channel.name +
-                                    " will be used instead of " + _cnxCSVObj.Channel)
-
-                                # modify the targetted signal name object
-                                _signalTargetObj = _flotObj.getChannel(_prodTmpObj.channel.name)
-
-                        # targetted producer port is already link to targetted signal in current flow
-                        # no path to apply no modification on producer alias
+                        # S_USER is not specified
+                        # => it a DCNX
                         else:
-                            pass
-                    # targetted signal doesn't exist in flow
-                    # => no other signal to patch
-                    # targetted signal will be created by alias on producer port using computed _signalTargetObj
-                    else:
-                        pass
-
-                    #
-                    # modify alias on producer port
-                    #
+                                pass
 
 
-
-
-
-                    # if model is not referenced in dictionary => add it
-                    #if _cnxCSVObj.modoccProd not in _aliasTodoProd.keys():
-                    #    _aliasTodoProd[_cnxCSVObj.modoccProd]=[]
-
-                    # add alias object in tab
-                   # if _cnxCSVObj.getConsAlias() not in _aliasTodoProd[_cnxCSVObj.modoccProd]:
-                   #     _aliasTodoProd[_cnxCSVObj.modoccProd].append(_cnxCSVObj.getProdAlias())
 
                     pass
-
-
-                # a difference on SIGNAL or OP_CONS or TAB_CONS fields
-                # implies a modification on model consumer coupling file
-                if (_testTab[4] and _csvConfTab[4]) or (_testTab[8] and _csvConfTab[8]) or\
-                        (_testTab[9] and _csvConfTab[9]):
-
-                    # if model is not referenced in dictionary => add it
-                   # if _cnxCSVObj.modoccCons not in _aliasTodoCons.keys():
-                  #      _aliasTodoCons[_cnxCSVObj.modoccCons]=[]
-
-                    # add alias object in tab
-                   # if _cnxCSVObj.getConsAlias():
-                  #      _aliasTodoCons[_cnxCSVObj.modoccCons].append(_cnxCSVObj.getConsAlias())
-#
-                    pass
-
-
-
-                # a difference on INIT field
-                # implies a modification on initflot file
-                if _testTab[5]:
-                    pass
-
 
 
             #(_flotObj.compCnx(_cnxCSVObj))
@@ -431,6 +306,18 @@ def ListCouplingToBeDone(aliasObj, portObj, dictCpl):
             logger.warning("[CheckCSV][line " + str(line_num) + "] -- Different connection specified for port: "
                            + portObj.getIdentifier + "--\n\t\t ")
 
+
+# function to return the corresponding Signal name following EYC rule: portName_modelname_modeloccurence
+# it constructed from a portObj
+def computeEYCname(portObj):
+
+    _signalNameEYC = portObj.name
+    _signalNameEYC += "_"
+    _signalNameEYC += portObj.modocc
+    _signalNameEYC = _signalNameEYC.replace("/", "_")
+
+    return _signalNameEYC
+
 def computeTargetSignal(_flotObj, _cnxCSVObj, channelIsSpecifiedOnCsv):
 
     global logger,line_num
@@ -446,10 +333,7 @@ def computeTargetSignal(_flotObj, _cnxCSVObj, channelIsSpecifiedOnCsv):
             _TargetSignal = _TargetProdTripletObjInFlow.channel
 
     else:
-        _signalNameEYC = _TargetProdTripletObjInFlow.name
-        _signalNameEYC += "_"
-        _signalNameEYC += _TargetProdTripletObjInFlow.modocc
-        _signalNameEYC = _signalNameEYC.replace("/", "_")
+        _signalNameEYC = computeEYCname(_TargetProdTripletObjInFlow)
 
         if _cnxCSVObj.Channel != _signalNameEYC:
             logger.warning("[CheckCSV][line " + str(line_num) + "] -- EYC channel name option activated --\n\t\t "
@@ -464,7 +348,7 @@ def getCsvParameterTab(headerTab):
     global _possibleField
 
     # index tab of mandatory field/header in CSV file
-    _mandatoryFieldIndex = [0, 1, 6, 7]
+    _mandatoryFieldIndex = [6, 7]
 
     # output tab initialization
     _configurationTab = [False]*10
@@ -502,8 +386,11 @@ def parseCsvLine(DicoLine):
     #
     tab = [None] * 10
 
-    tab[0] = DicoLine[_possibleField[0]]
-    tab[1] = DicoLine[_possibleField[1]]
+    if _possibleField[0] in DicoLine.keys():
+        tab[0] = DicoLine[_possibleField[0]]
+    if _possibleField[1] in DicoLine.keys():
+        tab[1] = DicoLine[_possibleField[1]]
+
     tab[6] = DicoLine[_possibleField[6]]
     tab[7] = DicoLine[_possibleField[7]]
 
