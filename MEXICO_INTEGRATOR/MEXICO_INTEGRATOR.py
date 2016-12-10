@@ -6,6 +6,7 @@ from datetime import datetime
 
 from optparse import OptionParser
 from MEXICO.CFG.mexico_cfg import mexicoConfig
+from FLOT.channel import channel
 from FLOT.connexion import PotentialConnexionFromTab
 from FLOT.flot import flot
 from FLOT.alias import Alias,MexicoAlias
@@ -23,6 +24,9 @@ channelEYCNameFlag = True
 # force channel renaming flag
 forceChannelNameFlag = True
 
+# force initialization flag (to force intiialization in conflict cases)
+forceInitFlag = False
+
 # string to suffix patched signal names
 signalPatchString = "_PATCH_MEXINT"
 
@@ -33,6 +37,15 @@ _possibleField = ['MODOCC_PROD', 'PORT_PROD', 'OP_PROD', 'TAB_PROD',
 
 # CSV current line for logger
 line_num = 0
+
+#
+# dictionary of alias modification to do per model
+#
+_aliasConsDict = {}
+_aliasProdDict = {}
+_initializationDict = {}
+
+
 
 def main():
 
@@ -120,12 +133,6 @@ def parseCsvFile(csvFile, flowFile):
 
     file = open(csvFile, "r")
 
-    #
-    # dictionary of alias modification to do per model
-    #
-    _aliasTodoCons = {}
-    _aliasTodoProd = {}
-
     try:
 
         #
@@ -206,6 +213,13 @@ def parseCsvFile(csvFile, flowFile):
             # differences analysis and translation in term of aliases on modele/port
             if _testTab != [False] * 10:
 
+                # get compared consumer port from flow
+                _consPortObj = _flotObj.getPort(_cnxCSVObj.getConsTriplet())
+
+                # S_FLOW = channel link to consummer port in flow
+                S_FLOW = _consPortObj.channel
+                S_FLOWObj = _flotObj.getChannel(S_FLOW)
+
                 # a difference on MOD_CONS or PORT_CONS is not possible
                 # due to the cnxObj comparison nature (it construct from the same
                 # MOD_CONS and PROD_CONS)
@@ -238,63 +252,223 @@ def parseCsvFile(csvFile, flowFile):
 
                             # if S_USER from CSV if not None
                             # It's a simple alias case
-                            if row[_possibleField[4]]:
-                                print (_cnxCSVObj.modoccCons)
-                                print (_cnxCSVObj.Channel)
+                            if _cnxCSVObj.Channel:
+                                print(_cnxCSVObj.modoccCons)
+                                print(_cnxCSVObj.Channel)
 
                                 # check S_USER existence in flow
+                                S_USER = _cnxCSVObj.Channel
 
+                                # create an alias on S_USER for consumer port
+                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER)
+
+                                # add it in Alias dictonary
+                                AddAlias(_TargetConsummerAlias, _consPortObj)
+
+                                # Apply init algorithm
+                                AlgoInits(_flotObj,_cnxCSVObj)
 
                         # S_USER is not specified
                         # => it a DCNX
                         else:
-                                pass
+
+                            if S_FLOW != _cnxCSVObj.portCons:
+
+                                # create an alias on S_USER for consumer port
+                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=_cnxCSVObj.portCons)
+
+                                # add it in Alias dictonary
+                                AddAlias(_TargetConsummerAlias, _consPortObj)
+
+                            else:
+
+                                # create an alias on S_USER for consumer port
+                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_FLOW+"_DCNX")
+
+                                # add it in Alias dictonary
+                                AddAlias(_TargetConsummerAlias, _consPortObj)
+
+                            # Apply init algorithm
+                            AlgoInits(_flotObj, _cnxCSVObj, True)
 
 
+                    # a model/port producer is speficied in CSV
+                    else:
+                        pass
 
-                    pass
 
-
-            #(_flotObj.compCnx(_cnxCSVObj))
-            #print('[CSV parser] *************************************************')
 
     finally:
         file.close()
 
     print ("**** ALIAS PROD ****")
-    for modele in _aliasTodoProd.keys():
+    for modele in _aliasProdDict.keys():
         print('modele: ' + modele)
-        if _aliasTodoProd[modele]:
-            for port in _aliasTodoProd[modele].keys():
+        if _aliasProdDict[modele]:
+            for port in _aliasProdDict[modele].keys():
                 print('port: ' + port)
-                print(_aliasTodoProd[modele][port])
+                print(_aliasProdDict[modele][port])
             pass
 
     print("**** ALIAS CONSO ****")
-    for modele in _aliasTodoCons.keys():
+    for modele in _aliasConsDict.keys():
         print('modele: ' + modele)
-        if _aliasTodoCons[modele]:
-            for port in _aliasTodoCons[modele].keys():
+        if _aliasConsDict[modele]:
+            for port in _aliasConsDict[modele].keys():
                 print('port: ' + port)
-                print(_aliasTodoCons[modele][port])
+                print(_aliasConsDict[modele][port])
             pass
+
+
+
+def AlgoInits(flotObj,cnxCSVObj,specSignalName=False):
+
+    # get compared consumer port from flow
+    _consPortObj = flotObj.getPort(cnxCSVObj.getConsTriplet())
+
+    # S_FLOW = channel link to consummer port in flow
+    S_FLOW = _consPortObj.channel
+    S_FLOWObj = flotObj.getChannel(S_FLOW)
+
+    if specSignalName:
+        S_USER = S_FLOW + "_DCNX"
+    else:
+        S_USER = cnxCSVObj.Channel
+
+
+
+    # IF S_USER not exist in flow
+    if flotObj.getChannel(S_USER) is None:
+
+        # create a channel object for S_USER
+        S_USERObj = channel(S_USER)
+
+        # link it consumer port
+        S_USERObj.addPort(_consPortObj)
+
+
+        # IF USER_INIT is not None, apply it on the new signal S_USER
+        if cnxCSVObj.init:
+
+            # add the initialization value
+            S_USERObj.init = cnxCSVObj.init
+
+            # add to inits dictionary
+            AddInit(S_USERObj, _consPortObj)
+
+        # USER_INIT is not specified
+        else:
+
+            # previous channel on flow has an initialization set ?
+            if S_FLOWObj.init:
+
+                # add the initialization value
+                S_USERObj.init = S_FLOWObj.init
+
+                # add to inits dictionary
+                AddInit(S_USERObj, _consPortObj)
+
+    # S_USER exist in flow
+    else:
+
+        # get S_USER channel object
+        S_USERObj = flotObj.getChannel(S_USER)
+
+        # IF USER_INIT is not None, apply it on the new signal S_USER
+        if cnxCSVObj.init:
+
+            # S_USER channel has no initialization on flow
+            if S_USERObj.init is None:
+
+                # add the initialization value
+                S_USERObj.init = cnxCSVObj.init
+
+                # add to inits dictionary
+                AddInit(S_USERObj, _consPortObj)
+
+                # print a warning message if there is several consumer ports
+                if len(S_USERObj.getConsumerList())>1:
+
+                    logger.warning(
+                    "[CheckCSV][line " + str(line_num) + "] -- Channel "+S_USER+"is consummed by other model/ports than "+
+                    cnxCSVObj.getConsTriplet()+" modify initialization to :"+S_USERObj.init+" could have an impact on them")
+
+            # S_USER channel has an initialization on flow
+            else:
+
+                # if init from flow is not the init required in CSV
+                if S_USERObj.init != cnxCSVObj.init:
+
+                    # force init option is enabled
+                    if forceInitFlag:
+
+                        # add the initialization value
+                        S_USERObj.init = cnxCSVObj.init
+
+                        # add to inits dictionary
+                        AddInit(S_USERObj, _consPortObj)
+
+                        # print a warning message if there is several consumer ports
+                        if len(S_USERObj.getConsumerList()) > 1:
+                            logger.warning(
+                                "[CheckCSV][line " + str(
+                                line_num) + "] -- Channel " + S_USER + "is consummed by other model/ports than " +
+                                cnxCSVObj.getConsTriplet() + " modify initialization to :" + S_USERObj.init + " could have an impact on them")
+
+                    # no option to force initialization
+                    else:
+                        logger.error(
+                            "[CheckCSV][line " + str(
+                            line_num) + "] -- Channel " + S_USER + " init from CSV "+cnxCSVObj.init +" could not be set !\n"
+                            "This channel already have an init: "+S_USERObj.init+"\n")
+
+# fill dictionary of init to be done
+# sort init by model
+
+def AddInit(channelObj, portObj):
+
+    # target dictionary
+    _dict = _initializationDict
+
+    # test if model assoicate to port is alreday in init dict
+    # else create an empty dict for model key
+    if channelObj.name not in _dict.keys():
+        _dict[channelObj.name] = channelObj
+    else:
+
+        if channelObj.init != _dict[channelObj.name].init:
+
+            logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several initializations specified for port: "
+                           + portObj.getIdentifier + "--\n\t\tCannot set init: "+str(channelObj.init)+" because it as "
+                            "already set to: "+_dict[channelObj.name].init)
+        else:
+            logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several initializations of same value specified "
+                           "for port: "+ portObj.getIdentifier + "--\n\t\t")
 
 # fill dictionary of coupling to be done from alias object
 # to sort coupling by model
 
-def ListCouplingToBeDone(aliasObj, portObj, dictCpl):
+def AddAlias(aliasObj, portObj):
 
-    global logger,line_num
+    global logger,line_num,_aliasCons,_aliasProd
+
+    #
+    # set target dictionary
+    #
+    if portObj.type == "consumer":
+        _dict = _aliasCons
+    else:
+        _dict = _aliasProd
 
     # test if model assoicate to port is alreday in coupling dict
     # else create an empty dict for model key
-    if portObj.modocc not in dictCpl.keys():
-        dictCpl[portObj.modocc] = dict()
+    if portObj.modocc not in _dict.keys():
+        _dict[portObj.modocc] = dict()
 
     # test port key in dictionary for model
     # if no aliases is specifed on
-    if portObj.name not in dictCpl[portObj.modocc].keys():
-        dictCpl[portObj.modocc][portObj.name] = aliasObj
+    if portObj.name not in _dict[portObj.modocc].keys():
+        _dict[portObj.modocc][portObj.name] = aliasObj
 
     # an alias exist for model/port in "alias to be done" dictionary
     # check if it's the same coupling or not
@@ -302,8 +476,8 @@ def ListCouplingToBeDone(aliasObj, portObj, dictCpl):
     # else it 's a warning on CSV content
     else:
         # compare alias object
-        if aliasObj != dictCpl[portObj.modocc][portObj.name]:
-            logger.warning("[CheckCSV][line " + str(line_num) + "] -- Different connection specified for port: "
+        if aliasObj != _dict[portObj.modocc][portObj.name]:
+            logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several connections specified for port: "
                            + portObj.getIdentifier + "--\n\t\t ")
 
 
