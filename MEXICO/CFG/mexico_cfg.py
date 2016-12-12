@@ -117,6 +117,7 @@ class mexicoConfig:
                                                           _couplingElement.attrib['editable'],
                                                           _MICDObj)
                         _MICDObj.addCoupling(_couplingObj)
+                        _actorObj.addCoupling(_couplingObj)
             #rint(element.attrib)
 
     def addSSDB(self,ssdbObj):
@@ -156,7 +157,7 @@ class Actor:
     def __init__(self, actorname):
         self._name = actorname
         self._micds = []
-        self._couplingFiles = {}
+        self._couplingFiles = []
         self._mexicoRootPath = "."
 
     @property
@@ -176,6 +177,20 @@ class Actor:
 
     def getMICDList(self):
         return self._micds
+
+    def addCoupling(self,couplingObj):
+        if couplingObj not in self._couplingFiles:
+            self._couplingFiles.append(couplingObj)
+
+    def getCplList(self):
+        return self._couplingFiles
+
+    def getFirstCplFile(self):
+        if self._couplingFiles[0]:
+            return self._couplingFiles[0].fullPathName
+        else:
+            None
+
 
 class mexicoMICDFile:
 

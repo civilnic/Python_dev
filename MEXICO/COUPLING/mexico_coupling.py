@@ -23,7 +23,7 @@ class mexico_coupling:
         else:
             self._type = "Unknown"
 
-        self._aliasObjList = []
+        self._aliasObjDict = {}
 
         self.parse()
 
@@ -36,11 +36,17 @@ class mexico_coupling:
         self._pathname = pathname
 
     def addaliasObj(self, aliasObj):
-        if aliasObj not in self._aliasObjList:
-            self._aliasObjList.append(aliasObj)
+        if aliasObj.portname not in self._aliasObjDict.keys():
+            self._aliasObjDict[aliasObj.portname] = aliasObj
 
-    def getAliasObj(self):
-        return self._aliasObjList
+    def getAliasObj(self, portName):
+        if portName in self._aliasObjDict.keys():
+            return self._aliasObjDict[portName]
+        else:
+            return None
+
+    def getAliasObjList(self):
+        return self._aliasObjDict.values()
 
     def parse(self):
 
@@ -91,7 +97,7 @@ class mexico_coupling:
 
             writer.writeheader()
 
-            for _aliasObj in self.getAliasObj():
+            for _aliasObj in self.getAliasObjList():
                 writer.writerow(_aliasObj.getAliasLineDict())
 
         _csvfile.close()
@@ -117,7 +123,7 @@ class Alias:
         # signal_name{indice]#operator
 
         _testOnSignal = re.match(r'(?P<signal_name>\w+)(?:\[(?P<indice>\d+)\])*(?:#(?P<operator>\w+))*', channelname)
-        print("_testOnSignal: "+channelname)
+
         if _testOnSignal:
             if _testOnSignal.group("signal_name"):
                 self._signal = _testOnSignal.group("signal_name")
