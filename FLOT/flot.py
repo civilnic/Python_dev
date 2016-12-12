@@ -326,6 +326,9 @@ class flot:
         else:
             return False
 
+    def getModelList(self):
+        return self.models_ref.keys()
+
     def getPort(self, portIdentifier):
         if portIdentifier in self.consumers_ref.keys():
             return self.consumers_ref[portIdentifier]
@@ -378,8 +381,8 @@ class flot:
     #
     # evaluate _cnxObj in flow
     #  _ get the corresponding cnx Obj in current flow
-    #    this connexion is created first from consummer port
-    #    if present else from producer port
+    #    connexion is created from consumer port first
+    #    if present else from producer port if not
     #
     def compCnx(self, _cnxObj):
 
