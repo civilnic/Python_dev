@@ -307,6 +307,31 @@ This variable is not refreshed in RUN mode.'
             return None
 
 
+    def getPortSheet(self, portName):
+
+        _sheet = None
+
+        for _sheet in ["FUN_IN", "FUN_OUT"]:
+
+            # define port type following sheet name
+            _type = getPortType(_sheet)
+
+            # get port row
+            _portRow = self.getPortRow(portName, _type)
+
+            if _portRow is None:
+                continue
+            else:
+
+                break
+
+        # if port is not found return None
+        if _portRow is None:
+            return None
+
+        return _sheet
+
+
 
 
     def getPortObj(self, portName):

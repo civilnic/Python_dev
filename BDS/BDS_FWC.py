@@ -429,9 +429,13 @@ class BDS_FWC(BDS):
         try:
             int(LabelObj.sdi, 2)
         except ValueError:
-            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number)  + "_" +  str(LabelObj.sdi) + "_1"
+            _sdi = str(LabelObj.sdi)
+            if _sdi == "DD":
+                _sdi = "D"
+
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + "_" + _sdi + "_1"
         else:
-            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number)  + "_" +  str(int(LabelObj.sdi, 2)) + "_1"
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + "_" + str(int(LabelObj.sdi, 2)) + "_1"
 
     def SetParameterPreFormattedName(self, ParamObj):
 

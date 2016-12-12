@@ -2,6 +2,9 @@ import csv
 import re
 import xlrd
 import os
+import collections
+
+from FLOT.alias import MexicoAlias
 
 class mexico_coupling:
 
@@ -18,12 +21,12 @@ class mexico_coupling:
 
         if (_fileExtension == ".xls") or (_fileExtension == ".xlsx"):
             self._type = "XLS"
-        elif (_fileExtension == ".csv"):
+        elif _fileExtension == ".csv":
             self._type = "CSV"
         else:
             self._type = "Unknown"
 
-        self._aliasObjDict = {}
+        self._aliasObjDict = collections.OrderedDict()
 
         self.parse()
 
@@ -35,9 +38,23 @@ class mexico_coupling:
     def pathname(self, pathname):
         self._pathname = pathname
 
-    def addaliasObj(self, aliasObj):
+    def addAliasObj(self, aliasObj):
         if aliasObj.portname not in self._aliasObjDict.keys():
             self._aliasObjDict[aliasObj.portname] = aliasObj
+
+
+    def chgAddModify(self, MexicoAliasObj, sheetName):
+
+        # test a coupling is already done on port
+        # if not
+        if MexicoAliasObj.port in self._aliasObjDict.keys():
+            del self._aliasObjDict[MexicoAliasObj.port]
+
+        aliasObj = Alias(MexicoAliasObj.port, MexicoAliasObj.getChannelIndexOperatorString(), sheetName,
+                         MexicoAliasObj.comment, MexicoAliasObj.date)
+        self.addAliasObj(aliasObj)
+
+
 
     def getAliasObj(self, portName):
         if portName in self._aliasObjDict.keys():
@@ -83,7 +100,7 @@ class mexico_coupling:
                          row[mexico_coupling.fieldnames[3]],
                          row[mexico_coupling.fieldnames[2]]
                          )
-        self.addaliasObj(aliasObj)
+        self.addAliasObj(aliasObj)
 
         return True
 

@@ -24,7 +24,7 @@ logger = logging.getLogger()
 channelEYCNameFlag = True
 
 # force channel renaming flag
-forceChannelNameFlag = True
+forceChannelNameFlag = False
 
 # force initialization flag (to force intiialization in conflict cases)
 forceInitFlag = False
@@ -39,6 +39,8 @@ _possibleField = ['MODOCC_PROD', 'PORT_PROD', 'OP_PROD', 'TAB_PROD',
 
 # CSV current line for logger
 line_num = 0
+
+globalComment = "[2016-1072] SHT update FDEF models"
 
 #
 # dictionary of alias modification to do per model
@@ -136,7 +138,7 @@ def main():
 
 def parseCsvFile(csvFile, flowFile):
 
-    global _mexicoCfgObj
+    global _mexicoCfgObj,globalComment
 
     file = open(csvFile, "r")
 
@@ -222,7 +224,7 @@ def parseCsvFile(csvFile, flowFile):
 
                 # get compared consumer port from flow
                 _consPortObj = _flotObj.getPort(_cnxCSVObj.getConsTriplet())
-
+                print(_cnxCSVObj)
                 # S_FLOW = channel link to consummer port in flow
                 S_FLOW = _consPortObj.channel
                 S_FLOWObj = _flotObj.getChannel(S_FLOW)
@@ -267,7 +269,8 @@ def parseCsvFile(csvFile, flowFile):
                                 S_USER = _cnxCSVObj.Channel
 
                                 # create an alias on S_USER for consumer port
-                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER)
+                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                    comment=globalComment, date=displayDate)
 
                                 # add it in Alias dictonary
                                 AddAlias(_TargetConsummerAlias, _consPortObj)
@@ -282,7 +285,9 @@ def parseCsvFile(csvFile, flowFile):
                             if S_FLOW != _cnxCSVObj.portCons:
 
                                 # create an alias on S_USER for consumer port
-                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=_cnxCSVObj.portCons)
+                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons,
+                                                                    channel=_cnxCSVObj.portCons,
+                                                                    comment=globalComment, date=displayDate)
 
                                 # add it in Alias dictonary
                                 AddAlias(_TargetConsummerAlias, _consPortObj)
@@ -290,7 +295,8 @@ def parseCsvFile(csvFile, flowFile):
                             else:
 
                                 # create an alias on S_USER for consumer port
-                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_FLOW+"_DCNX")
+                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_FLOW+"_DCNX",
+                                                                    comment=globalComment, date=displayDate)
 
                                 # add it in Alias dictonary
                                 AddAlias(_TargetConsummerAlias, _consPortObj)
@@ -329,7 +335,8 @@ def parseCsvFile(csvFile, flowFile):
                             if _channelObj.getProducer().getIdentifier() == _cnxCSVObj.getProdTriplet():
 
                                 # create an alias on S_USER for consumer port
-                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER)
+                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                    comment=globalComment, date=displayDate)
 
                                 # add it in Alias dictionary
                                 AddAlias(_TargetConsummerAlias, _consPortObj)
@@ -354,7 +361,8 @@ def parseCsvFile(csvFile, flowFile):
 
                                             # create an alias with EYC rule name
                                             _TargetAlias = MexicoAlias(port=_prodPortToPatchObj.name,
-                                                                       channel=computeEYCname(_prodPortToPatchObj))
+                                                                       channel=computeEYCname(_prodPortToPatchObj),
+                                                                       comment=globalComment, date=displayDate)
 
                                             # add it in Alias dictionary
                                             AddAlias(_TargetAlias, _prodPortToPatchObj)
@@ -362,7 +370,8 @@ def parseCsvFile(csvFile, flowFile):
                                         else:
                                             # create an alias on producer port name (equiv. to no alias)
                                             _TargetAlias = MexicoAlias(port=_prodPortToPatchObj.name,
-                                                                       channel=_prodPortToPatchObj.name)
+                                                                       channel=_prodPortToPatchObj.name,
+                                                                       comment=globalComment, date=displayDate)
 
                                             # add it in Alias dictionary
                                             AddAlias(_TargetAlias, _prodPortToPatchObj)
@@ -397,7 +406,8 @@ def parseCsvFile(csvFile, flowFile):
                                     RenameChannel(_flotObj, S_USER, _cnxCSVObj, True, False)
 
                                     # create an alias on S_USER for consumer port
-                                    _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER)
+                                    _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                        comment=globalComment, date=displayDate)
 
                                     # add it in Alias dictionary
                                     AddAlias(_TargetConsummerAlias, _consPortObj)
@@ -406,10 +416,12 @@ def parseCsvFile(csvFile, flowFile):
                                     AlgoInits(_flotObj, _cnxCSVObj)
 
                                 else:
+
                                     S_USER = _prodPortObj.channel
 
                                     # create an alias on S_USER for consumer port
-                                    _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER)
+                                    _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                        comment=globalComment, date=displayDate)
 
                                     # add it in Alias dictionary
                                     AddAlias(_TargetConsummerAlias, _consPortObj)
@@ -424,13 +436,48 @@ def parseCsvFile(csvFile, flowFile):
                             RenameChannel(_flotObj, S_USER, _cnxCSVObj, True, False)
 
                             # create an alias on S_USER for consumer port
-                            _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER)
+                            _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                comment=globalComment, date=displayDate)
 
                             # add it in Alias dictionary
                             AddAlias(_TargetConsummerAlias, _consPortObj)
 
                             # apply algo inits
                             AlgoInits(_flotObj, _cnxCSVObj)
+
+                if (_testTab[8] and _csvConfTab[8]):
+                    if _cnxCSVObj.modoccCons in _aliasConsDict.keys():
+                        if _cnxCSVObj.portCons in _aliasConsDict[_cnxCSVObj.modoccCons]:
+                            _aliasObject = _aliasConsDict[_cnxCSVObj.modoccCons][_cnxCSVObj.portCons]
+                            _aliasObject.operator = _cnxCSVObj.operatorCons
+                        else:
+                            # create an alias on S_USER for consumer port
+                            _aliasObject = MexicoAlias( port=_cnxCSVObj.portCons, channel=_cnxCSVObj.Channel,
+                                                        comment=globalComment, date=displayDate)
+
+                            _aliasObject.operator = _cnxCSVObj.operatorCons
+
+                            # add it in Alias dictionary
+                            AddAlias(_aliasObject, _consPortObj)
+                    else:
+                        # create an alias on S_USER for consumer port
+                        _aliasObject = MexicoAlias(port=_cnxCSVObj.portCons, channel=_cnxCSVObj.Channel,
+                                                   comment=globalComment, date=displayDate)
+
+                        _aliasObject.operator = _cnxCSVObj.operatorCons
+
+                        # add it in Alias dictionary
+                        AddAlias(_aliasObject, _consPortObj)
+
+
+
+
+
+                if (_testTab[9] and _csvConfTab[9]):
+                    pass
+
+
+
 
 
     finally:
@@ -439,15 +486,25 @@ def parseCsvFile(csvFile, flowFile):
     print ("**** ALIAS PROD ****")
     for modele in _aliasProdDict.keys():
 
+        actorObj = _mexicoCfgObj.getActor(modele)
+
+        _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
+
         print('modele: ' + modele)
+
         if _aliasProdDict[modele]:
-            for port in _aliasProdDict[modele].keys():
+
+            for port in sorted(_aliasProdDict[modele].keys()):
                 print('port: ' + port)
                 print(_aliasProdDict[modele][port])
-            pass
+
+                _coulingFileObj.chgAddModify(_aliasProdDict[modele][port], "FUN_OUT")
+
+        _coulingFileObj.write()
 
     print("**** ALIAS CONSO ****")
     for modele in _aliasConsDict.keys():
+
         actorObj = _mexicoCfgObj.getActor(modele)
 
         _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
@@ -456,26 +513,19 @@ def parseCsvFile(csvFile, flowFile):
 
         if _aliasConsDict[modele]:
 
-            for port in _aliasConsDict[modele].keys():
-
+            for port in sorted(_aliasConsDict[modele].keys()):
 
                 print('port: ' + port)
                 print(_aliasConsDict[modele][port])
 
-                aliasObj = _coulingFileObj.getAliasObj(port)
-                print(aliasObj.getAliasLineDict())
-
-
-                aliasObj.signal = _aliasConsDict[modele][port].channel
-                aliasObj.comment = "test MEXICO INTEGRATOR"
-                aliasObj.date = displayDate
+                _coulingFileObj.chgAddModify(_aliasConsDict[modele][port], "FUN_IN")
 
 
         _coulingFileObj.write()
 
 
     print("**** INIT ****")
-    for channel in _initializationDict.keys():
+    for channel in sorted(_initializationDict.keys()):
         print('channel: ' + channel)
         print('value: ' + str(_initializationDict[channel].init))
 
@@ -651,7 +701,7 @@ def AddInit(channelObj, portObj):
                             "already set to: "+_dict[channelObj.name].init)
         else:
             logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several initializations of same value specified "
-                           "for port: "+ portObj.getIdentifier + "--\n\t\t")
+                           "for port: "+ portObj.getIdentifier()+ "--\n\t\t")
 
 # fill dictionary of coupling to be done from alias object
 # to sort coupling by model

@@ -100,7 +100,7 @@ class channel:
     #  object _ports_prod tab.
     #
     def getProducer(self):
-        if self._ports_prod[0]:
+        if len(self._ports_prod)>0:
             return self._ports_prod[0]
         else:
             return None

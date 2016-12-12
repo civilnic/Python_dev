@@ -56,10 +56,7 @@ class Alias:
     def getChannelName(self):
         return self.channel
 
-    def getPortName(self):
-        return self.port
-
-    def getMexicoCpl(self):
+    def getChannelIndexOperatorString(self):
 
         _channelField = self.channel
 
@@ -67,7 +64,16 @@ class Alias:
             _channelField += "[" + str(self.index) + "]"
 
         if self.operator:
-            _channelField += str(self.operator)
+            _channelField += "#" + str(self.operator)
+
+        return _channelField
+
+    def getPortName(self):
+        return self.port
+
+    def getMexicoCpl(self):
+
+        _channelField = self.getChannelIndexOperatorString()
 
         return [self.port, _channelField]
 
@@ -107,7 +113,7 @@ class MexicoAlias(Alias):
                  sheet=None, date=None, comment=None):
 
         if AliasObj is not None:
-            super().__init__( AliasObj.port, AliasObj.channel, AliasObj.index, AliasObj.operator)
+            super().__init__(AliasObj.port, AliasObj.channel, AliasObj.index, AliasObj.operator)
         else:
             super().__init__(port, channel, index, operator)
 

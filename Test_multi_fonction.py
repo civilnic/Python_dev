@@ -29,6 +29,7 @@ def main():
 
 
     # OK for FWC
+    #labelObjList = bdsFWC.get_LabelObjList(nature="IN", system="FWC", source=r"EEC..|EIU.|ADC.|LGCIU.|FQI.A_.B|ILS.|RA.|GPS.|GPS..|SDCU.|SYNC_\w_\w{3}")
     labelObjList = bdsFWC.get_LabelObjList(nature="IN", system="FWC", source=r"EEC..|EIU.|ADC.|LGCIU.|FQI.A_.B|ILS.|RA.|GPS.|GPS..|SDCU.|SYNC_\w_\w{3}")
 
 
