@@ -1,4 +1,4 @@
-<configurationTable generationDate="5/12/2016" generationTool="outil perso" type="A429">
+<configurationTable generationDate="13/12/2016" generationTool="outil perso" type="A429">
   <configurationSources>
     <sourceFile pathname="" type=""/>
   </configurationSources>
@@ -283,10 +283,10 @@
         <signal comment="Intruder altitude selected option below on label 013_10 in ATSAW configuration" lsb="13" msb="13" name="TCAS_L013_B13_SELBELOWLIM" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="015" name="TCASa4_wXX015" sdi="XX" type="HYB">
+    <A429Label labelNumber="015" name="TCASa4_wx015" sdi="XX" type="HYB">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label TCASa4_wXX015" name="TCASa4_wXX015_SSM" type="status">
-          <signal name="TCASa4_wXX015_SSM"/>
+        <parameter comment="SSM of label TCASa4_wx015" name="TCASa4_wx015_SSM" type="status">
+          <signal name="TCASa4_wx015_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Inferior intruder limitation" name="INFINTLIM" type="float">
@@ -300,10 +300,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="016" name="TCASa4_wXX016" sdi="XX" type="HYB">
+    <A429Label labelNumber="016" name="TCASa4_wx016" sdi="XX" type="HYB">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label TCASa4_wXX016" name="TCASa4_wXX016_SSM" type="status">
-          <signal name="TCASa4_wXX016_SSM"/>
+        <parameter comment="SSM of label TCASa4_wx016" name="TCASa4_wx016_SSM" type="status">
+          <signal name="TCASa4_wx016_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Manual sensitivity level control (automatic)" name="MANUXSLC1" type="boolean">
@@ -607,10 +607,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="033" name="ILS1a4_wXX033" sdi="XX" type="HYB">
+    <A429Label labelNumber="033" name="ILS1a4_wx033" sdi="XX" type="HYB">
       <ssm type="status_ssm_bcd">
-        <parameter comment="SSM of label ILS1a4_wXX033" name="ILS1a4_wXX033_SSM" type="status">
-          <signal name="ILS1a4_wXX033_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx033" name="ILS1a4_wx033_SSM" type="status">
+          <signal name="ILS1a4_wx033_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS frequency" name="ILSFRQ" type="int">
@@ -649,10 +649,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="033" name="ILS2a4_wXX033" sdi="XX" type="HYB">
+    <A429Label labelNumber="033" name="ILS2a4_wx033" sdi="XX" type="HYB">
       <ssm type="status_ssm_bcd">
-        <parameter comment="SSM of label ILS2a4_wXX033" name="ILS2a4_wXX033_SSM" type="status">
-          <signal name="ILS2a4_wXX033_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx033" name="ILS2a4_wx033_SSM" type="status">
+          <signal name="ILS2a4_wx033_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS frequency" name="ILSFRQ" type="int">
@@ -1929,10 +1929,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="076" name="IRS1a4_wDD076" sdi="DD" type="BNR">
+    <A429Label labelNumber="076" name="IRS1a4_wx076" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS1a4_wDD076" name="IRS1a4_wDD076_SSM" type="status">
-          <signal name="IRS1a4_wDD076_SSM"/>
+        <parameter comment="SSM of label IRS1a4_wx076" name="IRS1a4_wx076_SSM" type="status">
+          <signal name="IRS1a4_wx076_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Altitude GPS" name="ALTGPS" type="float">
@@ -1946,10 +1946,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="076" name="IRS2a4_wDD076" sdi="DD" type="BNR">
+    <A429Label labelNumber="076" name="IRS2a4_wx076" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS2a4_wDD076" name="IRS2a4_wDD076_SSM" type="status">
-          <signal name="IRS2a4_wDD076_SSM"/>
+        <parameter comment="SSM of label IRS2a4_wx076" name="IRS2a4_wx076_SSM" type="status">
+          <signal name="IRS2a4_wx076_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Altitude GPS" name="ALTGPS" type="float">
@@ -1963,10 +1963,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="076" name="IRS3a4_wDD076" sdi="DD" type="BNR">
+    <A429Label labelNumber="076" name="IRS3a4_wx076" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS3a4_wDD076" name="IRS3a4_wDD076_SSM" type="status">
-          <signal name="IRS3a4_wDD076_SSM"/>
+        <parameter comment="SSM of label IRS3a4_wx076" name="IRS3a4_wx076_SSM" type="status">
+          <signal name="IRS3a4_wx076_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Altitude GPS" name="ALTGPS" type="float">
@@ -2246,10 +2246,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="105" name="ILS1a4_wXX105" sdi="XX" type="BNR">
+    <A429Label labelNumber="105" name="ILS1a4_wx105" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wXX105" name="ILS1a4_wXX105_SSM" type="status">
-          <signal name="ILS1a4_wXX105_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx105" name="ILS1a4_wx105_SSM" type="status">
+          <signal name="ILS1a4_wx105_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS course" name="ILSCRS" type="float">
@@ -2268,10 +2268,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="105" name="ILS2a4_wXX105" sdi="XX" type="BNR">
+    <A429Label labelNumber="105" name="ILS2a4_wx105" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wXX105" name="ILS2a4_wXX105_SSM" type="status">
-          <signal name="ILS2a4_wXX105_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx105" name="ILS2a4_wx105_SSM" type="status">
+          <signal name="ILS2a4_wx105_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS course" name="ILSCRS" type="float">
@@ -3507,10 +3507,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="173" name="ILS1a4_wXX173" sdi="XX" type="BNR">
+    <A429Label labelNumber="173" name="ILS1a4_wx173" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wXX173" name="ILS1a4_wXX173_SSM" type="status">
-          <signal name="ILS1a4_wXX173_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx173" name="ILS1a4_wx173_SSM" type="status">
+          <signal name="ILS1a4_wx173_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Localiser deviation" name="LOCDEVA1" type="float">
@@ -3534,10 +3534,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="173" name="ILS2a4_wXX173" sdi="XX" type="BNR">
+    <A429Label labelNumber="173" name="ILS2a4_wx173" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wXX173" name="ILS2a4_wXX173_SSM" type="status">
-          <signal name="ILS2a4_wXX173_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx173" name="ILS2a4_wx173_SSM" type="status">
+          <signal name="ILS2a4_wx173_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Localiser deviation" name="LOCDEVA2" type="float">
@@ -3561,10 +3561,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="174" name="ILS1a4_wXX174" sdi="XX" type="BNR">
+    <A429Label labelNumber="174" name="ILS1a4_wx174" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wXX174" name="ILS1a4_wXX174_SSM" type="status">
-          <signal name="ILS1a4_wXX174_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx174" name="ILS1a4_wx174_SSM" type="status">
+          <signal name="ILS1a4_wx174_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Glide slope deviation" name="GLISDEV1" type="float">
@@ -3588,10 +3588,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="174" name="ILS2a4_wXX174" sdi="XX" type="BNR">
+    <A429Label labelNumber="174" name="ILS2a4_wx174" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wXX174" name="ILS2a4_wXX174_SSM" type="status">
-          <signal name="ILS2a4_wXX174_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx174" name="ILS2a4_wx174_SSM" type="status">
+          <signal name="ILS2a4_wx174_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Glide slope deviation" name="GLISDEV2" type="float">
@@ -3663,10 +3663,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="177" name="ILS1a4_wXX177" sdi="XX" type="BNR">
+    <A429Label labelNumber="177" name="ILS1a4_wx177" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wXX177" name="ILS1a4_wXX177_SSM" type="status">
-          <signal name="ILS1a4_wXX177_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx177" name="ILS1a4_wx177_SSM" type="status">
+          <signal name="ILS1a4_wx177_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Distance to threshold" name="THRSHLDDIST" type="float">
@@ -3675,10 +3675,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="177" name="ILS2a4_wXX177" sdi="XX" type="BNR">
+    <A429Label labelNumber="177" name="ILS2a4_wx177" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wXX177" name="ILS2a4_wXX177_SSM" type="status">
-          <signal name="ILS2a4_wXX177_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx177" name="ILS2a4_wx177_SSM" type="status">
+          <signal name="ILS2a4_wx177_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Distance to threshold" name="THRSHLDDIST" type="float">
@@ -4671,10 +4671,10 @@
         <signal comment="Inner marker 1" lsb="13" msb="13" name="VOR2_L222_IM2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="227" name="CFDIUa4_wDD227" sdi="DD" type="ISO5">
+    <A429Label labelNumber="227" name="CFDIUa4_wx227" sdi="DD" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label CFDIUa4_wDD227" name="CFDIUa4_wDD227_SSM" type="status">
-          <signal name="CFDIUa4_wDD227_SSM"/>
+        <parameter comment="SSM of label CFDIUa4_wx227" name="CFDIUa4_wx227_SSM" type="status">
+          <signal name="CFDIUa4_wx227_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Maintenance phases (DU)" name="X_MAINTPHASES" type="int">
@@ -5529,10 +5529,10 @@
         <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI2_L262_OURQTYRGHDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="263" name="ILS1a4_wXX263" sdi="XX" type="ISO5">
+    <A429Label labelNumber="263" name="ILS1a4_wx263" sdi="XX" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS1a4_wXX263" name="ILS1a4_wXX263_SSM" type="status">
-          <signal name="ILS1a4_wXX263_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx263" name="ILS1a4_wx263_SSM" type="status">
+          <signal name="ILS1a4_wx263_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="int">
@@ -5542,10 +5542,10 @@
         <signal comment="ILS identifier character 2" lsb="19" msb="25" name="ILS1_L263_ILSIDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="263" name="ILS2a4_wXX263" sdi="XX" type="ISO5">
+    <A429Label labelNumber="263" name="ILS2a4_wx263" sdi="XX" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS2a4_wXX263" name="ILS2a4_wXX263_SSM" type="status">
-          <signal name="ILS2a4_wXX263_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx263" name="ILS2a4_wx263_SSM" type="status">
+          <signal name="ILS2a4_wx263_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="int">
@@ -5702,10 +5702,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="264" name="ILS1a4_wXX264" sdi="XX" type="ISO5">
+    <A429Label labelNumber="264" name="ILS1a4_wx264" sdi="XX" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS1a4_wXX264" name="ILS1a4_wXX264_SSM" type="status">
-          <signal name="ILS1a4_wXX264_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx264" name="ILS1a4_wx264_SSM" type="status">
+          <signal name="ILS1a4_wx264_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="int">
@@ -5715,10 +5715,10 @@
         <signal comment="ILS identifier character 4" lsb="19" msb="25" name="ILS1_L264_ILSIDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="264" name="ILS2a4_wXX264" sdi="XX" type="ISO5">
+    <A429Label labelNumber="264" name="ILS2a4_wx264" sdi="XX" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS2a4_wXX264" name="ILS2a4_wXX264_SSM" type="status">
-          <signal name="ILS2a4_wXX264_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx264" name="ILS2a4_wx264_SSM" type="status">
+          <signal name="ILS2a4_wx264_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="int">
@@ -6230,10 +6230,10 @@
         <signal comment="Attitude mode (IRS degraded mode)" lsb="12" msb="12" name="IRS3_L270_B12_ATTMOD3" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="270" name="TCASa4_wXX270" sdi="XX" type="HYB">
+    <A429Label labelNumber="270" name="TCASa4_wx270" sdi="XX" type="HYB">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label TCASa4_wXX270" name="TCASa4_wXX270_SSM" type="status">
-          <signal name="TCASa4_wXX270_SSM"/>
+        <parameter comment="SSM of label TCASa4_wx270" name="TCASa4_wx270_SSM" type="status">
+          <signal name="TCASa4_wx270_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Advisory altitude rate to maintain" name="ADVALT" type="float">
@@ -6500,10 +6500,10 @@
         <signal comment="DTO limit mode selected - channel B engine 1 (Neo)" lsb="11" msb="11" name="EECPW1B_L271_B11_DTOMODSELB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="271" name="ILS1a4_wXX271" sdi="XX" type="DIS">
+    <A429Label labelNumber="271" name="ILS1a4_wx271" sdi="XX" type="DIS">
       <ssm type="status_ssm_dis">
-        <parameter comment="SSM of label ILS1a4_wXX271" name="ILS1a4_wXX271_SSM" type="status">
-          <signal name="ILS1a4_wXX271_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx271" name="ILS1a4_wx271_SSM" type="status">
+          <signal name="ILS1a4_wx271_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="MMR ILS installed bit 12" name="BIT12ILS1" type="boolean">
@@ -6684,10 +6684,10 @@
         <signal comment="Selected mode status (0=mode failed  1=mode active)" lsb="26" msb="26" name="ILS1_L271_B26_MMRMODACTFMA" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="271" name="ILS2a4_wXX271" sdi="XX" type="DIS">
+    <A429Label labelNumber="271" name="ILS2a4_wx271" sdi="XX" type="DIS">
       <ssm type="status_ssm_dis">
-        <parameter comment="SSM of label ILS2a4_wXX271" name="ILS2a4_wXX271_SSM" type="status">
-          <signal name="ILS2a4_wXX271_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx271" name="ILS2a4_wx271_SSM" type="status">
+          <signal name="ILS2a4_wx271_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="MMR ILS installed bit 12" name="BIT12ILS2" type="boolean">
@@ -7414,10 +7414,10 @@
         <signal comment="Thrust reverser stow swtg circuit fail - ch B eng 1 (forced to 0 on Neo CFM)" lsb="22" msb="22" name="EECCFM1B_L274_B22_TREVSTOWFAILB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="274" name="TCASa4_wXX274" sdi="XX" type="HYB">
+    <A429Label labelNumber="274" name="TCASa4_wx274" sdi="XX" type="HYB">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label TCASa4_wXX274" name="TCASa4_wXX274_SSM" type="status">
-          <signal name="TCASa4_wXX274_SSM"/>
+        <parameter comment="SSM of label TCASa4_wx274" name="TCASa4_wx274_SSM" type="status">
+          <signal name="TCASa4_wx274_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Ground mode 1" name="GNDMOD1" type="boolean">
@@ -7883,10 +7883,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="310" name="IRS1a4_wDD310" sdi="DD" type="BNR">
+    <A429Label labelNumber="310" name="IRS1a4_wx310" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS1a4_wDD310" name="IRS1a4_wDD310_SSM" type="status">
-          <signal name="IRS1a4_wDD310_SSM"/>
+        <parameter comment="SSM of label IRS1a4_wx310" name="IRS1a4_wx310_SSM" type="status">
+          <signal name="IRS1a4_wx310_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Aircraft latitude position from IRS" name="LATITUDEIRS" type="float">
@@ -7895,10 +7895,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="310" name="IRS2a4_wDD310" sdi="DD" type="BNR">
+    <A429Label labelNumber="310" name="IRS2a4_wx310" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS2a4_wDD310" name="IRS2a4_wDD310_SSM" type="status">
-          <signal name="IRS2a4_wDD310_SSM"/>
+        <parameter comment="SSM of label IRS2a4_wx310" name="IRS2a4_wx310_SSM" type="status">
+          <signal name="IRS2a4_wx310_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Aircraft latitude position from IRS" name="LATITUDEIRS" type="float">
@@ -7907,10 +7907,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="310" name="IRS3a4_wDD310" sdi="DD" type="BNR">
+    <A429Label labelNumber="310" name="IRS3a4_wx310" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS3a4_wDD310" name="IRS3a4_wDD310_SSM" type="status">
-          <signal name="IRS3a4_wDD310_SSM"/>
+        <parameter comment="SSM of label IRS3a4_wx310" name="IRS3a4_wx310_SSM" type="status">
+          <signal name="IRS3a4_wx310_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Aircraft latitude position from IRS" name="LATITUDEIRS" type="float">
@@ -7919,10 +7919,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="311" name="IRS1a4_wDD311" sdi="DD" type="BNR">
+    <A429Label labelNumber="311" name="IRS1a4_wx311" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS1a4_wDD311" name="IRS1a4_wDD311_SSM" type="status">
-          <signal name="IRS1a4_wDD311_SSM"/>
+        <parameter comment="SSM of label IRS1a4_wx311" name="IRS1a4_wx311_SSM" type="status">
+          <signal name="IRS1a4_wx311_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Aircraft longitude position from IRS" name="LONGITUDEIRS" type="float">
@@ -7931,10 +7931,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="311" name="IRS2a4_wDD311" sdi="DD" type="BNR">
+    <A429Label labelNumber="311" name="IRS2a4_wx311" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS2a4_wDD311" name="IRS2a4_wDD311_SSM" type="status">
-          <signal name="IRS2a4_wDD311_SSM"/>
+        <parameter comment="SSM of label IRS2a4_wx311" name="IRS2a4_wx311_SSM" type="status">
+          <signal name="IRS2a4_wx311_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Aircraft longitude position from IRS" name="LONGITUDEIRS" type="float">
@@ -7943,10 +7943,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="311" name="IRS3a4_wDD311" sdi="DD" type="BNR">
+    <A429Label labelNumber="311" name="IRS3a4_wx311" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label IRS3a4_wDD311" name="IRS3a4_wDD311_SSM" type="status">
-          <signal name="IRS3a4_wDD311_SSM"/>
+        <parameter comment="SSM of label IRS3a4_wx311" name="IRS3a4_wx311_SSM" type="status">
+          <signal name="IRS3a4_wx311_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Aircraft longitude position from IRS" name="LONGITUDEIRS" type="float">
@@ -8609,10 +8609,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="320" name="ILS1a4_wDD320" sdi="DD" type="BNR">
+    <A429Label labelNumber="320" name="ILS1a4_wx320" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wDD320" name="ILS1a4_wDD320_SSM" type="status">
-          <signal name="ILS1a4_wDD320_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx320" name="ILS1a4_wx320_SSM" type="status">
+          <signal name="ILS1a4_wx320_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Baro-Temp Corrected Altitude" name="BAROCORALT" type="float">
@@ -8621,10 +8621,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="320" name="ILS2a4_wDD320" sdi="DD" type="BNR">
+    <A429Label labelNumber="320" name="ILS2a4_wx320" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wDD320" name="ILS2a4_wDD320_SSM" type="status">
-          <signal name="ILS2a4_wDD320_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx320" name="ILS2a4_wx320_SSM" type="status">
+          <signal name="ILS2a4_wx320_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Baro-Temp Corrected Altitude" name="BAROCORALT" type="float">
@@ -8831,10 +8831,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="323" name="ILS1a4_wDD323" sdi="DD" type="ISO5">
+    <A429Label labelNumber="323" name="ILS1a4_wx323" sdi="DD" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS1a4_wDD323" name="ILS1a4_wDD323_SSM" type="status">
-          <signal name="ILS1a4_wDD323_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx323" name="ILS1a4_wx323_SSM" type="status">
+          <signal name="ILS1a4_wx323_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="int">
@@ -8865,10 +8865,10 @@
         <signal comment="AP ident char 3" lsb="23" msb="29" name="ILS1_L323_APIDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="323" name="ILS2a4_wDD323" sdi="DD" type="ISO5">
+    <A429Label labelNumber="323" name="ILS2a4_wx323" sdi="DD" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS2a4_wDD323" name="ILS2a4_wDD323_SSM" type="status">
-          <signal name="ILS2a4_wDD323_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx323" name="ILS2a4_wx323_SSM" type="status">
+          <signal name="ILS2a4_wx323_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="int">
@@ -8995,10 +8995,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="324" name="ILS1a4_wDD324" sdi="DD" type="ISO5">
+    <A429Label labelNumber="324" name="ILS1a4_wx324" sdi="DD" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS1a4_wDD324" name="ILS1a4_wDD324_SSM" type="status">
-          <signal name="ILS1a4_wDD324_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx324" name="ILS1a4_wx324_SSM" type="status">
+          <signal name="ILS1a4_wx324_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="int">
@@ -9029,10 +9029,10 @@
         <signal comment="AP ident char 6" lsb="23" msb="29" name="ILS1_L324_APIDCHAR6" nbBit="7" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="324" name="ILS2a4_wDD324" sdi="DD" type="ISO5">
+    <A429Label labelNumber="324" name="ILS2a4_wx324" sdi="DD" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS2a4_wDD324" name="ILS2a4_wDD324_SSM" type="status">
-          <signal name="ILS2a4_wDD324_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx324" name="ILS2a4_wx324_SSM" type="status">
+          <signal name="ILS2a4_wx324_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="int">
@@ -9159,10 +9159,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="325" name="ILS1a4_wDD325" sdi="DD" type="BNR">
+    <A429Label labelNumber="325" name="ILS1a4_wx325" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wDD325" name="ILS1a4_wDD325_SSM" type="status">
-          <signal name="ILS1a4_wDD325_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx325" name="ILS1a4_wx325_SSM" type="status">
+          <signal name="ILS1a4_wx325_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Anchor Point Latitude" name="LATITUDEAP" type="float">
@@ -9176,10 +9176,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="325" name="ILS2a4_wDD325" sdi="DD" type="BNR">
+    <A429Label labelNumber="325" name="ILS2a4_wx325" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wDD325" name="ILS2a4_wDD325_SSM" type="status">
-          <signal name="ILS2a4_wDD325_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx325" name="ILS2a4_wx325_SSM" type="status">
+          <signal name="ILS2a4_wx325_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Anchor Point Latitude" name="LATITUDEAP" type="float">
@@ -9277,10 +9277,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="326" name="ILS1a4_wDD326" sdi="DD" type="BNR">
+    <A429Label labelNumber="326" name="ILS1a4_wx326" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wDD326" name="ILS1a4_wDD326_SSM" type="status">
-          <signal name="ILS1a4_wDD326_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx326" name="ILS1a4_wx326_SSM" type="status">
+          <signal name="ILS1a4_wx326_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Anchor Point Longitude" name="LONGITUDEAP" type="float">
@@ -9294,10 +9294,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="326" name="ILS2a4_wDD326" sdi="DD" type="BNR">
+    <A429Label labelNumber="326" name="ILS2a4_wx326" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wDD326" name="ILS2a4_wDD326_SSM" type="status">
-          <signal name="ILS2a4_wDD326_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx326" name="ILS2a4_wx326_SSM" type="status">
+          <signal name="ILS2a4_wx326_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Anchor Point Longitude" name="LONGITUDEAP" type="float">
@@ -9311,10 +9311,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="327" name="ILS1a4_wDD327" sdi="DD" type="BNR">
+    <A429Label labelNumber="327" name="ILS1a4_wx327" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wDD327" name="ILS1a4_wDD327_SSM" type="status">
-          <signal name="ILS1a4_wDD327_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx327" name="ILS1a4_wx327_SSM" type="status">
+          <signal name="ILS1a4_wx327_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Anchor Point Altitude (for output)" name="ALTITUDEAP" type="float">
@@ -9323,10 +9323,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="327" name="ILS2a4_wDD327" sdi="DD" type="BNR">
+    <A429Label labelNumber="327" name="ILS2a4_wx327" sdi="DD" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wDD327" name="ILS2a4_wDD327_SSM" type="status">
-          <signal name="ILS2a4_wDD327_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx327" name="ILS2a4_wx327_SSM" type="status">
+          <signal name="ILS2a4_wx327_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Anchor point Altitude (for output)" name="ALTITUDEAP" type="float">
@@ -9335,10 +9335,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="330" name="ILS1a4_wXX330" sdi="XX" type="BNR">
+    <A429Label labelNumber="330" name="ILS1a4_wx330" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wXX330" name="ILS1a4_wXX330_SSM" type="status">
-          <signal name="ILS1a4_wXX330_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx330" name="ILS1a4_wx330_SSM" type="status">
+          <signal name="ILS1a4_wx330_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS Slope" name="FLSSLOPENC" type="float">
@@ -9357,10 +9357,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="330" name="ILS2a4_wXX330" sdi="XX" type="BNR">
+    <A429Label labelNumber="330" name="ILS2a4_wx330" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wXX330" name="ILS2a4_wXX330_SSM" type="status">
-          <signal name="ILS2a4_wXX330_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx330" name="ILS2a4_wx330_SSM" type="status">
+          <signal name="ILS2a4_wx330_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS Slope" name="FLSSLOPENC" type="float">
@@ -9415,10 +9415,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="331" name="ILS1a4_wXX331" sdi="XX" type="BNR">
+    <A429Label labelNumber="331" name="ILS1a4_wx331" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS1a4_wXX331" name="ILS1a4_wXX331_SSM" type="status">
-          <signal name="ILS1a4_wXX331_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx331" name="ILS1a4_wx331_SSM" type="status">
+          <signal name="ILS1a4_wx331_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Local magnetic deviation (at destination)" name="LOCMAGDEV" type="float">
@@ -9427,10 +9427,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="331" name="ILS2a4_wXX331" sdi="XX" type="BNR">
+    <A429Label labelNumber="331" name="ILS2a4_wx331" sdi="XX" type="BNR">
       <ssm type="status_ssm_bnr">
-        <parameter comment="SSM of label ILS2a4_wXX331" name="ILS2a4_wXX331_SSM" type="status">
-          <signal name="ILS2a4_wXX331_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx331" name="ILS2a4_wx331_SSM" type="status">
+          <signal name="ILS2a4_wx331_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="Local magnetic deviation (at destination)" name="LOCMAGDEV" type="float">
@@ -9490,10 +9490,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="332" name="ILS1a4_wDD332" sdi="DD" type="ISO5">
+    <A429Label labelNumber="332" name="ILS1a4_wx332" sdi="DD" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS1a4_wDD332" name="ILS1a4_wDD332_SSM" type="status">
-          <signal name="ILS1a4_wDD332_SSM"/>
+        <parameter comment="SSM of label ILS1a4_wx332" name="ILS1a4_wx332_SSM" type="status">
+          <signal name="ILS1a4_wx332_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="int">
@@ -9506,10 +9506,10 @@
         <signal comment="AP ident char 7" lsb="16" msb="22" name="ILS1_L332_APIDCHAR7" nbBit="7" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="332" name="ILS2a4_wDD332" sdi="DD" type="ISO5">
+    <A429Label labelNumber="332" name="ILS2a4_wx332" sdi="DD" type="ISO5">
       <ssm type="status_no_ssm">
-        <parameter comment="SSM of label ILS2a4_wDD332" name="ILS2a4_wDD332_SSM" type="status">
-          <signal name="ILS2a4_wDD332_SSM"/>
+        <parameter comment="SSM of label ILS2a4_wx332" name="ILS2a4_wx332_SSM" type="status">
+          <signal name="ILS2a4_wx332_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="int">
@@ -11066,10 +11066,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="350" name="TCASa4_wXX350" sdi="XX" type="DIS">
+    <A429Label labelNumber="350" name="TCASa4_wx350" sdi="XX" type="DIS">
       <ssm type="status_ssm_dis">
-        <parameter comment="SSM of label TCASa4_wXX350" name="TCASa4_wXX350_SSM" type="status">
-          <signal name="TCASa4_wXX350_SSM"/>
+        <parameter comment="SSM of label TCASa4_wx350" name="TCASa4_wx350_SSM" type="status">
+          <signal name="TCASa4_wx350_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ADS-B failure" name="ADSBFAIL" type="boolean">
@@ -11277,10 +11277,10 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="377" name="TCASa4_wXX377" sdi="XX" type="DIS">
+    <A429Label labelNumber="377" name="TCASa4_wx377" sdi="XX" type="DIS">
       <ssm type="status_ssm_dis">
-        <parameter comment="SSM of label TCASa4_wXX377" name="TCASa4_wXX377_SSM" type="status">
-          <signal name="TCASa4_wXX377_SSM"/>
+        <parameter comment="SSM of label TCASa4_wx377" name="TCASa4_wx377_SSM" type="status">
+          <signal name="TCASa4_wx377_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="T2CAS option" name="T2CASOPT" type="boolean">

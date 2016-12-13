@@ -113,7 +113,11 @@ def SetLabelFormattedName(LabelObj):
     try:
         int(LabelObj.sdi, 2)
     except ValueError:
-        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(LabelObj.sdi) + str("%03d" % LabelObj.number)
+        _sdi = str(LabelObj.sdi)
+        if (_sdi == "DD") or (_sdi == "XX"):
+            _sdi = "x"
+
+        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + _sdi + str("%03d" % LabelObj.number)
     else:
         LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi, 2)) + str("%03d" % LabelObj.number)
 

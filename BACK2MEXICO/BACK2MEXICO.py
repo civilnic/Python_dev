@@ -118,8 +118,16 @@ def main():
     #
     _cnxmFlotObj = flot(_cnxmFlowFile)
 
-
-    _mexicoModelList = _mexicoFlotObj.getModelList()
-    print(_mexicoModelList)
+    #
+    # create model list for each flow
+    #
+    _mexicoModelList = set(_mexicoFlotObj.getModelList())
     _cnxmModelList = _cnxmFlotObj.getModelList()
-    print(_cnxmModelList)
+
+    #
+    # create common model list
+    #
+    _commonModels = [x for x in _cnxmModelList if x in _mexicoModelList]
+
+
+main()

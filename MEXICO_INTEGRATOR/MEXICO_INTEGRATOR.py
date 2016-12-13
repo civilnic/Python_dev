@@ -218,13 +218,15 @@ def parseCsvFile(csvFile, flowFile):
             # if channelEYCNameFlag is True we have to take into account channel name differences
             if channelEYCNameFlag:
                 _csvConfTab[4] = True
-
+            print(_csvConfTab)
+            print(_testTab)
             # differences analysis and translation in term of aliases on modele/port
             if _testTab != [False] * 10:
 
                 # get compared consumer port from flow
                 _consPortObj = _flotObj.getPort(_cnxCSVObj.getConsTriplet())
                 print(_cnxCSVObj)
+                print(_testTab)
                 # S_FLOW = channel link to consummer port in flow
                 S_FLOW = _consPortObj.channel
                 S_FLOWObj = _flotObj.getChannel(S_FLOW)
@@ -446,19 +448,27 @@ def parseCsvFile(csvFile, flowFile):
                             AlgoInits(_flotObj, _cnxCSVObj)
 
                 if (_testTab[8] and _csvConfTab[8]):
+                    print("TTTTTTTTTTTTIIIIIIIIIIITIIIIIIIIIIIIIIIIIIIIIIIIII")
+                    print(_cnxCSVObj.operatorCons)
                     if _cnxCSVObj.modoccCons in _aliasConsDict.keys():
-                        if _cnxCSVObj.portCons in _aliasConsDict[_cnxCSVObj.modoccCons]:
-                            _aliasObject = _aliasConsDict[_cnxCSVObj.modoccCons][_cnxCSVObj.portCons]
-                            _aliasObject.operator = _cnxCSVObj.operatorCons
-                        else:
+                       if _cnxCSVObj.portCons in _aliasConsDict[_cnxCSVObj.modoccCons]:
+                       #     _aliasObject = _aliasConsDict[_cnxCSVObj.modoccCons][_cnxCSVObj.portCons]
+                       #     _aliasObject.operator = _cnxCSVObj.operatorCons
+                        #else:
+                            _prevaliasObject = _aliasConsDict[_cnxCSVObj.modoccCons][_cnxCSVObj.portCons]
+                            _aliasObject = copy.copy(_prevaliasObject)
+
+                            del _aliasConsDict[_cnxCSVObj.modoccCons][_cnxCSVObj.portCons]
+                       else:
                             # create an alias on S_USER for consumer port
                             _aliasObject = MexicoAlias( port=_cnxCSVObj.portCons, channel=_cnxCSVObj.Channel,
                                                         comment=globalComment, date=displayDate)
 
-                            _aliasObject.operator = _cnxCSVObj.operatorCons
 
-                            # add it in Alias dictionary
-                            AddAlias(_aliasObject, _consPortObj)
+                       _aliasObject.operator = _cnxCSVObj.operatorCons
+
+                       # add it in Alias dictionary
+                       AddAlias(_aliasObject, _consPortObj)
                     else:
                         # create an alias on S_USER for consumer port
                         _aliasObject = MexicoAlias(port=_cnxCSVObj.portCons, channel=_cnxCSVObj.Channel,
@@ -807,7 +817,8 @@ def getCsvParameterTab(headerTab):
 def parseCsvLine(DicoLine):
 
     global _possibleField
-
+    print("DicoLine")
+    print(DicoLine)
     #
     # key of dictionnary are set with header line of csv file (with csv.DictReader)
     # to test the header line with only test keys of dictionary
@@ -819,30 +830,38 @@ def parseCsvLine(DicoLine):
     tab = [None] * 10
 
     if _possibleField[0] in DicoLine.keys():
-        tab[0] = DicoLine[_possibleField[0]]
+        if DicoLine[_possibleField[0]]:
+            tab[0] = DicoLine[_possibleField[0]]
     if _possibleField[1] in DicoLine.keys():
-        tab[1] = DicoLine[_possibleField[1]]
+        if DicoLine[_possibleField[1]]:
+            tab[1] = DicoLine[_possibleField[1]]
 
     tab[6] = DicoLine[_possibleField[6]]
     tab[7] = DicoLine[_possibleField[7]]
 
     if _possibleField[2] in DicoLine.keys():
-        tab[2] = DicoLine[_possibleField[2]]
+        if DicoLine[_possibleField[2]]:
+            tab[2] = DicoLine[_possibleField[2]]
 
     if _possibleField[3] in DicoLine.keys():
-        tab[3] = DicoLine[_possibleField[3]]
+        if DicoLine[_possibleField[3]]:
+            tab[3] = DicoLine[_possibleField[3]]
 
     if _possibleField[4] in DicoLine.keys():
-        tab[4] = DicoLine[_possibleField[4]]
+        if DicoLine[_possibleField[4]]:
+            tab[4] = DicoLine[_possibleField[4]]
 
     if _possibleField[5] in DicoLine.keys():
-        tab[5] = DicoLine[_possibleField[5]]
+        if DicoLine[_possibleField[5]]:
+            tab[5] = DicoLine[_possibleField[5]]
 
     if _possibleField[8] in DicoLine.keys():
-        tab[8] = DicoLine[_possibleField[8]]
+        if DicoLine[_possibleField[8]]:
+            tab[8] = DicoLine[_possibleField[8]]
 
     if _possibleField[9] in DicoLine.keys():
-        tab[9] = DicoLine[_possibleField[9]]
+        if DicoLine[_possibleField[9]]:
+            tab[9] = DicoLine[_possibleField[9]]
 
     _cnxObj = PotentialConnexionFromTab(tab)
 

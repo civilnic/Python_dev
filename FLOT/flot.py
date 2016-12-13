@@ -327,7 +327,7 @@ class flot:
             return False
 
     def getModelList(self):
-        return self.models_ref.keys()
+        return list(self.models_ref.keys())
 
     def getPort(self, portIdentifier):
         if portIdentifier in self.consumers_ref.keys():
