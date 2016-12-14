@@ -75,7 +75,7 @@ class mexico_coupling:
                 #
                 # Use ''DictReader'' to directly have a dictionary (keys are the first row value)
                 #
-                reader = csv.DictReader(_file, delimiter=';')
+                reader = csv.DictReader(_file, fieldnames=mexico_coupling.fieldnames, delimiter=';')
 
                 #
                 # read data
@@ -93,6 +93,8 @@ class mexico_coupling:
         _testLine = re.match(r'(?P<signal_name>^(#).*)', row[mexico_coupling.fieldnames[0]])
         if _testLine:
             return False
+
+        print(row)
 
         aliasObj = Alias(row[mexico_coupling.fieldnames[0]],
                          row[mexico_coupling.fieldnames[1]],
