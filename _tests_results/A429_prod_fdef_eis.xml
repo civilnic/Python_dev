@@ -1,4 +1,4 @@
-<configurationTable generationDate="13/12/2016" generationTool="outil perso" type="A429">
+<configurationTable generationDate="14/12/2016" generationTool="outil perso" type="A429">
   <configurationSources>
     <sourceFile pathname="" type=""/>
   </configurationSources>
@@ -307,22 +307,22 @@
         </parameter>
       </ssm>
       <parameter comment="Manual sensitivity level control (automatic)" name="MANUXSLC1" type="boolean">
-        <signal comment="Manual sensitivity level control (automatic)" lsb="15" msb="15" name="TCAS_L016_MANUXSLC1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Manual sensitivity level control (automatic)" lsb="15" msb="15" name="TCAS_L016_B15_MANUXSLC1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Manual sensitivity level control (stand by)" name="MANUXSLC2" type="boolean">
-        <signal comment="Manual sensitivity level control (stand by)" lsb="16" msb="16" name="TCAS_L016_MANUXSLC2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Manual sensitivity level control (stand by)" lsb="16" msb="16" name="TCAS_L016_B16_MANUXSLC2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Manual sensitivity level control (TA only)" name="MANUXSLC3" type="boolean">
-        <signal comment="Manual sensitivity level control (TA only)" lsb="17" msb="17" name="TCAS_L016_MANUXSLC3" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Manual sensitivity level control (TA only)" lsb="17" msb="17" name="TCAS_L016_B17_MANUXSLC3" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Manual sensitivity level control (Automatic)" name="MANUXSLC1" type="boolean">
-        <signal comment="Manual sensitivity level control (Automatic)" lsb="15" msb="15" name="TCAS_L016_MANUXSLC1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Manual sensitivity level control (Automatic)" lsb="15" msb="15" name="TCAS_L016_B15_MANUXSLC1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Manual sensitivity level control (Stand by)" name="MANUXSLC2" type="boolean">
-        <signal comment="Manual sensitivity level control (Stand by)" lsb="16" msb="16" name="TCAS_L016_MANUXSLC2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Manual sensitivity level control (Stand by)" lsb="16" msb="16" name="TCAS_L016_B16_MANUXSLC2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Manual sensitivity level control (TA only)" name="MANUXSLC3" type="boolean">
-        <signal comment="Manual sensitivity level control (TA only)" lsb="17" msb="17" name="TCAS_L016_MANUXSLC3" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Manual sensitivity level control (TA only)" lsb="17" msb="17" name="TCAS_L016_B17_MANUXSLC3" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="020" name="LGC1a4_w1020" sdi="01" type="DIS">
@@ -511,7 +511,7 @@
         </signal>
       </parameter>
       <parameter comment="500 Hz add to ADF1 frequency (ADF1FREQ)" name="ADF1FRQKHZ" type="boolean">
-        <signal comment="500 Hz add to ADF1 frequency (ADF1FREQ)" lsb="14" msb="14" name="ADF1_L032_ADF1FRQKHZ" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="500 Hz add to ADF1 frequency (ADF1FREQ)" lsb="14" msb="14" name="ADF1_L032_B14_ADF1FRQKHZ" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="ADF1 frequency" name="ADF1FREQ" type="int">
         <signal comment="ADF1 frequency" lsb="15" msb="29" name="ADF1_L032_ADF1FREQ" nbBit="15" signed="1" startBit="1" type="int">
@@ -531,7 +531,7 @@
         </signal>
       </parameter>
       <parameter comment="500 Hz to add to ADF2 frequency (ADF2FRQ)" name="ADF2FRQKHZ" type="boolean">
-        <signal comment="500 Hz to add to ADF2 frequency (ADF2FRQ)" lsb="14" msb="14" name="ADF2_L032_ADF2FRQKHZ" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="500 Hz to add to ADF2 frequency (ADF2FRQ)" lsb="14" msb="14" name="ADF2_L032_B14_ADF2FRQKHZ" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="ADF2 frequency" name="ADF2FREQ" type="int">
         <signal comment="ADF2 frequency" lsb="15" msb="29" name="ADF2_L032_ADF2FREQ" nbBit="15" signed="1" startBit="1" type="int">
@@ -607,88 +607,24 @@
         </signal>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="033" name="ILS1a4_wx033" sdi="XX" type="HYB">
-      <ssm type="status_ssm_bcd">
+    <A429Label labelNumber="033" name="ILS1a4_wx033" sdi="DD" type="Opaque">
+      <ssm type="status_no_ssm">
         <parameter comment="SSM of label ILS1a4_wx033" name="ILS1a4_wx033_SSM" type="status">
           <signal name="ILS1a4_wx033_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS frequency" name="ILSFRQ" type="int">
-        <signal comment="ILS frequency" lsb="15" msb="29" name="ILS1_L033_ILSFRQ" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
-      </parameter>
-      <parameter comment="ILS1 frequency" name="ILS1FREQ" type="int">
-        <signal comment="ILS1 frequency" lsb="15" msb="29" name="ILS1_L033_ILS1FREQ" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
-      </parameter>
-      <parameter comment="GLS Channel bits 11 and 12 (bit 12 is the MSB)" name="GLSCHABIT1112" type="float">
-        <signal comment="GLS Channel bits 11 and 12 (bit 12 is the MSB)" lsb="11" msb="12" name="ILS1_L033_GLSCHABIT1112" nbBit="2" signed="0" startBit="1" type="float">
-          <float floatCodingType="BNR" floatResolution="1.0"/>
-        </signal>
-      </parameter>
-      <parameter comment="GLS channel" name="GLSCHANNEL" type="float">
-        <signal comment="GLS channel" lsb="15" msb="29" name="ILS1_L033_GLSCHANNEL" nbBit="15" signed="0" startBit="1" type="float">
-          <float floatCodingType="BNR" floatResolution="1.0"/>
-        </signal>
-      </parameter>
-      <parameter comment="MLS channel" name="MLSCHANNEL" type="int">
-        <signal comment="MLS channel" lsb="18" msb="29" name="ILS1_L033_MLSCHANNEL" nbBit="12" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="1.0"/>
-        </signal>
-      </parameter>
-      <parameter comment="ILS frequency" name="ILSFRQFM" type="int">
-        <signal comment="ILS frequency" lsb="15" msb="29" name="ILS1_L033_ILSFRQFM" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
-      </parameter>
-      <parameter comment="ILS frequency" name="ILSFRQFMA" type="int">
-        <signal comment="ILS frequency" lsb="15" msb="29" name="ILS1_L033_ILSFRQFMA" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
+        <signal comment="ILS frequency" lsb="9" msb="31" name="ILS1_L033_ILSFRQ" nbBit="23" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
-    <A429Label labelNumber="033" name="ILS2a4_wx033" sdi="XX" type="HYB">
-      <ssm type="status_ssm_bcd">
+    <A429Label labelNumber="033" name="ILS2a4_wx033" sdi="DD" type="Opaque">
+      <ssm type="status_no_ssm">
         <parameter comment="SSM of label ILS2a4_wx033" name="ILS2a4_wx033_SSM" type="status">
           <signal name="ILS2a4_wx033_SSM"/>
         </parameter>
       </ssm>
       <parameter comment="ILS frequency" name="ILSFRQ" type="int">
-        <signal comment="ILS frequency" lsb="15" msb="29" name="ILS2_L033_ILSFRQ" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
-      </parameter>
-      <parameter comment="ILS2 frequency" name="ILS2FREQ" type="int">
-        <signal comment="ILS2 frequency" lsb="15" msb="29" name="ILS2_L033_ILS2FREQ" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
-      </parameter>
-      <parameter comment="GLS Channel bits 11 and 12 (bit 12 is the MSB)" name="GLSCHABIT1112" type="float">
-        <signal comment="GLS Channel bits 11 and 12 (bit 12 is the MSB)" lsb="11" msb="12" name="ILS2_L033_GLSCHABIT1112" nbBit="2" signed="0" startBit="1" type="float">
-          <float floatCodingType="BNR" floatResolution="1.0"/>
-        </signal>
-      </parameter>
-      <parameter comment="GLS channel" name="GLSCHANNEL" type="float">
-        <signal comment="GLS channel" lsb="15" msb="29" name="ILS2_L033_GLSCHANNEL" nbBit="15" signed="0" startBit="1" type="float">
-          <float floatCodingType="BNR" floatResolution="1.0"/>
-        </signal>
-      </parameter>
-      <parameter comment="MLS channel" name="MLSCHANNEL" type="int">
-        <signal comment="MLS channel" lsb="18" msb="29" name="ILS2_L033_MLSCHANNEL" nbBit="12" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="1.0"/>
-        </signal>
-      </parameter>
-      <parameter comment="ILS frequency" name="ILSFRQFM" type="int">
-        <signal comment="ILS frequency" lsb="15" msb="29" name="ILS2_L033_ILSFRQFM" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
-      </parameter>
-      <parameter comment="ILS frequency" name="ILSFRQFMA" type="int">
-        <signal comment="ILS frequency" lsb="15" msb="29" name="ILS2_L033_ILSFRQFMA" nbBit="15" signed="1" startBit="1" type="int">
-          <integer integerCodingType="BCD" integerResolution="0.01"/>
-        </signal>
+        <signal comment="ILS frequency" lsb="9" msb="31" name="ILS2_L033_ILSFRQ" nbBit="23" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="034" name="VOR1a4_w1034" sdi="01" type="HYB">
@@ -1616,37 +1552,37 @@
         </parameter>
       </ssm>
       <parameter comment="DTO A/C option installed - channel B engine 2 (Neo)" name="DTOB_2" type="boolean">
-        <signal comment="DTO A/C option installed - channel B engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2B_L066_DTOB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel B engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2B_L066_B25_DTOB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel B engine 2 (Neo)" name="DTOMODSELB_2" type="boolean">
-        <signal comment="DTO limit mode selected - channel B engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2B_L066_DTOMODSELB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel B engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2B_L066_B24_DTOMODSELB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel B engine 2 (Neo)" name="DTOSELBIT1B_2" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel B engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2B_L066_DTOSELBIT1B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel B engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2B_L066_B21_DTOSELBIT1B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel B engine 2 (Neo)" name="DTOSELBIT2B_2" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel B engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2B_L066_DTOSELBIT2B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel B engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2B_L066_B22_DTOSELBIT2B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel B engine 2 (Neo)" name="DTOSELBIT3B_2" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel B engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2B_L066_DTOSELBIT3B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel B engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2B_L066_B23_DTOSELBIT3B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel B engine 2 (Neo)" name="DTOB_2" type="boolean">
-        <signal comment="DTO A/C option installed - channel B engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2B_L066_DTOB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel B engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2B_L066_B25_DTOB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel B engine 2 (Neo)" name="DTOB_2" type="boolean">
-        <signal comment="DTO A/C option installed - channel B engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2B_L066_DTOB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel B engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2B_L066_B25_DTOB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel B engine 2 (Neo)" name="DTOMODSELB_2" type="boolean">
-        <signal comment="DTO limit mode selected - channel B engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2B_L066_DTOMODSELB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel B engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2B_L066_B24_DTOMODSELB_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel B engine 2 (Neo)" name="DTOSELBIT1B_2" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel B engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2B_L066_DTOSELBIT1B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel B engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2B_L066_B21_DTOSELBIT1B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel B engine 2 (Neo)" name="DTOSELBIT2B_2" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel B engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2B_L066_DTOSELBIT2B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel B engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2B_L066_B22_DTOSELBIT2B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel B engine 2 (Neo)" name="DTOSELBIT3B_2" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel B engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2B_L066_DTOSELBIT3B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel B engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2B_L066_B23_DTOSELBIT3B_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="066" name="EECPW2Ba4_w0066" sdi="00" type="DIS">
@@ -1672,37 +1608,37 @@
         </parameter>
       </ssm>
       <parameter comment="DTO A/C option installed - channel A engine 1 (Neo)" name="DTOA_1" type="boolean">
-        <signal comment="DTO A/C option installed - channel A engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1A_L066_DTOA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel A engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1A_L066_B25_DTOA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel A engine 1 (Neo)" name="DTOMODSELA_1" type="boolean">
-        <signal comment="DTO limit mode selected - channel A engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1A_L066_DTOMODSELA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel A engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1A_L066_B24_DTOMODSELA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel A engine 1 (Neo)" name="DTOSELBIT1A_1" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel A engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1A_L066_DTOSELBIT1A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel A engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1A_L066_B21_DTOSELBIT1A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel A engine 1 (Neo)" name="DTOSELBIT2A_1" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel A engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1A_L066_DTOSELBIT2A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel A engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1A_L066_B22_DTOSELBIT2A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel A engine 1 (Neo)" name="DTOSELBIT3A_1" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel A engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1A_L066_DTOSELBIT3A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel A engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1A_L066_B23_DTOSELBIT3A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel A engine 1 (Neo)" name="DTOA_1" type="boolean">
-        <signal comment="DTO A/C option installed - channel A engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1A_L066_DTOA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel A engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1A_L066_B25_DTOA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel A engine 1 (Neo)" name="DTOA_1" type="boolean">
-        <signal comment="DTO A/C option installed - channel A engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1A_L066_DTOA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel A engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1A_L066_B25_DTOA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel A engine 1 (Neo)" name="DTOMODSELA_1" type="boolean">
-        <signal comment="DTO limit mode selected - channel A engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1A_L066_DTOMODSELA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel A engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1A_L066_B24_DTOMODSELA_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel A engine 1 (Neo)" name="DTOSELBIT1A_1" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel A engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1A_L066_DTOSELBIT1A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel A engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1A_L066_B21_DTOSELBIT1A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel A engine 1 (Neo)" name="DTOSELBIT2A_1" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel A engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1A_L066_DTOSELBIT2A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel A engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1A_L066_B22_DTOSELBIT2A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel A engine 1 (Neo)" name="DTOSELBIT3A_1" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel A engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1A_L066_DTOSELBIT3A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel A engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1A_L066_B23_DTOSELBIT3A_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="066" name="EECPW1Aa4_w1066" sdi="01" type="DIS">
@@ -1728,37 +1664,37 @@
         </parameter>
       </ssm>
       <parameter comment="DTO A/C option installed - channel A engine 2 (Neo)" name="DTOA_2" type="boolean">
-        <signal comment="DTO A/C option installed - channel A engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2A_L066_DTOA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel A engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2A_L066_B25_DTOA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel A engine 2 (Neo)" name="DTOMODSELA_2" type="boolean">
-        <signal comment="DTO limit mode selected - channel A engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2A_L066_DTOMODSELA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel A engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2A_L066_B24_DTOMODSELA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel A engine 2 (Neo)" name="DTOSELBIT1A_2" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel A engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2A_L066_DTOSELBIT1A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel A engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2A_L066_B21_DTOSELBIT1A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel A engine 2 (Neo)" name="DTOSELBIT2A_2" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel A engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2A_L066_DTOSELBIT2A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel A engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2A_L066_B22_DTOSELBIT2A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel A engine 2 (Neo)" name="DTOSELBIT3A_2" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel A engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2A_L066_DTOSELBIT3A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel A engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2A_L066_B23_DTOSELBIT3A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel A engine 2 (Neo)" name="DTOA_2" type="boolean">
-        <signal comment="DTO A/C option installed - channel A engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2A_L066_DTOA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel A engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2A_L066_B25_DTOA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel A engine 2 (Neo)" name="DTOA_2" type="boolean">
-        <signal comment="DTO A/C option installed - channel A engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2A_L066_DTOA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel A engine 2 (Neo)" lsb="25" msb="25" name="EECCFM2A_L066_B25_DTOA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel A engine 2 (Neo)" name="DTOMODSELA_2" type="boolean">
-        <signal comment="DTO limit mode selected - channel A engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2A_L066_DTOMODSELA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel A engine 2 (Neo)" lsb="24" msb="24" name="EECCFM2A_L066_B24_DTOMODSELA_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel A engine 2 (Neo)" name="DTOSELBIT1A_2" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel A engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2A_L066_DTOSELBIT1A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel A engine 2 (Neo)" lsb="21" msb="21" name="EECCFM2A_L066_B21_DTOSELBIT1A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel A engine 2 (Neo)" name="DTOSELBIT2A_2" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel A engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2A_L066_DTOSELBIT2A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel A engine 2 (Neo)" lsb="22" msb="22" name="EECCFM2A_L066_B22_DTOSELBIT2A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel A engine 2 (Neo)" name="DTOSELBIT3A_2" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel A engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2A_L066_DTOSELBIT3A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel A engine 2 (Neo)" lsb="23" msb="23" name="EECCFM2A_L066_B23_DTOSELBIT3A_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="066" name="EECPW2Aa4_w2066" sdi="10" type="DIS">
@@ -1784,37 +1720,37 @@
         </parameter>
       </ssm>
       <parameter comment="DTO A/C option installed - channel B engine 1 (Neo)" name="DTOB_1" type="boolean">
-        <signal comment="DTO A/C option installed - channel B engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1B_L066_DTOB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel B engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1B_L066_B25_DTOB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel B engine 1 (Neo)" name="DTOMODSELB_1" type="boolean">
-        <signal comment="DTO limit mode selected - channel B engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1B_L066_DTOMODSELB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel B engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1B_L066_B24_DTOMODSELB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel B engine 1 (Neo)" name="DTOSELBIT1B_1" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel B engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1B_L066_DTOSELBIT1B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel B engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1B_L066_B21_DTOSELBIT1B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel B engine 1 (Neo)" name="DTOSELBIT2B_1" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel B engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1B_L066_DTOSELBIT2B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel B engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1B_L066_B22_DTOSELBIT2B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel B engine 1 (Neo)" name="DTOSELBIT3B_1" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel B engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1B_L066_DTOSELBIT3B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel B engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1B_L066_B23_DTOSELBIT3B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel B engine 1 (Neo)" name="DTOB_1" type="boolean">
-        <signal comment="DTO A/C option installed - channel B engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1B_L066_DTOB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel B engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1B_L066_B25_DTOB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO A/C option installed - channel B engine 1 (Neo)" name="DTOB_1" type="boolean">
-        <signal comment="DTO A/C option installed - channel B engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1B_L066_DTOB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO A/C option installed - channel B engine 1 (Neo)" lsb="25" msb="25" name="EECCFM1B_L066_B25_DTOB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO limit mode selected - channel B engine 1 (Neo)" name="DTOMODSELB_1" type="boolean">
-        <signal comment="DTO limit mode selected - channel B engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1B_L066_DTOMODSELB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO limit mode selected - channel B engine 1 (Neo)" lsb="24" msb="24" name="EECCFM1B_L066_B24_DTOMODSELB_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 1 - channel B engine 1 (Neo)" name="DTOSELBIT1B_1" type="boolean">
-        <signal comment="DTO selected coding bit 1 - channel B engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1B_L066_DTOSELBIT1B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 1 - channel B engine 1 (Neo)" lsb="21" msb="21" name="EECCFM1B_L066_B21_DTOSELBIT1B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 2 - channel B engine 1 (Neo)" name="DTOSELBIT2B_1" type="boolean">
-        <signal comment="DTO selected coding bit 2 - channel B engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1B_L066_DTOSELBIT2B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 2 - channel B engine 1 (Neo)" lsb="22" msb="22" name="EECCFM1B_L066_B22_DTOSELBIT2B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="DTO selected coding bit 3 - channel B engine 1 (Neo)" name="DTOSELBIT3B_1" type="boolean">
-        <signal comment="DTO selected coding bit 3 - channel B engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1B_L066_DTOSELBIT3B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="DTO selected coding bit 3 - channel B engine 1 (Neo)" lsb="23" msb="23" name="EECCFM1B_L066_B23_DTOSELBIT3B_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="066" name="EECPW1Ba4_w3066" sdi="11" type="DIS">
@@ -4638,22 +4574,22 @@
         </signal>
       </parameter>
       <parameter comment="Inner marker 1" name="IM1" type="boolean">
-        <signal comment="Inner marker 1" lsb="13" msb="13" name="VOR1_L222_IM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner marker 1" lsb="13" msb="13" name="VOR1_L222_B13_IM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Middle marker 1" name="MM1" type="boolean">
-        <signal comment="Middle marker 1" lsb="12" msb="12" name="VOR1_L222_MM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Middle marker 1" lsb="12" msb="12" name="VOR1_L222_B12_MM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Outer marker 1" name="OM1" type="boolean">
-        <signal comment="Outer marker 1" lsb="11" msb="11" name="VOR1_L222_OM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer marker 1" lsb="11" msb="11" name="VOR1_L222_B11_OM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Inner marker 1" name="IM1" type="boolean">
-        <signal comment="Inner marker 1" lsb="13" msb="13" name="VOR1_L222_IM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner marker 1" lsb="13" msb="13" name="VOR1_L222_B13_IM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Middle marker 1" name="MM1" type="boolean">
-        <signal comment="Middle marker 1" lsb="12" msb="12" name="VOR1_L222_MM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Middle marker 1" lsb="12" msb="12" name="VOR1_L222_B12_MM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Outer marker 1" name="OM1" type="boolean">
-        <signal comment="Outer marker 1" lsb="11" msb="11" name="VOR1_L222_OM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer marker 1" lsb="11" msb="11" name="VOR1_L222_B11_OM1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="222" name="VOR2a4_w2222" sdi="10" type="HYB">
@@ -4668,7 +4604,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner marker 1" name="IM2" type="boolean">
-        <signal comment="Inner marker 1" lsb="13" msb="13" name="VOR2_L222_IM2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner marker 1" lsb="13" msb="13" name="VOR2_L222_B13_IM2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="227" name="CFDIUa4_wx227" sdi="DD" type="ISO5">
@@ -4677,8 +4613,8 @@
           <signal name="CFDIUa4_wx227_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Maintenance phases (DU)" name="X_MAINTPHASES" type="int">
-        <signal comment="Maintenance phases (DU)" lsb="25" msb="31" name="CFDIU_L227_X_MAINTPHASES" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Maintenance phases (DU)" name="X_MAINTPHASES" type="char">
+        <signal comment="Maintenance phases (DU)" lsb="25" msb="31" name="CFDIU_L227_X_MAINTPHASES" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="233" name="CFDIUa4_w0233" sdi="00" type="ISO5">
@@ -4687,8 +4623,8 @@
           <signal name="CFDIUa4_w0233_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 1 CHAR1" name="FLGHNUMWORD1" type="int">
-        <signal comment="FLIGHT NUMBER WORD 1 CHAR1" lsb="11" msb="17" name="CFDIU_L233_FLGHNUMWORD1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLIGHT NUMBER WORD 1 CHAR1" name="FLGHNUMWORD1" type="char">
+        <signal comment="FLIGHT NUMBER WORD 1 CHAR1" lsb="11" msb="17" name="CFDIU_L233_FLGHNUMWORD1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="234" name="CFDIUa4_w0234" sdi="00" type="ISO5">
@@ -4697,8 +4633,8 @@
           <signal name="CFDIUa4_w0234_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 2 CHAR 1" name="FLGHNUMWORD2" type="int">
-        <signal comment="FLIGHT NUMBER WORD 2 CHAR 1" lsb="11" msb="17" name="CFDIU_L234_FLGHNUMWORD2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLIGHT NUMBER WORD 2 CHAR 1" name="FLGHNUMWORD2" type="char">
+        <signal comment="FLIGHT NUMBER WORD 2 CHAR 1" lsb="11" msb="17" name="CFDIU_L234_FLGHNUMWORD2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="235" name="CFDIUa4_w0235" sdi="00" type="ISO5">
@@ -4707,8 +4643,8 @@
           <signal name="CFDIUa4_w0235_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 3 CHAR1" name="FLGHNUMWORD3" type="int">
-        <signal comment="FLIGHT NUMBER WORD 3 CHAR1" lsb="11" msb="17" name="CFDIU_L235_FLGHNUMWORD3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLIGHT NUMBER WORD 3 CHAR1" name="FLGHNUMWORD3" type="char">
+        <signal comment="FLIGHT NUMBER WORD 3 CHAR1" lsb="11" msb="17" name="CFDIU_L235_FLGHNUMWORD3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="236" name="CFDIUa4_w0236" sdi="00" type="ISO5">
@@ -4717,8 +4653,8 @@
           <signal name="CFDIUa4_w0236_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 4 CHAR1" name="FLGHNUMWORD4" type="int">
-        <signal comment="FLIGHT NUMBER WORD 4 CHAR1" lsb="11" msb="17" name="CFDIU_L236_FLGHNUMWORD4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLIGHT NUMBER WORD 4 CHAR1" name="FLGHNUMWORD4" type="char">
+        <signal comment="FLIGHT NUMBER WORD 4 CHAR1" lsb="11" msb="17" name="CFDIU_L236_FLGHNUMWORD4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="241" name="IRS1a4_w1241" sdi="01" type="BNR">
@@ -4826,11 +4762,11 @@
           <signal name="VOR1a4_w1242_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR1 identifier character 1" name="VOR1IDCHAR1" type="int">
-        <signal comment="VOR1 identifier character 1" lsb="11" msb="17" name="VOR1_L242_VOR1IDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VOR1 identifier character 1" name="VOR1IDCHAR1" type="char">
+        <signal comment="VOR1 identifier character 1" lsb="11" msb="17" name="VOR1_L242_VOR1IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VOR1 identifier character 2" name="VOR1IDCHAR2" type="int">
-        <signal comment="VOR1 identifier character 2" lsb="19" msb="25" name="VOR1_L242_VOR1IDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VOR1 identifier character 2" name="VOR1IDCHAR2" type="char">
+        <signal comment="VOR1 identifier character 2" lsb="19" msb="25" name="VOR1_L242_VOR1IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="242" name="EECCFM2Aa4_w2242" sdi="10" type="BNR">
@@ -4863,11 +4799,11 @@
           <signal name="VOR2a4_w2242_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR2 identifier character 1" name="VOR2IDCHAR1" type="int">
-        <signal comment="VOR2 identifier character 1" lsb="11" msb="17" name="VOR2_L242_VOR2IDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VOR2 identifier character 1" name="VOR2IDCHAR1" type="char">
+        <signal comment="VOR2 identifier character 1" lsb="11" msb="17" name="VOR2_L242_VOR2IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VOR2 identifier character 2" name="VOR2IDCHAR2" type="int">
-        <signal comment="VOR2 identifier character 2" lsb="19" msb="25" name="VOR2_L242_VOR2IDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VOR2 identifier character 2" name="VOR2IDCHAR2" type="char">
+        <signal comment="VOR2 identifier character 2" lsb="19" msb="25" name="VOR2_L242_VOR2IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="242" name="EECCFM1Ba4_w3242" sdi="11" type="BNR">
@@ -4988,11 +4924,11 @@
           <signal name="VOR1a4_w1244_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR1 identifier character 3" name="VOR1IDCHAR3" type="int">
-        <signal comment="VOR1 identifier character 3" lsb="11" msb="17" name="VOR1_L244_VOR1IDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VOR1 identifier character 3" name="VOR1IDCHAR3" type="char">
+        <signal comment="VOR1 identifier character 3" lsb="11" msb="17" name="VOR1_L244_VOR1IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VOR1 identifier character 4" name="VOR1IDCHAR4" type="int">
-        <signal comment="VOR1 identifier character 4" lsb="19" msb="25" name="VOR1_L244_VOR1IDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VOR1 identifier character 4" name="VOR1IDCHAR4" type="char">
+        <signal comment="VOR1 identifier character 4" lsb="19" msb="25" name="VOR1_L244_VOR1IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="244" name="EECCFM2Aa4_w2244" sdi="10" type="BNR">
@@ -5045,11 +4981,11 @@
           <signal name="VOR2a4_w2244_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR2 identifier character 3" name="VOR2IDCHAR3" type="int">
-        <signal comment="VOR2 identifier character 3" lsb="11" msb="17" name="VOR2_L244_VOR2IDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VOR2 identifier character 3" name="VOR2IDCHAR3" type="char">
+        <signal comment="VOR2 identifier character 3" lsb="11" msb="17" name="VOR2_L244_VOR2IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VORx identifier character 4" name="VOR2IDCHAR4" type="int">
-        <signal comment="VORx identifier character 4" lsb="19" msb="25" name="VOR2_L244_VOR2IDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="VORx identifier character 4" name="VOR2IDCHAR4" type="char">
+        <signal comment="VORx identifier character 4" lsb="19" msb="25" name="VOR2_L244_VOR2IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="244" name="EECCFM1Ba4_w3244" sdi="11" type="BNR">
@@ -5192,7 +5128,7 @@
         </signal>
       </parameter>
       <parameter comment="Total fuel quantity on board degraded data" name="TOTFUQTYDGD1" type="boolean">
-        <signal comment="Total fuel quantity on board degraded data" lsb="11" msb="11" name="FQI1_L247_TOTFUQTYDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Total fuel quantity on board degraded data" lsb="11" msb="11" name="FQI1_L247_B11_TOTFUQTYDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="247" name="FQI2a4_w2247" sdi="10" type="HYB">
@@ -5207,7 +5143,7 @@
         </signal>
       </parameter>
       <parameter comment="Total fuel quantity on board degraded data" name="TOTFUQTYDGD2" type="boolean">
-        <signal comment="Total fuel quantity on board degraded data" lsb="11" msb="11" name="FQI2_L247_TOTFUQTYDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Total fuel quantity on board degraded data" lsb="11" msb="11" name="FQI2_L247_B11_TOTFUQTYDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="254" name="ADF1a4_w1254" sdi="01" type="ISO5">
@@ -5216,11 +5152,11 @@
           <signal name="ADF1a4_w1254_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF1 indentifier character 1" name="ADF1IDCHAR1" type="int">
-        <signal comment="ADF1 indentifier character 1" lsb="11" msb="17" name="ADF1_L254_ADF1IDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF1 indentifier character 1" name="ADF1IDCHAR1" type="char">
+        <signal comment="ADF1 indentifier character 1" lsb="11" msb="17" name="ADF1_L254_ADF1IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF1 identifier character 2" name="ADF1IDCHAR2" type="int">
-        <signal comment="ADF1 identifier character 2" lsb="19" msb="25" name="ADF1_L254_ADF1IDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF1 identifier character 2" name="ADF1IDCHAR2" type="char">
+        <signal comment="ADF1 identifier character 2" lsb="19" msb="25" name="ADF1_L254_ADF1IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="254" name="ADF2a4_w2254" sdi="10" type="ISO5">
@@ -5229,11 +5165,11 @@
           <signal name="ADF2a4_w2254_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF2 identifier character 1" name="ADF2IDCHAR1" type="int">
-        <signal comment="ADF2 identifier character 1" lsb="11" msb="17" name="ADF2_L254_ADF2IDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF2 identifier character 1" name="ADF2IDCHAR1" type="char">
+        <signal comment="ADF2 identifier character 1" lsb="11" msb="17" name="ADF2_L254_ADF2IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF2 identifier character 2" name="ADF2IDCHAR2" type="int">
-        <signal comment="ADF2 identifier character 2" lsb="19" msb="25" name="ADF2_L254_ADF2IDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF2 identifier character 2" name="ADF2IDCHAR2" type="char">
+        <signal comment="ADF2 identifier character 2" lsb="19" msb="25" name="ADF2_L254_ADF2IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="255" name="ADF1a4_w1255" sdi="01" type="ISO5">
@@ -5242,11 +5178,11 @@
           <signal name="ADF1a4_w1255_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF1 identifier character 3" name="ADF1IDCHAR3" type="int">
-        <signal comment="ADF1 identifier character 3" lsb="11" msb="17" name="ADF1_L255_ADF1IDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF1 identifier character 3" name="ADF1IDCHAR3" type="char">
+        <signal comment="ADF1 identifier character 3" lsb="11" msb="17" name="ADF1_L255_ADF1IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF1 identifier character 4" name="ADF1IDCHAR4" type="int">
-        <signal comment="ADF1 identifier character 4" lsb="19" msb="25" name="ADF1_L255_ADF1IDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF1 identifier character 4" name="ADF1IDCHAR4" type="char">
+        <signal comment="ADF1 identifier character 4" lsb="19" msb="25" name="ADF1_L255_ADF1IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="255" name="ADF2a4_w2255" sdi="10" type="ISO5">
@@ -5255,11 +5191,11 @@
           <signal name="ADF2a4_w2255_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF2 identifier character 3" name="ADF2IDCHAR3" type="int">
-        <signal comment="ADF2 identifier character 3" lsb="11" msb="17" name="ADF2_L255_ADF2IDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF2 identifier character 3" name="ADF2IDCHAR3" type="char">
+        <signal comment="ADF2 identifier character 3" lsb="11" msb="17" name="ADF2_L255_ADF2IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF2 identifier character 4" name="ADF2IDCHAR4" type="int">
-        <signal comment="ADF2 identifier character 4" lsb="19" msb="25" name="ADF2_L255_ADF2IDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ADF2 identifier character 4" name="ADF2IDCHAR4" type="char">
+        <signal comment="ADF2 identifier character 4" lsb="19" msb="25" name="ADF2_L255_ADF2IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="256" name="FQI1a4_w1256" sdi="01" type="HYB">
@@ -5274,7 +5210,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - left" name="OURQTYDGD1_1" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI1_L256_OURQTYDGD1_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI1_L256_B11_OURQTYDGD1_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Outer fuel tank quantity - left" name="OURQTYLFT1" type="float">
         <signal comment="Outer fuel tank quantity - left" lsb="14" msb="28" name="FQI1_L256_OURQTYLFT1" nbBit="15" signed="1" startBit="1" type="float">
@@ -5282,7 +5218,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - left" name="OURQTYLFTDGD1" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI1_L256_OURQTYLFTDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI1_L256_B11_OURQTYLFTDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="256" name="FQI2a4_w2256" sdi="10" type="HYB">
@@ -5297,7 +5233,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - left" name="OURQTYDGD2_1" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI2_L256_OURQTYDGD2_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI2_L256_B11_OURQTYDGD2_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Outer fuel tank quantity - left" name="OURQTYLFT2" type="float">
         <signal comment="Outer fuel tank quantity - left" lsb="14" msb="28" name="FQI2_L256_OURQTYLFT2" nbBit="15" signed="1" startBit="1" type="float">
@@ -5305,7 +5241,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - left" name="OURQTYLFTDGD2" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI2_L256_OURQTYLFTDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - left" lsb="11" msb="11" name="FQI2_L256_B11_OURQTYLFTDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="257" name="FQI1a4_w1257" sdi="01" type="HYB">
@@ -5320,7 +5256,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel tank quantity degraded data - left" name="INRQTYDGD1_1" type="boolean">
-        <signal comment="Inner fuel tank quantity degraded data - left" lsb="11" msb="11" name="FQI1_L257_INRQTYDGD1_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel tank quantity degraded data - left" lsb="11" msb="11" name="FQI1_L257_B11_INRQTYDGD1_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Inner fuel tank quantity - left" name="INRQTYLFT1" type="float">
         <signal comment="Inner fuel tank quantity - left" lsb="14" msb="28" name="FQI1_L257_INRQTYLFT1" nbBit="15" signed="1" startBit="1" type="float">
@@ -5328,7 +5264,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel tank quantity degraded data - left" name="INRQTYLFTDGD1" type="boolean">
-        <signal comment="Inner fuel tank quantity degraded data - left" lsb="11" msb="11" name="FQI1_L257_INRQTYLFTDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel tank quantity degraded data - left" lsb="11" msb="11" name="FQI1_L257_B11_INRQTYLFTDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="257" name="FQI2a4_w2257" sdi="10" type="HYB">
@@ -5343,7 +5279,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel tank quantity degraded data - left" name="INRQTYDGD2_1" type="boolean">
-        <signal comment="Inner fuel tank quantity degraded data - left" lsb="11" msb="11" name="FQI2_L257_INRQTYDGD2_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel tank quantity degraded data - left" lsb="11" msb="11" name="FQI2_L257_B11_INRQTYDGD2_1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Inner fuel quantity - left" name="INRQTYLFT2" type="float">
         <signal comment="Inner fuel quantity - left" lsb="14" msb="28" name="FQI2_L257_INRQTYLFT2" nbBit="15" signed="1" startBit="1" type="float">
@@ -5351,7 +5287,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel quantity degraded - left" name="INRQTYLFTDGD2" type="boolean">
-        <signal comment="Inner fuel quantity degraded - left" lsb="11" msb="11" name="FQI2_L257_INRQTYLFTDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel quantity degraded - left" lsb="11" msb="11" name="FQI2_L257_B11_INRQTYLFTDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="260" name="CFDIUa4_w0260" sdi="00" type="HYB">
@@ -5403,7 +5339,7 @@
         </signal>
       </parameter>
       <parameter comment="Center fuel tank quantity degraded" name="CTRQTYDGD1" type="boolean">
-        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI1_L260_CTRQTYDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI1_L260_B11_CTRQTYDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Center fuel tank quantity" name="CTRQTY1" type="float">
         <signal comment="Center fuel tank quantity" lsb="14" msb="28" name="FQI1_L260_CTRQTY1" nbBit="15" signed="1" startBit="1" type="float">
@@ -5411,7 +5347,7 @@
         </signal>
       </parameter>
       <parameter comment="Center fuel tank quantity degraded" name="CTRQTYDGD1" type="boolean">
-        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI1_L260_CTRQTYDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI1_L260_B11_CTRQTYDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="260" name="FQI2a4_w2260" sdi="10" type="HYB">
@@ -5426,7 +5362,7 @@
         </signal>
       </parameter>
       <parameter comment="Center fuel tank quantity degraded" name="CTRQTYDGD2" type="boolean">
-        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI2_L260_CTRQTYDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI2_L260_B11_CTRQTYDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Center fuel tank quantity" name="CTRQTY2" type="float">
         <signal comment="Center fuel tank quantity" lsb="14" msb="28" name="FQI2_L260_CTRQTY2" nbBit="15" signed="1" startBit="1" type="float">
@@ -5434,7 +5370,7 @@
         </signal>
       </parameter>
       <parameter comment="Center fuel tank quantity degraded" name="CTRQTYDGD2" type="boolean">
-        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI2_L260_CTRQTYDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Center fuel tank quantity degraded" lsb="11" msb="11" name="FQI2_L260_B11_CTRQTYDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="261" name="FQI1a4_w1261" sdi="01" type="HYB">
@@ -5449,7 +5385,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel tank quantity degraded data - right" name="INRQTYDGD1_2" type="boolean">
-        <signal comment="Inner fuel tank quantity degraded data - right" lsb="11" msb="11" name="FQI1_L261_INRQTYDGD1_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel tank quantity degraded data - right" lsb="11" msb="11" name="FQI1_L261_B11_INRQTYDGD1_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Inner fuel tank quantity - right" name="INRQTYRGH1" type="float">
         <signal comment="Inner fuel tank quantity - right" lsb="14" msb="28" name="FQI1_L261_INRQTYRGH1" nbBit="15" signed="1" startBit="1" type="float">
@@ -5457,7 +5393,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel tank quantity degraded data - right" name="INRQTYRGHDGD1" type="boolean">
-        <signal comment="Inner fuel tank quantity degraded data - right" lsb="11" msb="11" name="FQI1_L261_INRQTYRGHDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel tank quantity degraded data - right" lsb="11" msb="11" name="FQI1_L261_B11_INRQTYRGHDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="261" name="FQI2a4_w2261" sdi="10" type="HYB">
@@ -5472,7 +5408,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel tank quantity degraded data - right" name="INRQTYDGD2_2" type="boolean">
-        <signal comment="Inner fuel tank quantity degraded data - right" lsb="11" msb="11" name="FQI2_L261_INRQTYDGD2_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel tank quantity degraded data - right" lsb="11" msb="11" name="FQI2_L261_B11_INRQTYDGD2_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Inner fuel tank quantity - right" name="INRQTYRGH2" type="float">
         <signal comment="Inner fuel tank quantity - right" lsb="14" msb="28" name="FQI2_L261_INRQTYRGH2" nbBit="15" signed="1" startBit="1" type="float">
@@ -5480,7 +5416,7 @@
         </signal>
       </parameter>
       <parameter comment="Inner fuel tank quantity  degraded data - right" name="INRQTYRGHDGD2" type="boolean">
-        <signal comment="Inner fuel tank quantity  degraded data - right" lsb="11" msb="11" name="FQI2_L261_INRQTYRGHDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Inner fuel tank quantity  degraded data - right" lsb="11" msb="11" name="FQI2_L261_B11_INRQTYRGHDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="262" name="FQI1a4_w1262" sdi="01" type="HYB">
@@ -5495,7 +5431,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - right" name="OURQTYDGD1_2" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI1_L262_OURQTYDGD1_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI1_L262_B11_OURQTYDGD1_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Outer fuel tank quantity - right" name="OURQTYRGH1" type="float">
         <signal comment="Outer fuel tank quantity - right" lsb="14" msb="28" name="FQI1_L262_OURQTYRGH1" nbBit="15" signed="1" startBit="1" type="float">
@@ -5503,7 +5439,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - right" name="OURQTYRGHDGD1" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI1_L262_OURQTYRGHDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI1_L262_B11_OURQTYRGHDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="262" name="FQI2a4_w2262" sdi="10" type="HYB">
@@ -5518,7 +5454,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - right" name="OURQTYDGD2_2" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI2_L262_OURQTYDGD2_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI2_L262_B11_OURQTYDGD2_2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Outer fuel tank quantity - right" name="OURQTYRGH2" type="float">
         <signal comment="Outer fuel tank quantity - right" lsb="14" msb="28" name="FQI2_L262_OURQTYRGH2" nbBit="15" signed="1" startBit="1" type="float">
@@ -5526,7 +5462,7 @@
         </signal>
       </parameter>
       <parameter comment="Outer fuel tank quantity degraded - right" name="OURQTYRGHDGD2" type="boolean">
-        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI2_L262_OURQTYRGHDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Outer fuel tank quantity degraded - right" lsb="11" msb="11" name="FQI2_L262_B11_OURQTYRGHDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="263" name="ILS1a4_wx263" sdi="XX" type="ISO5">
@@ -5535,11 +5471,11 @@
           <signal name="ILS1a4_wx263_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="int">
-        <signal comment="ILS identifier character 1" lsb="11" msb="17" name="ILS1_L263_ILSIDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="char">
+        <signal comment="ILS identifier character 1" lsb="11" msb="17" name="ILS1_L263_ILSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="int">
-        <signal comment="ILS identifier character 2" lsb="19" msb="25" name="ILS1_L263_ILSIDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="char">
+        <signal comment="ILS identifier character 2" lsb="19" msb="25" name="ILS1_L263_ILSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="263" name="ILS2a4_wx263" sdi="XX" type="ISO5">
@@ -5548,11 +5484,11 @@
           <signal name="ILS2a4_wx263_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="int">
-        <signal comment="ILS identifier character 1" lsb="11" msb="17" name="ILS2_L263_ILSIDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="char">
+        <signal comment="ILS identifier character 1" lsb="11" msb="17" name="ILS2_L263_ILSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="int">
-        <signal comment="ILS identifier character 2" lsb="19" msb="25" name="ILS2_L263_ILSIDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="char">
+        <signal comment="ILS identifier character 2" lsb="19" msb="25" name="ILS2_L263_ILSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="264" name="EECCFM2Ba4_w0264" sdi="00" type="BNR">
@@ -5708,11 +5644,11 @@
           <signal name="ILS1a4_wx264_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="int">
-        <signal comment="ILS identifier character 3" lsb="11" msb="17" name="ILS1_L264_ILSIDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="char">
+        <signal comment="ILS identifier character 3" lsb="11" msb="17" name="ILS1_L264_ILSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="int">
-        <signal comment="ILS identifier character 4" lsb="19" msb="25" name="ILS1_L264_ILSIDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="char">
+        <signal comment="ILS identifier character 4" lsb="19" msb="25" name="ILS1_L264_ILSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="264" name="ILS2a4_wx264" sdi="XX" type="ISO5">
@@ -5721,11 +5657,11 @@
           <signal name="ILS2a4_wx264_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="int">
-        <signal comment="ILS identifier character 3" lsb="11" msb="17" name="ILS2_L264_ILSIDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="char">
+        <signal comment="ILS identifier character 3" lsb="11" msb="17" name="ILS2_L264_ILSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="int">
-        <signal comment="ILS identifier character 4" lsb="19" msb="25" name="ILS2_L264_ILSIDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="char">
+        <signal comment="ILS identifier character 4" lsb="19" msb="25" name="ILS2_L264_ILSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="270" name="EECCFM2Ba4_w0270" sdi="00" type="DIS">
@@ -6974,10 +6910,10 @@
         </signal>
       </parameter>
       <parameter comment="No highlight on ND" name="X_NOHIGHLIGHT" type="boolean">
-        <signal comment="No highlight on ND" lsb="19" msb="19" name="TCAS_L272_X_NOHIGHLIGHT" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="No highlight on ND" lsb="19" msb="19" name="TCAS_L272_B19_X_NOHIGHLIGHT" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="No selection on ND" name="X_NOSELECT" type="boolean">
-        <signal comment="No selection on ND" lsb="27" msb="27" name="TCAS_L272_X_NOSELECT" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="No selection on ND" lsb="27" msb="27" name="TCAS_L272_B27_X_NOSELECT" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Selected intruder number on ND" name="X_SELECT" type="float">
         <signal comment="Selected intruder number on ND" lsb="20" msb="26" name="TCAS_L272_X_SELECT" nbBit="7" signed="0" startBit="1" type="float">
@@ -7044,10 +6980,10 @@
         </signal>
       </parameter>
       <parameter comment="No highlight on ND" name="X_NOHIGHLIGHT" type="boolean">
-        <signal comment="No highlight on ND" lsb="19" msb="19" name="TCAS_L272_X_NOHIGHLIGHT" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="No highlight on ND" lsb="19" msb="19" name="TCAS_L272_B19_X_NOHIGHLIGHT" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="No selection on ND" name="X_NOSELECT" type="boolean">
-        <signal comment="No selection on ND" lsb="27" msb="27" name="TCAS_L272_X_NOSELECT" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="No selection on ND" lsb="27" msb="27" name="TCAS_L272_B27_X_NOSELECT" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Selected intruder number on ND" name="X_SELECT" type="float">
         <signal comment="Selected intruder number on ND" lsb="20" msb="26" name="TCAS_L272_X_SELECT" nbBit="7" signed="0" startBit="1" type="float">
@@ -7421,34 +7357,34 @@
         </parameter>
       </ssm>
       <parameter comment="Ground mode 1" name="GNDMOD1" type="boolean">
-        <signal comment="Ground mode 1" lsb="29" msb="29" name="TCAS_L274_GNDMOD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Ground mode 1" lsb="29" msb="29" name="TCAS_L274_B29_GNDMOD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Ground mode 2" name="GNDMOD2" type="boolean">
-        <signal comment="Ground mode 2" lsb="28" msb="28" name="TCAS_L274_GNDMOD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Ground mode 2" lsb="28" msb="28" name="TCAS_L274_B28_GNDMOD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Ground mode 3" name="GNDMOD3" type="boolean">
-        <signal comment="Ground mode 3" lsb="27" msb="27" name="TCAS_L274_GNDMOD3" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Ground mode 3" lsb="27" msb="27" name="TCAS_L274_B27_GNDMOD3" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Ground mode 4" name="GNDMOD4" type="boolean">
-        <signal comment="Ground mode 4" lsb="26" msb="26" name="TCAS_L274_GNDMOD4" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Ground mode 4" lsb="26" msb="26" name="TCAS_L274_B26_GNDMOD4" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Standby mode 1" name="STBYMOD1" type="boolean">
-        <signal comment="Standby mode 1" lsb="25" msb="25" name="TCAS_L274_STBYMOD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Standby mode 1" lsb="25" msb="25" name="TCAS_L274_B25_STBYMOD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Standby mode 2" name="STBYMOD2" type="boolean">
-        <signal comment="Standby mode 2" lsb="24" msb="24" name="TCAS_L274_STBYMOD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Standby mode 2" lsb="24" msb="24" name="TCAS_L274_B24_STBYMOD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Standby mode 3" name="STBYMOD3" type="boolean">
-        <signal comment="Standby mode 3" lsb="23" msb="23" name="TCAS_L274_STBYMOD3" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Standby mode 3" lsb="23" msb="23" name="TCAS_L274_B23_STBYMOD3" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Standby mode 1" name="STBYMOD1" type="boolean">
-        <signal comment="Standby mode 1" lsb="25" msb="25" name="TCAS_L274_STBYMOD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Standby mode 1" lsb="25" msb="25" name="TCAS_L274_B25_STBYMOD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Standby mode 2" name="STBYMOD2" type="boolean">
-        <signal comment="Standby mode 2" lsb="24" msb="24" name="TCAS_L274_STBYMOD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Standby mode 2" lsb="24" msb="24" name="TCAS_L274_B24_STBYMOD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="Standby mode 3" name="STBYMOD3" type="boolean">
-        <signal comment="Standby mode 3" lsb="23" msb="23" name="TCAS_L274_STBYMOD3" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="Standby mode 3" lsb="23" msb="23" name="TCAS_L274_B23_STBYMOD3" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="275" name="EECCFM2Ba4_w0275" sdi="00" type="DIS">
@@ -7757,17 +7693,17 @@
           <signal name="CFDIUa4_w0301_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Aircraft identifier character 1" name="X_ACIDENTCHAR1" type="int">
-        <signal comment="Aircraft identifier character 1" lsb="11" msb="17" name="CFDIU_L301_X_ACIDENTCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 1" name="X_ACIDENTCHAR1" type="char">
+        <signal comment="Aircraft identifier character 1" lsb="11" msb="17" name="CFDIU_L301_X_ACIDENTCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 2" name="X_ACIDENTCHAR2" type="int">
-        <signal comment="Aircraft identifier character 2" lsb="18" msb="24" name="CFDIU_L301_X_ACIDENTCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 2" name="X_ACIDENTCHAR2" type="char">
+        <signal comment="Aircraft identifier character 2" lsb="18" msb="24" name="CFDIU_L301_X_ACIDENTCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 3" name="X_ACIDENTCHAR3" type="int">
-        <signal comment="Aircraft identifier character 3" lsb="25" msb="31" name="CFDIU_L301_X_ACIDENTCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 3" name="X_ACIDENTCHAR3" type="char">
+        <signal comment="Aircraft identifier character 3" lsb="25" msb="31" name="CFDIU_L301_X_ACIDENTCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="A/C IDENTIFICATION WORD1" name="ACIDENTWORD1" type="int">
-        <signal comment="A/C IDENTIFICATION WORD1" lsb="11" msb="17" name="CFDIU_L301_ACIDENTWORD1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="A/C IDENTIFICATION WORD1" name="ACIDENTWORD1" type="char">
+        <signal comment="A/C IDENTIFICATION WORD1" lsb="11" msb="17" name="CFDIU_L301_ACIDENTWORD1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="302" name="CFDIUa4_w0302" sdi="00" type="ISO5">
@@ -7776,17 +7712,17 @@
           <signal name="CFDIUa4_w0302_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Aircraft identifier character 4" name="X_ACIDENTCHAR4" type="int">
-        <signal comment="Aircraft identifier character 4" lsb="11" msb="17" name="CFDIU_L302_X_ACIDENTCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 4" name="X_ACIDENTCHAR4" type="char">
+        <signal comment="Aircraft identifier character 4" lsb="11" msb="17" name="CFDIU_L302_X_ACIDENTCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 5" name="X_ACIDENTCHAR5" type="int">
-        <signal comment="Aircraft identifier character 5" lsb="18" msb="24" name="CFDIU_L302_X_ACIDENTCHAR5" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 5" name="X_ACIDENTCHAR5" type="char">
+        <signal comment="Aircraft identifier character 5" lsb="18" msb="24" name="CFDIU_L302_X_ACIDENTCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 6" name="X_ACIDENTCHAR6" type="int">
-        <signal comment="Aircraft identifier character 6" lsb="25" msb="31" name="CFDIU_L302_X_ACIDENTCHAR6" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 6" name="X_ACIDENTCHAR6" type="char">
+        <signal comment="Aircraft identifier character 6" lsb="25" msb="31" name="CFDIU_L302_X_ACIDENTCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="A/C IDENTIFICATION WORD2" name="ACIDENTWORD2" type="int">
-        <signal comment="A/C IDENTIFICATION WORD2" lsb="11" msb="17" name="CFDIU_L302_ACIDENTWORD2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="A/C IDENTIFICATION WORD2" name="ACIDENTWORD2" type="char">
+        <signal comment="A/C IDENTIFICATION WORD2" lsb="11" msb="17" name="CFDIU_L302_ACIDENTWORD2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="303" name="CFDIUa4_w0303" sdi="00" type="ISO5">
@@ -7795,17 +7731,17 @@
           <signal name="CFDIUa4_w0303_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Aircraft identifier character 7" name="X_ACIDENTCHAR7" type="int">
-        <signal comment="Aircraft identifier character 7" lsb="11" msb="17" name="CFDIU_L303_X_ACIDENTCHAR7" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 7" name="X_ACIDENTCHAR7" type="char">
+        <signal comment="Aircraft identifier character 7" lsb="11" msb="17" name="CFDIU_L303_X_ACIDENTCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 8" name="X_ACIDENTCHAR8" type="int">
-        <signal comment="Aircraft identifier character 8" lsb="18" msb="24" name="CFDIU_L303_X_ACIDENTCHAR8" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 8" name="X_ACIDENTCHAR8" type="char">
+        <signal comment="Aircraft identifier character 8" lsb="18" msb="24" name="CFDIU_L303_X_ACIDENTCHAR8" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 9" name="X_ACIDENTCHAR9" type="int">
-        <signal comment="Aircraft identifier character 9" lsb="25" msb="31" name="CFDIU_L303_X_ACIDENTCHAR9" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="Aircraft identifier character 9" name="X_ACIDENTCHAR9" type="char">
+        <signal comment="Aircraft identifier character 9" lsb="25" msb="31" name="CFDIU_L303_X_ACIDENTCHAR9" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="A/C IDENTIFICATION WORD3" name="ACIDENTWORD3" type="int">
-        <signal comment="A/C IDENTIFICATION WORD3" lsb="11" msb="17" name="CFDIU_L303_ACIDENTWORD3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="A/C IDENTIFICATION WORD3" name="ACIDENTWORD3" type="char">
+        <signal comment="A/C IDENTIFICATION WORD3" lsb="11" msb="17" name="CFDIU_L303_ACIDENTWORD3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="304" name="CFDIUa4_w0304" sdi="00" type="HYB">
@@ -7962,7 +7898,7 @@
         </parameter>
       </ssm>
       <parameter comment="ACT1 quantity accuracy degraded" name="ACT1FUDGD1" type="boolean">
-        <signal comment="ACT1 quantity accuracy degraded" lsb="11" msb="11" name="FQI1_L312_ACT1FUDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="ACT1 quantity accuracy degraded" lsb="11" msb="11" name="FQI1_L312_B11_ACT1FUDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="ACT1 fuel quantity" name="ACT1FUQTY1" type="float">
         <signal comment="ACT1 fuel quantity" lsb="14" msb="28" name="FQI1_L312_ACT1FUQTY1" nbBit="15" signed="1" startBit="1" type="float">
@@ -7999,7 +7935,7 @@
         </parameter>
       </ssm>
       <parameter comment="ACT1 quantity accuracy degraded" name="ACT1FUDGD2" type="boolean">
-        <signal comment="ACT1 quantity accuracy degraded" lsb="11" msb="11" name="FQI2_L312_ACT1FUDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="ACT1 quantity accuracy degraded" lsb="11" msb="11" name="FQI2_L312_B11_ACT1FUDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="ACT1 fuel quantity" name="ACT1FUQTY2" type="float">
         <signal comment="ACT1 fuel quantity" lsb="14" msb="28" name="FQI2_L312_ACT1FUQTY2" nbBit="15" signed="1" startBit="1" type="float">
@@ -8058,7 +7994,7 @@
         </parameter>
       </ssm>
       <parameter comment="ACT2 quantity accuracy degraded" name="ACT2FUDGD1" type="boolean">
-        <signal comment="ACT2 quantity accuracy degraded" lsb="11" msb="11" name="FQI1_L313_ACT2FUDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="ACT2 quantity accuracy degraded" lsb="11" msb="11" name="FQI1_L313_B11_ACT2FUDGD1" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="ACT2  fuel quantity" name="ACT2FUQTY1" type="float">
         <signal comment="ACT2  fuel quantity" lsb="14" msb="28" name="FQI1_L313_ACT2FUQTY1" nbBit="15" signed="1" startBit="1" type="float">
@@ -8090,7 +8026,7 @@
         </parameter>
       </ssm>
       <parameter comment="ACT2 quantity accuracy degraded" name="ACT2FUDGD2" type="boolean">
-        <signal comment="ACT2 quantity accuracy degraded" lsb="11" msb="11" name="FQI2_L313_ACT2FUDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
+        <signal comment="ACT2 quantity accuracy degraded" lsb="11" msb="11" name="FQI2_L313_B11_ACT2FUDGD2" nbBit="1" signed="0" startBit="1" type="boolean"/>
       </parameter>
       <parameter comment="ACT2 fuel quantity" name="ACT2FUQTY2" type="float">
         <signal comment="ACT2 fuel quantity" lsb="14" msb="28" name="FQI2_L313_ACT2FUQTY2" nbBit="15" signed="1" startBit="1" type="float">
@@ -8837,32 +8773,32 @@
           <signal name="ILS1a4_wx323_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="int">
-        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS1_L323_FLSIDCHAR1NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="char">
+        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS1_L323_FLSIDCHAR1NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="int">
-        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS1_L323_FLSIDCHAR2NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="char">
+        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS1_L323_FLSIDCHAR2NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="int">
-        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS1_L323_FLSIDCHAR3NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="char">
+        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS1_L323_FLSIDCHAR3NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="int">
-        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS1_L323_FLSIDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="char">
+        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS1_L323_FLSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="int">
-        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS1_L323_FLSIDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="char">
+        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS1_L323_FLSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="int">
-        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS1_L323_FLSIDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="char">
+        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS1_L323_FLSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 1" name="APIDCHAR1" type="int">
-        <signal comment="AP ident char 1" lsb="9" msb="15" name="ILS1_L323_APIDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 1" name="APIDCHAR1" type="char">
+        <signal comment="AP ident char 1" lsb="9" msb="15" name="ILS1_L323_APIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 2" name="APIDCHAR2" type="int">
-        <signal comment="AP ident char 2" lsb="16" msb="22" name="ILS1_L323_APIDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 2" name="APIDCHAR2" type="char">
+        <signal comment="AP ident char 2" lsb="16" msb="22" name="ILS1_L323_APIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 3" name="APIDCHAR3" type="int">
-        <signal comment="AP ident char 3" lsb="23" msb="29" name="ILS1_L323_APIDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 3" name="APIDCHAR3" type="char">
+        <signal comment="AP ident char 3" lsb="23" msb="29" name="ILS1_L323_APIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="323" name="ILS2a4_wx323" sdi="DD" type="ISO5">
@@ -8871,32 +8807,32 @@
           <signal name="ILS2a4_wx323_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="int">
-        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS2_L323_FLSIDCHAR1NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="char">
+        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS2_L323_FLSIDCHAR1NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="int">
-        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS2_L323_FLSIDCHAR2NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="char">
+        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS2_L323_FLSIDCHAR2NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="int">
-        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS2_L323_FLSIDCHAR3NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="char">
+        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS2_L323_FLSIDCHAR3NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="int">
-        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS2_L323_FLSIDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="char">
+        <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS2_L323_FLSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="int">
-        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS2_L323_FLSIDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="char">
+        <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS2_L323_FLSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="int">
-        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS2_L323_FLSIDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="char">
+        <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS2_L323_FLSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 1" name="APIDCHAR1" type="int">
-        <signal comment="AP ident char 1" lsb="9" msb="15" name="ILS2_L323_APIDCHAR1" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 1" name="APIDCHAR1" type="char">
+        <signal comment="AP ident char 1" lsb="9" msb="15" name="ILS2_L323_APIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 2" name="APIDCHAR2" type="int">
-        <signal comment="AP ident char 2" lsb="16" msb="22" name="ILS2_L323_APIDCHAR2" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 2" name="APIDCHAR2" type="char">
+        <signal comment="AP ident char 2" lsb="16" msb="22" name="ILS2_L323_APIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 3" name="APIDCHAR3" type="int">
-        <signal comment="AP ident char 3" lsb="23" msb="29" name="ILS2_L323_APIDCHAR3" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 3" name="APIDCHAR3" type="char">
+        <signal comment="AP ident char 3" lsb="23" msb="29" name="ILS2_L323_APIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="324" name="IRS1a4_w1324" sdi="01" type="BNR">
@@ -9001,32 +8937,32 @@
           <signal name="ILS1a4_wx324_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="int">
-        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS1_L324_FLSIDCHAR4NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="char">
+        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS1_L324_FLSIDCHAR4NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="int">
-        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS1_L324_FLSIDCHAR5NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="char">
+        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS1_L324_FLSIDCHAR5NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="int">
-        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS1_L324_FLSIDCHAR6NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="char">
+        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS1_L324_FLSIDCHAR6NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="int">
-        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS1_L324_FLSIDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="char">
+        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS1_L324_FLSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="int">
-        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS1_L324_FLSIDCHAR5" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="char">
+        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS1_L324_FLSIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="int">
-        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS1_L324_FLSIDCHAR6" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="char">
+        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS1_L324_FLSIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 4" name="APIDCHAR4" type="int">
-        <signal comment="AP ident char 4" lsb="9" msb="15" name="ILS1_L324_APIDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 4" name="APIDCHAR4" type="char">
+        <signal comment="AP ident char 4" lsb="9" msb="15" name="ILS1_L324_APIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 5" name="APIDCHAR5" type="int">
-        <signal comment="AP ident char 5" lsb="16" msb="22" name="ILS1_L324_APIDCHAR5" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 5" name="APIDCHAR5" type="char">
+        <signal comment="AP ident char 5" lsb="16" msb="22" name="ILS1_L324_APIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 6" name="APIDCHAR6" type="int">
-        <signal comment="AP ident char 6" lsb="23" msb="29" name="ILS1_L324_APIDCHAR6" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 6" name="APIDCHAR6" type="char">
+        <signal comment="AP ident char 6" lsb="23" msb="29" name="ILS1_L324_APIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="324" name="ILS2a4_wx324" sdi="DD" type="ISO5">
@@ -9035,32 +8971,32 @@
           <signal name="ILS2a4_wx324_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="int">
-        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS2_L324_FLSIDCHAR4NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="char">
+        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS2_L324_FLSIDCHAR4NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="int">
-        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS2_L324_FLSIDCHAR5NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="char">
+        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS2_L324_FLSIDCHAR5NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="int">
-        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS2_L324_FLSIDCHAR6NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="char">
+        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS2_L324_FLSIDCHAR6NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="int">
-        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS2_L324_FLSIDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="char">
+        <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS2_L324_FLSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="int">
-        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS2_L324_FLSIDCHAR5" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="char">
+        <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS2_L324_FLSIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="int">
-        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS2_L324_FLSIDCHAR6" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="char">
+        <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS2_L324_FLSIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 4" name="APIDCHAR4" type="int">
-        <signal comment="AP ident char 4" lsb="9" msb="15" name="ILS2_L324_APIDCHAR4" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 4" name="APIDCHAR4" type="char">
+        <signal comment="AP ident char 4" lsb="9" msb="15" name="ILS2_L324_APIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 5" name="APIDCHAR5" type="int">
-        <signal comment="AP ident char 5" lsb="16" msb="22" name="ILS2_L324_APIDCHAR5" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 5" name="APIDCHAR5" type="char">
+        <signal comment="AP ident char 5" lsb="16" msb="22" name="ILS2_L324_APIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 6" name="APIDCHAR6" type="int">
-        <signal comment="AP ident char 6" lsb="23" msb="29" name="ILS2_L324_APIDCHAR6" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 6" name="APIDCHAR6" type="char">
+        <signal comment="AP ident char 6" lsb="23" msb="29" name="ILS2_L324_APIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="325" name="IRS1a4_w1325" sdi="01" type="BNR">
@@ -9496,14 +9432,14 @@
           <signal name="ILS1a4_wx332_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="int">
-        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS1_L332_FLSIDCHAR7NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="char">
+        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS1_L332_FLSIDCHAR7NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="int">
-        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS1_L332_FLSIDCHAR7" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="char">
+        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS1_L332_FLSIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 7" name="APIDCHAR7" type="int">
-        <signal comment="AP ident char 7" lsb="16" msb="22" name="ILS1_L332_APIDCHAR7" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 7" name="APIDCHAR7" type="char">
+        <signal comment="AP ident char 7" lsb="16" msb="22" name="ILS1_L332_APIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="332" name="ILS2a4_wx332" sdi="DD" type="ISO5">
@@ -9512,14 +9448,14 @@
           <signal name="ILS2a4_wx332_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="int">
-        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS2_L332_FLSIDCHAR7NC" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="char">
+        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS2_L332_FLSIDCHAR7NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="int">
-        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS2_L332_FLSIDCHAR7" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="char">
+        <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS2_L332_FLSIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 7" name="APIDCHAR7" type="int">
-        <signal comment="AP ident char 7" lsb="16" msb="22" name="ILS2_L332_APIDCHAR7" nbBit="7" signed="0" startBit="1" type="int"/>
+      <parameter comment="AP ident char 7" name="APIDCHAR7" type="char">
+        <signal comment="AP ident char 7" lsb="16" msb="22" name="ILS2_L332_APIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
     <A429Label labelNumber="333" name="EECCFM2Ba4_w0333" sdi="00" type="DIS">

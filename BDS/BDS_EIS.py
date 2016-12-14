@@ -109,23 +109,19 @@ class BDS_EIS(BDS):
 
 def SetLabelFormattedName(LabelObj):
 
-    # set formatted name (i.e simulation label name)pip
-    try:
-        int(LabelObj.sdi, 2)
-    except ValueError:
-        _sdi = str(LabelObj.sdi)
-        if (_sdi == "DD") or (_sdi == "XX"):
-            _sdi = "x"
+    _sdi = LabelObj.sdi
+    if (_sdi == "DD") or (_sdi == "XX"):
+        _sdi = "x"
 
         LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + _sdi + str("%03d" % LabelObj.number)
     else:
-        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi, 2)) + str("%03d" % LabelObj.number)
+        LabelObj.SimuFormattedName = str(LabelObj.source) + "a4_w" + str(int(LabelObj.sdi,2)) + str("%03d" % LabelObj.number)
 
 def SetParameterPreFormattedName(ParamObj):
 
     LabelObj=ParamObj.labelObj
 
-    if LabelObj.labeltype == "DW":
+    if isinstance(ParamObj, A429ParamDIS):
         ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_B" + str(ParamObj.BitNumber) + "_" + str(ParamObj.name)
     else:
         ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + str(ParamObj.name)

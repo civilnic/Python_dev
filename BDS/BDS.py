@@ -24,7 +24,6 @@ class BDS:
         labelIdentifier=LabelOject.createIndentifier()
         if(labelIdentifier not in self.A429LabelDict.keys()):
             self.A429LabelDict[labelIdentifier] = LabelOject
-        else:
             pass
             #print("Label deja dans la BDS: " + str(labelIdentifier))
         return self.A429LabelDict[labelIdentifier]

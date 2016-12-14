@@ -323,7 +323,7 @@ class BDS_FWC(BDS):
             # other I/O type
             else:
                 pass
-            #TODO: Discret and other than A419 data type treatment
+            #TODO: Discret and other than A429 data type treatment
 
     def AddParameter(self, DicoLine, LabelObj):
 
@@ -426,23 +426,22 @@ class BDS_FWC(BDS):
         else:
             connectorId = ""
 
-        try:
-            int(LabelObj.sdi, 2)
-        except ValueError:
-            _sdi = str(LabelObj.sdi)
-            if _sdi == "DD":
-                _sdi = "D"
-
+        _sdi = LabelObj.sdi
+        if _sdi == "DD":
+            _sdi = "D"
+        elif _sdi == "XX":
+            _sdi = "X"
             LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + "_" + _sdi + "_1"
         else:
-            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + "_" + str(int(LabelObj.sdi, 2)) + "_1"
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) \
+                                         + "_" + str(int(LabelObj.sdi, 2)) + "_1"
 
     def SetParameterPreFormattedName(self, ParamObj):
 
         LabelObj = ParamObj.labelObj
         parametername = str(ParamObj.name).replace(".", "_")
 
-        if LabelObj.labeltype == "DW":
+        if isinstance(ParamObj, A429ParamDIS):
             ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) \
                                             + "_B" + str(ParamObj.BitNumber) + "_" + parametername
         else:

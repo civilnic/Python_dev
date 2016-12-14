@@ -100,7 +100,7 @@ class FDEF_XML:
         _ssmElement = etree.SubElement(
                                         self._LabelCurrentElement,
                                         "ssm",
-                                        type=self.getSsmType(labelObj)
+                                        type=labelObj.ssmtype
                                      )
 
         _parameterElement = etree.SubElement(
@@ -179,51 +179,3 @@ class FDEF_XML:
             )
         else:
             print("[FDEF_XML]{AddPatameter] Unknwon param coding type: " + ParamObj.codingtype)
-
-
-
-
-
-
-    def getSsmType(self, labelObj):
-
-        # if ssmtype attribute is set on object (i.e specified on BDS) we use it here
-        if labelObj.ssmtype:
-            _ssmtype = FDEF_XML.ssmType(labelObj)
-
-        # we test labeltype field of label object
-        # in case of HYB label, ssm type depends on parameters types
-        if labelObj.labeltype == "HYB":
-
-            # we parse parameters list of current label
-            # if one parameter is BNR => status will be BNR type
-            # if one parameter is BCD => status will be BCD type
-            # else status is set to default value: no SSM
-            for paramobj in labelObj.ParameterList:
-                if paramobj.formatparam == "BNR":
-                    _ssmtype = "status_ssm_bnr"
-                    break
-                elif paramobj.formatparam == "BCD":
-                    _ssmtype = "status_ssm_bcd"
-                    break
-                else:
-                    _ssmtype = "status_no_ssm"
-                pass
-        # for other label type DW/BCD/BNR ssm type follow label type
-        # => directly converted with ssmType function
-        else:
-            _ssmtype = FDEF_XML.ssmType(labelObj)
-        return _ssmtype
-
-    # set ssmtype according to label type.
-    def ssmType(labelObj):
-        _ssmtype=None
-        if labelObj.labeltype == "BNR":
-            _ssmtype = "status_ssm_bnr"
-        elif labelObj.labeltype == "DW":
-            _ssmtype = "status_ssm_dis"
-        elif labelObj.labeltype == "BCD":
-            _ssmtype = "status_ssm_bcd"
-        else:
-            _ssmtype = "status_no_ssm"
-        return _ssmtype

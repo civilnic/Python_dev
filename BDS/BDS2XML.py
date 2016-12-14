@@ -209,7 +209,7 @@ class BDS2XML:
             else:
                 # 'POSI'
                 linedict['POSI'] = ParameterObj.BitNumber
-            if LabelObj.labeltype != "ISO5" and ParameterObj.formatparam != "DW":
+            if LabelObj.labeltype != "ISO5" and ParameterObj.formatparam != "DW" and ParameterObj.formatparam != "Opaque":
                 # 'SGN'
                 linedict['SGN'] = ParameterObj.signed
                 # 'ECHEL'

@@ -11,7 +11,7 @@ class A429Label:
         _ path name of the file
         """
         self.number = int(number)
-        self.sdi = sdi
+        self.sdi = convertSDI(sdi)
         self.labeltype = labeltype
         self.system = system
         self._nature = convertNature(nature)
@@ -26,8 +26,35 @@ class A429Label:
 
     @property
     def ssmtype(self):
+        if self.labeltype == "BNR":
+            self._ssmtype = "status_ssm_bnr"
+        elif self.labeltype == "DW":
+            self._ssmtype = "status_ssm_dis"
+        elif self.labeltype == "BCD":
+            self._ssmtype = "status_ssm_bcd"
+        elif self.labeltype == "HYB":
+            # we parse parameters list of current label
+            # if one parameter is BNR => status will be BNR type
+            # if one parameter is BCD => status will be BCD type
+            # else status is set to default value: no SSM
+            if self.ParameterList:
+                for paramobj in self.ParameterList:
+                    if paramobj.formatparam == "BNR":
+                        self._ssmtype = "status_ssm_bnr"
+                        break
+                    elif paramobj.formatparam == "BCD":
+                        self._ssmtype = "status_ssm_bcd"
+                        break
+                    else:
+                        self._ssmtype = "status_no_ssm"
+                    pass
+            else:
+                self._ssmtype = "status_no_ssm"
+        else:
+            self._ssmtype = "status_no_ssm"
 
         return self._ssmtype
+
     @ssmtype.setter
     def ssmtype(self, ssmtype):
         self._ssmtype = ssmtype
@@ -96,8 +123,42 @@ class A429Label:
                 param.print()
 
     def createIndentifier(self):
-        identifier = (self.nature, self.system, self.number, self.sdi,self.source)
+
+        """" create a unique label identifer to store on BDS label dictionary """
+
+        identifier = (self.nature, self.system, self.number, str(self.sdi), self.source)
         return identifier
+
+
+    def computeSsmType(self):
+
+        """" compute attribute ssmtype if not attribute is not set """
+
+        if not self.ssmtype:
+
+            if self.labeltype == "BNR":
+                self.ssmtype = "status_ssm_bnr"
+            elif self.labeltype == "DW":
+                self.ssmtype = "status_ssm_dis"
+            elif self.labeltype == "BCD":
+                self.ssmtype = "status_ssm_bcd"
+            elif self.labeltype == "HYB":
+                # we parse parameters list of current label
+                # if one parameter is BNR => status will be BNR type
+                # if one parameter is BCD => status will be BCD type
+                # else status is set to default value: no SSM
+                for paramobj in self.ParameterList:
+                    if paramobj.formatparam == "BNR":
+                        self.ssmtype = "status_ssm_bnr"
+                        break
+                    elif paramobj.formatparam == "BCD":
+                        self.ssmtype = "status_ssm_bcd"
+                        break
+                    else:
+                        self.ssmtype = "status_no_ssm"
+                    pass
+            else:
+                self.ssmtype = "status_no_ssm"
 
 
 class A429Parameter:
@@ -180,6 +241,7 @@ class A429Parameter:
         return self._signed
     @signed.setter
     def signed(self, signed):
+
         convert_sign = str(signed)
 
         if signed:
@@ -349,7 +411,7 @@ class A429ParamISO5(A429Parameter):
 
     def __init__(self, name, nature, label, msb, nb_bits):
         A429Parameter.__init__(self, name, nature, label)
-        self.codingtype = "int"
+        self.codingtype = "char"
         self.msb = int(msb)
         if(nb_bits):
             self.nb_bits = int(nb_bits)
@@ -385,3 +447,28 @@ def convertNature(nature):
         return None
 
     return nature
+
+def convertSDI(sdi):
+
+    # set formatted name (i.e simulation label name)pip
+    try:
+        # we test here if string can be interpreded as an integer
+        _sdi = int(sdi, 2)
+
+        # string convertion
+        _sdi = str(_sdi)
+
+        # test cases
+        if (_sdi == "0") or (_sdi == "00"):
+            _sdi = "00"
+        elif (_sdi == "1") or (_sdi == "01"):
+            _sdi = "01"
+        elif (_sdi == "10") or (_sdi == "2"):
+            _sdi = "10"
+        elif (_sdi == "11") or (_sdi == "3"):
+            _sdi = "11"
+
+    except ValueError:
+        _sdi = str(sdi)
+
+    return _sdi
