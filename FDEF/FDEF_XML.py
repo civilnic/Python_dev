@@ -2,7 +2,7 @@ from datetime import datetime
 
 from lxml import etree
 
-from A429.A429 import (A429ParamBNR, A429ParamBCD, A429ParamISO5)
+from A429.A429 import (A429ParamBNR, A429ParamBCD, A429ParamISO5, A429ParamOpaque)
 
 
 class FDEF_XML:
@@ -121,13 +121,23 @@ class FDEF_XML:
 
     def AddParameter(self, ParamObj):
 
-        _parameterElement = etree.SubElement(
-            self._LabelCurrentElement,
-            "parameter",
-            name=ParamObj.name,
-            type=ParamObj.codingtype,
-            comment=ParamObj.parameter_def
-        )
+        if isinstance(ParamObj, A429ParamISO5) or isinstance(ParamObj, A429ParamOpaque):
+            _parameterElement = etree.SubElement(
+                self._LabelCurrentElement,
+                "parameter",
+                name=ParamObj.name,
+                type="String",
+                comment=ParamObj.parameter_def
+            )
+        else:
+            _parameterElement = etree.SubElement(
+                self._LabelCurrentElement,
+                "parameter",
+                name=ParamObj.name,
+                type=ParamObj.codingtype,
+                comment=ParamObj.parameter_def
+            )
+
         if isinstance(ParamObj, A429ParamISO5):
             _signalElement = etree.SubElement(
                 _parameterElement,

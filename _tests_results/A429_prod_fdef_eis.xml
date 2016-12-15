@@ -1,4 +1,4 @@
-<configurationTable generationDate="14/12/2016" generationTool="outil perso" type="A429">
+<configurationTable generationDate="15/12/2016" generationTool="outil perso" type="A429">
   <configurationSources>
     <sourceFile pathname="" type=""/>
   </configurationSources>
@@ -613,7 +613,7 @@
           <signal name="ILS1a4_wx033_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS frequency" name="ILSFRQ" type="int">
+      <parameter comment="ILS frequency" name="ILSFRQ" type="String">
         <signal comment="ILS frequency" lsb="9" msb="31" name="ILS1_L033_ILSFRQ" nbBit="23" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
@@ -623,7 +623,7 @@
           <signal name="ILS2a4_wx033_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS frequency" name="ILSFRQ" type="int">
+      <parameter comment="ILS frequency" name="ILSFRQ" type="String">
         <signal comment="ILS frequency" lsb="9" msb="31" name="ILS2_L033_ILSFRQ" nbBit="23" signed="0" startBit="1" type="int"/>
       </parameter>
     </A429Label>
@@ -4613,7 +4613,7 @@
           <signal name="CFDIUa4_wx227_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Maintenance phases (DU)" name="X_MAINTPHASES" type="char">
+      <parameter comment="Maintenance phases (DU)" name="X_MAINTPHASES" type="String">
         <signal comment="Maintenance phases (DU)" lsb="25" msb="31" name="CFDIU_L227_X_MAINTPHASES" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4623,7 +4623,7 @@
           <signal name="CFDIUa4_w0233_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 1 CHAR1" name="FLGHNUMWORD1" type="char">
+      <parameter comment="FLIGHT NUMBER WORD 1 CHAR1" name="FLGHNUMWORD1" type="String">
         <signal comment="FLIGHT NUMBER WORD 1 CHAR1" lsb="11" msb="17" name="CFDIU_L233_FLGHNUMWORD1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4633,7 +4633,7 @@
           <signal name="CFDIUa4_w0234_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 2 CHAR 1" name="FLGHNUMWORD2" type="char">
+      <parameter comment="FLIGHT NUMBER WORD 2 CHAR 1" name="FLGHNUMWORD2" type="String">
         <signal comment="FLIGHT NUMBER WORD 2 CHAR 1" lsb="11" msb="17" name="CFDIU_L234_FLGHNUMWORD2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4643,7 +4643,7 @@
           <signal name="CFDIUa4_w0235_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 3 CHAR1" name="FLGHNUMWORD3" type="char">
+      <parameter comment="FLIGHT NUMBER WORD 3 CHAR1" name="FLGHNUMWORD3" type="String">
         <signal comment="FLIGHT NUMBER WORD 3 CHAR1" lsb="11" msb="17" name="CFDIU_L235_FLGHNUMWORD3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4653,7 +4653,7 @@
           <signal name="CFDIUa4_w0236_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLIGHT NUMBER WORD 4 CHAR1" name="FLGHNUMWORD4" type="char">
+      <parameter comment="FLIGHT NUMBER WORD 4 CHAR1" name="FLGHNUMWORD4" type="String">
         <signal comment="FLIGHT NUMBER WORD 4 CHAR1" lsb="11" msb="17" name="CFDIU_L236_FLGHNUMWORD4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4762,10 +4762,10 @@
           <signal name="VOR1a4_w1242_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR1 identifier character 1" name="VOR1IDCHAR1" type="char">
+      <parameter comment="VOR1 identifier character 1" name="VOR1IDCHAR1" type="String">
         <signal comment="VOR1 identifier character 1" lsb="11" msb="17" name="VOR1_L242_VOR1IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VOR1 identifier character 2" name="VOR1IDCHAR2" type="char">
+      <parameter comment="VOR1 identifier character 2" name="VOR1IDCHAR2" type="String">
         <signal comment="VOR1 identifier character 2" lsb="19" msb="25" name="VOR1_L242_VOR1IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4799,10 +4799,10 @@
           <signal name="VOR2a4_w2242_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR2 identifier character 1" name="VOR2IDCHAR1" type="char">
+      <parameter comment="VOR2 identifier character 1" name="VOR2IDCHAR1" type="String">
         <signal comment="VOR2 identifier character 1" lsb="11" msb="17" name="VOR2_L242_VOR2IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VOR2 identifier character 2" name="VOR2IDCHAR2" type="char">
+      <parameter comment="VOR2 identifier character 2" name="VOR2IDCHAR2" type="String">
         <signal comment="VOR2 identifier character 2" lsb="19" msb="25" name="VOR2_L242_VOR2IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4924,10 +4924,10 @@
           <signal name="VOR1a4_w1244_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR1 identifier character 3" name="VOR1IDCHAR3" type="char">
+      <parameter comment="VOR1 identifier character 3" name="VOR1IDCHAR3" type="String">
         <signal comment="VOR1 identifier character 3" lsb="11" msb="17" name="VOR1_L244_VOR1IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VOR1 identifier character 4" name="VOR1IDCHAR4" type="char">
+      <parameter comment="VOR1 identifier character 4" name="VOR1IDCHAR4" type="String">
         <signal comment="VOR1 identifier character 4" lsb="19" msb="25" name="VOR1_L244_VOR1IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -4981,10 +4981,10 @@
           <signal name="VOR2a4_w2244_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="VOR2 identifier character 3" name="VOR2IDCHAR3" type="char">
+      <parameter comment="VOR2 identifier character 3" name="VOR2IDCHAR3" type="String">
         <signal comment="VOR2 identifier character 3" lsb="11" msb="17" name="VOR2_L244_VOR2IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="VORx identifier character 4" name="VOR2IDCHAR4" type="char">
+      <parameter comment="VORx identifier character 4" name="VOR2IDCHAR4" type="String">
         <signal comment="VORx identifier character 4" lsb="19" msb="25" name="VOR2_L244_VOR2IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5152,10 +5152,10 @@
           <signal name="ADF1a4_w1254_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF1 indentifier character 1" name="ADF1IDCHAR1" type="char">
+      <parameter comment="ADF1 indentifier character 1" name="ADF1IDCHAR1" type="String">
         <signal comment="ADF1 indentifier character 1" lsb="11" msb="17" name="ADF1_L254_ADF1IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF1 identifier character 2" name="ADF1IDCHAR2" type="char">
+      <parameter comment="ADF1 identifier character 2" name="ADF1IDCHAR2" type="String">
         <signal comment="ADF1 identifier character 2" lsb="19" msb="25" name="ADF1_L254_ADF1IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5165,10 +5165,10 @@
           <signal name="ADF2a4_w2254_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF2 identifier character 1" name="ADF2IDCHAR1" type="char">
+      <parameter comment="ADF2 identifier character 1" name="ADF2IDCHAR1" type="String">
         <signal comment="ADF2 identifier character 1" lsb="11" msb="17" name="ADF2_L254_ADF2IDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF2 identifier character 2" name="ADF2IDCHAR2" type="char">
+      <parameter comment="ADF2 identifier character 2" name="ADF2IDCHAR2" type="String">
         <signal comment="ADF2 identifier character 2" lsb="19" msb="25" name="ADF2_L254_ADF2IDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5178,10 +5178,10 @@
           <signal name="ADF1a4_w1255_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF1 identifier character 3" name="ADF1IDCHAR3" type="char">
+      <parameter comment="ADF1 identifier character 3" name="ADF1IDCHAR3" type="String">
         <signal comment="ADF1 identifier character 3" lsb="11" msb="17" name="ADF1_L255_ADF1IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF1 identifier character 4" name="ADF1IDCHAR4" type="char">
+      <parameter comment="ADF1 identifier character 4" name="ADF1IDCHAR4" type="String">
         <signal comment="ADF1 identifier character 4" lsb="19" msb="25" name="ADF1_L255_ADF1IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5191,10 +5191,10 @@
           <signal name="ADF2a4_w2255_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ADF2 identifier character 3" name="ADF2IDCHAR3" type="char">
+      <parameter comment="ADF2 identifier character 3" name="ADF2IDCHAR3" type="String">
         <signal comment="ADF2 identifier character 3" lsb="11" msb="17" name="ADF2_L255_ADF2IDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ADF2 identifier character 4" name="ADF2IDCHAR4" type="char">
+      <parameter comment="ADF2 identifier character 4" name="ADF2IDCHAR4" type="String">
         <signal comment="ADF2 identifier character 4" lsb="19" msb="25" name="ADF2_L255_ADF2IDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5471,10 +5471,10 @@
           <signal name="ILS1a4_wx263_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="char">
+      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="String">
         <signal comment="ILS identifier character 1" lsb="11" msb="17" name="ILS1_L263_ILSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="char">
+      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="String">
         <signal comment="ILS identifier character 2" lsb="19" msb="25" name="ILS1_L263_ILSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5484,10 +5484,10 @@
           <signal name="ILS2a4_wx263_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="char">
+      <parameter comment="ILS identifier character 1" name="ILSIDCHAR1" type="String">
         <signal comment="ILS identifier character 1" lsb="11" msb="17" name="ILS2_L263_ILSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="char">
+      <parameter comment="ILS identifier character 2" name="ILSIDCHAR2" type="String">
         <signal comment="ILS identifier character 2" lsb="19" msb="25" name="ILS2_L263_ILSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5644,10 +5644,10 @@
           <signal name="ILS1a4_wx264_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="char">
+      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="String">
         <signal comment="ILS identifier character 3" lsb="11" msb="17" name="ILS1_L264_ILSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="char">
+      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="String">
         <signal comment="ILS identifier character 4" lsb="19" msb="25" name="ILS1_L264_ILSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -5657,10 +5657,10 @@
           <signal name="ILS2a4_wx264_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="char">
+      <parameter comment="ILS identifier character 3" name="ILSIDCHAR3" type="String">
         <signal comment="ILS identifier character 3" lsb="11" msb="17" name="ILS2_L264_ILSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="char">
+      <parameter comment="ILS identifier character 4" name="ILSIDCHAR4" type="String">
         <signal comment="ILS identifier character 4" lsb="19" msb="25" name="ILS2_L264_ILSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -7693,16 +7693,16 @@
           <signal name="CFDIUa4_w0301_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Aircraft identifier character 1" name="X_ACIDENTCHAR1" type="char">
+      <parameter comment="Aircraft identifier character 1" name="X_ACIDENTCHAR1" type="String">
         <signal comment="Aircraft identifier character 1" lsb="11" msb="17" name="CFDIU_L301_X_ACIDENTCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 2" name="X_ACIDENTCHAR2" type="char">
+      <parameter comment="Aircraft identifier character 2" name="X_ACIDENTCHAR2" type="String">
         <signal comment="Aircraft identifier character 2" lsb="18" msb="24" name="CFDIU_L301_X_ACIDENTCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 3" name="X_ACIDENTCHAR3" type="char">
+      <parameter comment="Aircraft identifier character 3" name="X_ACIDENTCHAR3" type="String">
         <signal comment="Aircraft identifier character 3" lsb="25" msb="31" name="CFDIU_L301_X_ACIDENTCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="A/C IDENTIFICATION WORD1" name="ACIDENTWORD1" type="char">
+      <parameter comment="A/C IDENTIFICATION WORD1" name="ACIDENTWORD1" type="String">
         <signal comment="A/C IDENTIFICATION WORD1" lsb="11" msb="17" name="CFDIU_L301_ACIDENTWORD1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -7712,16 +7712,16 @@
           <signal name="CFDIUa4_w0302_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Aircraft identifier character 4" name="X_ACIDENTCHAR4" type="char">
+      <parameter comment="Aircraft identifier character 4" name="X_ACIDENTCHAR4" type="String">
         <signal comment="Aircraft identifier character 4" lsb="11" msb="17" name="CFDIU_L302_X_ACIDENTCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 5" name="X_ACIDENTCHAR5" type="char">
+      <parameter comment="Aircraft identifier character 5" name="X_ACIDENTCHAR5" type="String">
         <signal comment="Aircraft identifier character 5" lsb="18" msb="24" name="CFDIU_L302_X_ACIDENTCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 6" name="X_ACIDENTCHAR6" type="char">
+      <parameter comment="Aircraft identifier character 6" name="X_ACIDENTCHAR6" type="String">
         <signal comment="Aircraft identifier character 6" lsb="25" msb="31" name="CFDIU_L302_X_ACIDENTCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="A/C IDENTIFICATION WORD2" name="ACIDENTWORD2" type="char">
+      <parameter comment="A/C IDENTIFICATION WORD2" name="ACIDENTWORD2" type="String">
         <signal comment="A/C IDENTIFICATION WORD2" lsb="11" msb="17" name="CFDIU_L302_ACIDENTWORD2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -7731,16 +7731,16 @@
           <signal name="CFDIUa4_w0303_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="Aircraft identifier character 7" name="X_ACIDENTCHAR7" type="char">
+      <parameter comment="Aircraft identifier character 7" name="X_ACIDENTCHAR7" type="String">
         <signal comment="Aircraft identifier character 7" lsb="11" msb="17" name="CFDIU_L303_X_ACIDENTCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 8" name="X_ACIDENTCHAR8" type="char">
+      <parameter comment="Aircraft identifier character 8" name="X_ACIDENTCHAR8" type="String">
         <signal comment="Aircraft identifier character 8" lsb="18" msb="24" name="CFDIU_L303_X_ACIDENTCHAR8" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="Aircraft identifier character 9" name="X_ACIDENTCHAR9" type="char">
+      <parameter comment="Aircraft identifier character 9" name="X_ACIDENTCHAR9" type="String">
         <signal comment="Aircraft identifier character 9" lsb="25" msb="31" name="CFDIU_L303_X_ACIDENTCHAR9" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="A/C IDENTIFICATION WORD3" name="ACIDENTWORD3" type="char">
+      <parameter comment="A/C IDENTIFICATION WORD3" name="ACIDENTWORD3" type="String">
         <signal comment="A/C IDENTIFICATION WORD3" lsb="11" msb="17" name="CFDIU_L303_ACIDENTWORD3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -8773,31 +8773,31 @@
           <signal name="ILS1a4_wx323_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="char">
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="String">
         <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS1_L323_FLSIDCHAR1NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="char">
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="String">
         <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS1_L323_FLSIDCHAR2NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="char">
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="String">
         <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS1_L323_FLSIDCHAR3NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="char">
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="String">
         <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS1_L323_FLSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="char">
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="String">
         <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS1_L323_FLSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="char">
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="String">
         <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS1_L323_FLSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 1" name="APIDCHAR1" type="char">
+      <parameter comment="AP ident char 1" name="APIDCHAR1" type="String">
         <signal comment="AP ident char 1" lsb="9" msb="15" name="ILS1_L323_APIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 2" name="APIDCHAR2" type="char">
+      <parameter comment="AP ident char 2" name="APIDCHAR2" type="String">
         <signal comment="AP ident char 2" lsb="16" msb="22" name="ILS1_L323_APIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 3" name="APIDCHAR3" type="char">
+      <parameter comment="AP ident char 3" name="APIDCHAR3" type="String">
         <signal comment="AP ident char 3" lsb="23" msb="29" name="ILS1_L323_APIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -8807,31 +8807,31 @@
           <signal name="ILS2a4_wx323_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="char">
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1NC" type="String">
         <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS2_L323_FLSIDCHAR1NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="char">
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2NC" type="String">
         <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS2_L323_FLSIDCHAR2NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="char">
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3NC" type="String">
         <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS2_L323_FLSIDCHAR3NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="char">
+      <parameter comment="FLS identifier character 1" name="FLSIDCHAR1" type="String">
         <signal comment="FLS identifier character 1" lsb="9" msb="15" name="ILS2_L323_FLSIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="char">
+      <parameter comment="FLS identifier character 2" name="FLSIDCHAR2" type="String">
         <signal comment="FLS identifier character 2" lsb="16" msb="22" name="ILS2_L323_FLSIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="char">
+      <parameter comment="FLS identifier character 3" name="FLSIDCHAR3" type="String">
         <signal comment="FLS identifier character 3" lsb="23" msb="29" name="ILS2_L323_FLSIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 1" name="APIDCHAR1" type="char">
+      <parameter comment="AP ident char 1" name="APIDCHAR1" type="String">
         <signal comment="AP ident char 1" lsb="9" msb="15" name="ILS2_L323_APIDCHAR1" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 2" name="APIDCHAR2" type="char">
+      <parameter comment="AP ident char 2" name="APIDCHAR2" type="String">
         <signal comment="AP ident char 2" lsb="16" msb="22" name="ILS2_L323_APIDCHAR2" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 3" name="APIDCHAR3" type="char">
+      <parameter comment="AP ident char 3" name="APIDCHAR3" type="String">
         <signal comment="AP ident char 3" lsb="23" msb="29" name="ILS2_L323_APIDCHAR3" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -8937,31 +8937,31 @@
           <signal name="ILS1a4_wx324_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="char">
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="String">
         <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS1_L324_FLSIDCHAR4NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="char">
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="String">
         <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS1_L324_FLSIDCHAR5NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="char">
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="String">
         <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS1_L324_FLSIDCHAR6NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="char">
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="String">
         <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS1_L324_FLSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="char">
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="String">
         <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS1_L324_FLSIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="char">
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="String">
         <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS1_L324_FLSIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 4" name="APIDCHAR4" type="char">
+      <parameter comment="AP ident char 4" name="APIDCHAR4" type="String">
         <signal comment="AP ident char 4" lsb="9" msb="15" name="ILS1_L324_APIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 5" name="APIDCHAR5" type="char">
+      <parameter comment="AP ident char 5" name="APIDCHAR5" type="String">
         <signal comment="AP ident char 5" lsb="16" msb="22" name="ILS1_L324_APIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 6" name="APIDCHAR6" type="char">
+      <parameter comment="AP ident char 6" name="APIDCHAR6" type="String">
         <signal comment="AP ident char 6" lsb="23" msb="29" name="ILS1_L324_APIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -8971,31 +8971,31 @@
           <signal name="ILS2a4_wx324_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="char">
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4NC" type="String">
         <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS2_L324_FLSIDCHAR4NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="char">
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5NC" type="String">
         <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS2_L324_FLSIDCHAR5NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="char">
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6NC" type="String">
         <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS2_L324_FLSIDCHAR6NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="char">
+      <parameter comment="FLS identifier character 4" name="FLSIDCHAR4" type="String">
         <signal comment="FLS identifier character 4" lsb="9" msb="15" name="ILS2_L324_FLSIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="char">
+      <parameter comment="FLS identifier character 5" name="FLSIDCHAR5" type="String">
         <signal comment="FLS identifier character 5" lsb="16" msb="22" name="ILS2_L324_FLSIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="char">
+      <parameter comment="FLS identifier character 6" name="FLSIDCHAR6" type="String">
         <signal comment="FLS identifier character 6" lsb="23" msb="29" name="ILS2_L324_FLSIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 4" name="APIDCHAR4" type="char">
+      <parameter comment="AP ident char 4" name="APIDCHAR4" type="String">
         <signal comment="AP ident char 4" lsb="9" msb="15" name="ILS2_L324_APIDCHAR4" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 5" name="APIDCHAR5" type="char">
+      <parameter comment="AP ident char 5" name="APIDCHAR5" type="String">
         <signal comment="AP ident char 5" lsb="16" msb="22" name="ILS2_L324_APIDCHAR5" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 6" name="APIDCHAR6" type="char">
+      <parameter comment="AP ident char 6" name="APIDCHAR6" type="String">
         <signal comment="AP ident char 6" lsb="23" msb="29" name="ILS2_L324_APIDCHAR6" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -9432,13 +9432,13 @@
           <signal name="ILS1a4_wx332_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="char">
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="String">
         <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS1_L332_FLSIDCHAR7NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="char">
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="String">
         <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS1_L332_FLSIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 7" name="APIDCHAR7" type="char">
+      <parameter comment="AP ident char 7" name="APIDCHAR7" type="String">
         <signal comment="AP ident char 7" lsb="16" msb="22" name="ILS1_L332_APIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>
@@ -9448,13 +9448,13 @@
           <signal name="ILS2a4_wx332_SSM"/>
         </parameter>
       </ssm>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="char">
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7NC" type="String">
         <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS2_L332_FLSIDCHAR7NC" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="char">
+      <parameter comment="FLS identifier character 7" name="FLSIDCHAR7" type="String">
         <signal comment="FLS identifier character 7" lsb="16" msb="22" name="ILS2_L332_FLSIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
-      <parameter comment="AP ident char 7" name="APIDCHAR7" type="char">
+      <parameter comment="AP ident char 7" name="APIDCHAR7" type="String">
         <signal comment="AP ident char 7" lsb="16" msb="22" name="ILS2_L332_APIDCHAR7" nbBit="7" signed="0" startBit="1" type="char"/>
       </parameter>
     </A429Label>

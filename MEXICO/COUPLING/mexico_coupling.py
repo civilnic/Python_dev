@@ -94,8 +94,6 @@ class mexico_coupling:
         if _testLine:
             return False
 
-        print(row)
-
         aliasObj = Alias(row[mexico_coupling.fieldnames[0]],
                          row[mexico_coupling.fieldnames[1]],
                          row[mexico_coupling.fieldnames[4]],
