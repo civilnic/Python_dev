@@ -84,7 +84,7 @@ def main():
     logger.info("************************************************")
     logger.info(" BACK2MEXICO tool")
     logger.info("************************************************")
-    logger.info(" run informations:")
+    logger.info(" RUN informations:")
     logger.info("")
     logger.info(" scripts parameters: ")
     logger.info("\t<MexicoCfgFile> "+_mexicoCfgFile)
@@ -128,6 +128,36 @@ def main():
     # create common model list
     #
     _commonModels = [x for x in _cnxmModelList if x in _mexicoModelList]
+    s = " - ";
+    logger.info("\tList of common models between flow files\n" + s.join(sorted(_commonModels)))
 
+    #
+    # loop on common models
+    #
+
+    for _model in sorted(_commonModels):
+
+        logger.info("\tTreatment of model: " + _model)
+
+        #
+        # on both flow get the corresponding model object
+        #
+        _mexicoModelObj = _mexicoFlotObj.getModel(_model)
+        _cnxmModelObj = _cnxmFlotObj.getModel(_model)
+
+        #
+        # for each model create a list of consumers ports
+        #
+        _mexicoConsList = []
+        _cnxmConsList = []
+        for _portObj in _mexicoModelObj.ports_consum:
+            _mexicoConsList.append(_portObj.name)
+        for _portObj in _cnxmModelObj.ports_consum:
+            _cnxmConsList.append(_portObj.name)
+
+        #
+        # create a list of common ports (only common ports could be treated by this script)
+        #
+        _commonConsumers = [x for x in _cnxmConsList if x in _mexicoConsList]
 
 main()

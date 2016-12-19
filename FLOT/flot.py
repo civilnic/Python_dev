@@ -312,11 +312,17 @@ class flot:
 
             return self.consumers_ref[_identifier]
 
-    def hasModele(self, modeleIdentifier):
-        if modeleIdentifier in self.models_ref.keys():
+    def hasModele(self, modelIdentifier):
+        if modelIdentifier in self.models_ref.keys():
             return True
         else:
             return False
+
+    def getModel(self, modelIdentifier):
+        if self.hasModele(modelIdentifier):
+            return self.models_ref[modelIdentifier]
+        else:
+            return None
 
     def hasPort(self, portIdentifier):
         if portIdentifier in self.consumers_ref.keys():
