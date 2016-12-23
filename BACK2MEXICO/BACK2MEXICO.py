@@ -37,7 +37,6 @@ _mexicoCfgObj = None
 
 def main():
 
-    print('toto')
     global _mexicoCfgObj, comment, logger
 
     # on met le niveau du logger à DEBUG, comme ça il écrit tout
@@ -78,8 +77,6 @@ def main():
     _mexicoCfgFile = sys.argv[1]
     _conceptionFile = sys.argv[2]
     _cnxmFlowFile = sys.argv[3]
-
-    print(args[1])
 
     logger.info("************************************************")
     logger.info(" BACK2MEXICO tool")
@@ -150,14 +147,44 @@ def main():
         #
         _mexicoConsList = []
         _cnxmConsList = []
+        _mexicoConsDict = dict()
+        _cnxmConsDict = dict()
+
         for _portObj in _mexicoModelObj.ports_consum:
             _mexicoConsList.append(_portObj.name)
+            _mexicoConsDict[_portObj.name] = _portObj
         for _portObj in _cnxmModelObj.ports_consum:
             _cnxmConsList.append(_portObj.name)
-
+            _cnxmConsDict[_portObj.name] = _portObj
         #
         # create a list of common ports (only common ports could be treated by this script)
         #
         _commonConsumers = [x for x in _cnxmConsList if x in _mexicoConsList]
 
+        #
+        # loop on common port name
+        #
+        for _port in sorted(_commonConsumers):
+
+            #
+            # create a connexion object from both flow
+            #
+
+            _mexicoCNXObj = _mexicoFlotObj.getCnxForPort(_port)
+            _cnxmCNXObj = _cnxmFlotObj.getCnxForPort(_port)
+
+            #
+            # evaluate connexion object from cnxm in mexico flow
+            # return a comparison result tab
+            #
+            _compResTab = _mexicoFlotObj.compCnx(_cnxmCNXObj)
+
+            # there is difference to report on mexico flow
+            # differences analysis and translation in term of aliases on modele/port
+            if _compResTab != [False] * 10:
+                pass
+
+            # no difference for cnx  => nothing to doq
+            else:
+                pass
 main()
