@@ -164,14 +164,22 @@ def main():
         #
         # loop on common port name
         #
+
         for _port in sorted(_commonConsumers):
+
+            #
+            # port is uniquely identified in flow with the identifier: mod/occ/port
+            # recreate local port identifier here
+            #
+
+            _portIdent = _model+"/"+_port
 
             #
             # create a connexion object from both flow
             #
 
-            _mexicoCNXObj = _mexicoFlotObj.getCnxForPort(_port)
-            _cnxmCNXObj = _cnxmFlotObj.getCnxForPort(_port)
+            _mexicoCNXObj = _mexicoFlotObj.getCnxForPort(_portIdent)
+            _cnxmCNXObj = _cnxmFlotObj.getCnxForPort(_portIdent)
 
             #
             # evaluate connexion object from cnxm in mexico flow
@@ -182,6 +190,9 @@ def main():
             # there is difference to report on mexico flow
             # differences analysis and translation in term of aliases on modele/port
             if _compResTab != [False] * 10:
+                print(_compResTab)
+                print(_mexicoCNXObj)
+                print(_cnxmCNXObj)
                 pass
 
             # no difference for cnx  => nothing to doq
