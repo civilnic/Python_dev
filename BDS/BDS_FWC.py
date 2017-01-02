@@ -429,6 +429,7 @@ class BDS_FWC(BDS):
         _sdi = LabelObj.sdi
         if _sdi == "DD":
             _sdi = "D"
+            LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + "_" + _sdi + "_1"
         elif _sdi == "XX":
             _sdi = "X"
             LabelObj.SimuFormattedName = "E_" + connectorId + "_" + str("%03d" % LabelObj.number) + "_" + _sdi + "_1"

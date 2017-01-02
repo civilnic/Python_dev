@@ -55,6 +55,12 @@ class BDS_EIS(BDS):
 
     def ParseLine(self, DicoLine):
 
+        if not DicoLine["NOM_BLOC"]:
+            return None
+
+        if int(DicoLine["NOM_BLOC"]) != 1:
+            return None
+
         LabelObj = A429Label(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["FORMAT_BLOC"], DicoLine["SENS"], DicoLine["NOM_SOUS_ENS"])
         LabelObj.input_trans_rate = DicoLine["FREQU_CONT"]
         LabelObj.source = DicoLine["NOM_SUPP"]

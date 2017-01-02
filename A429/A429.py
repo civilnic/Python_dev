@@ -118,6 +118,7 @@ class A429Label:
         print ("\tLabel pins: "+str(self.pins))
         print ("\tLabel nature: "+str(self.nature))
         print ("\tLabel _ssmtype: "+str(self._ssmtype))
+        print ("\tLabel SimuFormattedName: "+str(self.SimuFormattedName))
         if(DisplayParam is True):
             for param in self.getParameterList():
                 param.print()
