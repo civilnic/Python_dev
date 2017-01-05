@@ -20,9 +20,6 @@ displayDate = str(_date.day) + "/" + str(_date.month) + "/" + str(_date.year)
 # création de l'objet logger qui va nous servir à écrire dans les logs
 logger = logging.getLogger()
 
-# CSV current line for logger
-line_num = 0
-
 comment = None
 
 #
@@ -38,6 +35,9 @@ _mexicoCfgObj = None
 def main():
 
     global _mexicoCfgObj, comment, logger
+
+    # date computation for information
+    _date = datetime.now()
 
     # on met le niveau du logger à DEBUG, comme ça il écrit tout
     logger.setLevel(logging.DEBUG)
@@ -193,9 +193,94 @@ def main():
                 print(_compResTab)
                 print(_mexicoCNXObj)
                 print(_cnxmCNXObj)
-                pass
+
+                #
+                # create an alias object for producer and consumer to be
+                # used if modification are needed
+                #
+                _consCnxmAlias = _cnxmCNXObj.getConsAlias()
+                _prodCnxmAlias = _cnxmCNXObj.getProdAlias()
+
+                _TargetConsCnxmAliasObj = MexicoAlias(AliasObj=_consCnxmAlias, date=displayDate, comment=comment)
+                _TargetProdCnxmAliasObj = MexicoAlias(AliasObj=_prodCnxmAlias, date=displayDate, comment=comment)
+
+                #
+                # comparison algorithm
+                #
+                # there is a signal difference => coupling on producer and consumer must be modified
+                #
+                if _compResTab[4]:
+
+                    # add new alias on consumer
+                    AddAlias(_TargetConsCnxmAliasObj, _mexicoConsDict[_port])
+
+                    # if producer is defined on cnxm flow
+                    # add a new alias on producer also
+                    if _cnxmCNXObj.portProd:
+
+                        #
+                        # check that producer specified in cnxm flow exist on mexico flow:
+                        #
+                        if _cnxmCNXObj.getProdTriplet():
+
+                            #
+                            # get port object on mexico flow for producer
+                            #
+                            _consPortObj = _mexicoFlotObj.getPort(_cnxmCNXObj.getProdTriplet())
+
+                        else:
+                            logger.warning("[BACK2MEXICO] -- Producer port didn t exist on mexico flow: "
+                                           + portObj.getIdentifier() + "--\n\t\t ")
+                            pass
+
+                else:
+                    pass
+                #
+                # there is an init difference
+                #
+                if _compResTab[5]:
+                    pass
 
             # no difference for cnx  => nothing to doq
             else:
                 pass
+
+
+# fill dictionary of coupling to be done from alias object
+# to sort coupling by model
+
+def AddAlias(aliasObj, portObj):
+
+    global logger, _aliasConsDict, _aliasProdDict
+
+    #
+    # set target dictionary
+    #
+    if portObj.type == "consumer":
+        _dict = _aliasConsDict
+    else:
+        _dict = _aliasProdDict
+
+    # test if model assoicate to port is alreday in coupling dict
+    # else create an empty dict for model key
+    if portObj.modocc not in _dict.keys():
+        _dict[portObj.modocc] = dict()
+
+    # test port key in dictionary for model
+    # if no aliases is specifed on
+    if portObj.name not in _dict[portObj.modocc].keys():
+        _dict[portObj.modocc][portObj.name] = aliasObj
+
+    # an alias exist for model/port in "alias to be done" dictionary
+    # check if it's the same coupling or not
+    # if not raise an CSV error
+    # else it 's a warning on CSV content
+    else:
+        # compare alias object
+        if aliasObj != _dict[portObj.modocc][portObj.name]:
+            logger.warning("[BACK2MEXICO] -- Several connections specified for port: "
+                           + portObj.getIdentifier() + "--\n\t\t ")
+
+
+
 main()
