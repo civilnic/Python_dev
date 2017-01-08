@@ -214,7 +214,7 @@ def main():
                     # add new alias on consumer
                     AddAlias(_TargetConsCnxmAliasObj, _mexicoConsDict[_port])
 
-                    # if producer is defined on cnxm flow
+                    # if producer is defined on cnxm flow and producer exist on mexico flow
                     # add a new alias on producer also
                     if _cnxmCNXObj.portProd:
 
@@ -226,24 +226,116 @@ def main():
                             #
                             # get port object on mexico flow for producer
                             #
-                            _consPortObj = _mexicoFlotObj.getPort(_cnxmCNXObj.getProdTriplet())
+                            _prodPortObj = _mexicoFlotObj.getPort(_cnxmCNXObj.getProdTriplet())
+
+                            #
+                            # add new alias on producer
+                            #
+                            AddAlias(_TargetProdCnxmAliasObj, _prodPortObj)
 
                         else:
                             logger.warning("[BACK2MEXICO] -- Producer port didn t exist on mexico flow: "
-                                           + portObj.getIdentifier() + "--\n\t\t ")
+                                           + _cnxmCNXObj.modoccProd  + "/" + _cnxmCNXObj.portProd + "--\n\t\t ")
                             pass
 
                 else:
-                    pass
+                    #
+                    # new operator or tab on producer to set
+                    #
+                    if _compResTab[2] or _compResTab[3]:
+
+                        #
+                        # check that producer specified in cnxm flow exist on mexico flow:
+                        #
+                        if _cnxmCNXObj.getProdTriplet():
+
+                            #
+                            # get port object on mexico flow for producer
+                            #
+                            _prodPortObj = _mexicoFlotObj.getPort(_cnxmCNXObj.getProdTriplet())
+
+                            #
+                            # add new alias on producer
+                            #
+                            AddAlias(_TargetProdCnxmAliasObj, _prodPortObj)
+
+                        else:
+                            logger.warning("[BACK2MEXICO] -- Producer port didn t exist on mexico flow: "
+                                           + _cnxmCNXObj.modoccProd  + "/" + _cnxmCNXObj.portProd + "--\n\t\t ")
+                            pass
+                    #
+                    # difference on consumer operator or tab
+                    #
+                    if _compResTab[8] or _compResTab[9]:
+                        #
+                        # add new alias on consumer
+                        #
+                        AddAlias(_TargetConsCnxmAliasObj, _mexicoConsDict[_port])
+
                 #
                 # there is an init difference
                 #
                 if _compResTab[5]:
-                    pass
+
+                    # create a channel object (ChannelObj)
+                    from FLOT.channel import channel
+                    channelObj = channel(_cnxmCNXObj.Channel)
+
+                    # add the initialization value
+                    channelObj.init = _cnxmCNXObj.init
+
+                    # link it consumer port
+                    channelObj.addPort(_mexicoConsDict[_port])
+
+                    # add to inits dictionary
+                    AddInit(channelObj, _mexicoConsDict[_port])
 
             # no difference for cnx  => nothing to doq
             else:
                 pass
+
+    print("**** ALIAS PROD ****")
+    for modele in _aliasProdDict.keys():
+
+        actorObj = _mexicoCfgObj.getActor(modele)
+
+        _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
+
+        print('modele: ' + modele)
+
+        if _aliasProdDict[modele]:
+
+            for port in sorted(_aliasProdDict[modele].keys()):
+                print('port: ' + port)
+                print(_aliasProdDict[modele][port])
+
+                _coulingFileObj.chgAddModify(_aliasProdDict[modele][port], "FUN_OUT")
+
+        _coulingFileObj.write()
+
+    print("**** ALIAS CONSO ****")
+    for modele in _aliasConsDict.keys():
+
+        actorObj = _mexicoCfgObj.getActor(modele)
+
+        _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
+
+        print('modele: ' + modele)
+
+        if _aliasConsDict[modele]:
+
+            for port in sorted(_aliasConsDict[modele].keys()):
+                print('port: ' + port)
+                print(_aliasConsDict[modele][port])
+
+                _coulingFileObj.chgAddModify(_aliasConsDict[modele][port], "FUN_IN")
+
+        _coulingFileObj.write()
+
+    print("**** INIT ****")
+    for channel in sorted(_initializationDict.keys()):
+        print('channel: ' + channel)
+        print('value: ' + str(_initializationDict[channel].init))
 
 
 # fill dictionary of coupling to be done from alias object
@@ -278,9 +370,30 @@ def AddAlias(aliasObj, portObj):
     else:
         # compare alias object
         if aliasObj != _dict[portObj.modocc][portObj.name]:
-            logger.warning("[BACK2MEXICO] -- Several connections specified for port: "
+            logger.warning("[BACK2MEXICO][AddAlias] -- Several connections specified for port: "
                            + portObj.getIdentifier() + "--\n\t\t ")
 
 
+#
+# fill dictionary of init to be done
+# sort init by model
+
+def AddInit(channelObj, portObj):
+
+    # target dictionary
+    _dict = _initializationDict
+
+    # test if model assoicate to port is alreday in init dict
+    # else create an empty dict for model key
+    if channelObj.name not in _dict.keys():
+        _dict[channelObj.name] = channelObj
+    else:
+
+        if channelObj.init != _dict[channelObj.name].init:
+
+            logger.warning("[BACK2MEXICO][AddInit] -- Several initializations specified for port: "
+                           + portObj.getIdentifier + "--\n\t\tCannot set init: " + str(channelObj.init) + " because it"
+                                                                                                          " as "
+                                                                    " already set to: " + _dict[channelObj.name].init)
 
 main()
