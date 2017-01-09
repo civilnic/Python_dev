@@ -12,6 +12,7 @@ from FLOT.connexion import PotentialConnexionFromTab
 from FLOT.flot import flot
 from FLOT.alias import Alias,MexicoAlias
 from MEXICO.COUPLING.mexico_coupling import mexico_coupling
+from MEXICO.INIT.mexico_inits import Mexico_Init_File
 
 # date computation for information
 _date = datetime.now()
@@ -333,10 +334,25 @@ def main():
         _coulingFileObj.write()
 
     print("**** INIT ****")
-    for channel in sorted(_initializationDict.keys()):
-        print('channel: ' + channel)
-        print('value: ' + str(_initializationDict[channel].init))
+    #
+    # get Init MICD from MEXICO configuration file
+    #
+    _initFile=_mexicoCfgObj.getInitFilePathName()
+    logger.info(" MEXICO Init file updated: " + _initFile)
 
+    if _initFile:
+
+        _MICD_Inits=Mexico_Init_File(_initFile)
+
+        for channel in sorted(_initializationDict.keys()):
+            print('channel: ' + channel)
+            print('value: ' + str(_initializationDict[channel].init))
+
+    else:
+        #
+        # log an error
+        #
+        pass
 
 # fill dictionary of coupling to be done from alias object
 # to sort coupling by model

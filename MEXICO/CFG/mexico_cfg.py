@@ -118,11 +118,34 @@ class mexicoConfig:
                                                           _MICDObj)
                         _MICDObj.addCoupling(_couplingObj)
                         _actorObj.addCoupling(_couplingObj)
+
+            #  init file tag is named ActorInit
+            if element.tag == "ActorInit":
+
+                # get MICD element list
+                _micdelementList = element.getchildren()
+
+                _actorObj = Actor(_model)
+                _actorObj.mexicoRootPath = self._mexicoRootPath
+
+                self.addActorInit(_actorObj)
+
+                for _micdelement in _micdelementList:
+
+                    _InitMICDObj = mexicoMICDFile(_micdelement.attrib['fileName'], _micdelement.attrib['type'] , _actorObj)
+                    _actorObj.addMICD(_InitMICDObj)
+
+
+
             #rint(element.attrib)
 
     def addSSDB(self,ssdbObj):
         if ssdbObj not in self._ssdbFiles:
             self._ssdbFiles.append(ssdbObj)
+
+    def addActorInit(self,actorObj):
+        if actorObj not in self._initFile:
+            self._initFile.append(actorObj)
 
     def addActor(self,actorObj):
         if actorObj not in self._actors:
@@ -144,6 +167,15 @@ class mexicoConfig:
 
     def getMexicoRootPath(self):
         return self._mexicoRootPath
+
+    def getInitFilePathName(self):
+
+        if self._initFile:
+            _InitActorObj=self._initFile[0]
+            _InitActorMicd=_InitActorObj.getMICDList()[0]
+            return _InitActorMicd.fullPathName
+        else:
+            return None
 
     def getFlowFile(self):
 
