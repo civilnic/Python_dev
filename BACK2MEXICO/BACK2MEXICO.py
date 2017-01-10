@@ -344,6 +344,9 @@ def main():
 
         _MICD_Inits=Mexico_Init_File(_initFile)
 
+        for _portObj in _MICD_Inits.getPortObjList():
+            print(_portObj.getPortLineTab())
+
         for channel in sorted(_initializationDict.keys()):
             print('channel: ' + channel)
             print('value: ' + str(_initializationDict[channel].init))
