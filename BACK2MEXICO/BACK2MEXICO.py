@@ -13,6 +13,8 @@ from FLOT.flot import flot
 from FLOT.alias import Alias,MexicoAlias
 from MEXICO.COUPLING.mexico_coupling import mexico_coupling
 from MEXICO.INIT.mexico_inits import Mexico_Init_File
+from MEXICO.MICD.MICD_port import MICD_port
+from MEXICO.MICD.MICD import MICD
 
 # date computation for information
 _date = datetime.now()
@@ -29,6 +31,7 @@ comment = None
 _aliasConsDict = {}
 _aliasProdDict = {}
 _initializationDict = {}
+_initializationDictPerModel = {}
 
 _mexicoCfgObj = None
 
@@ -337,19 +340,83 @@ def main():
     #
     # get Init MICD from MEXICO configuration file
     #
-    _initFile=_mexicoCfgObj.getInitFilePathName()
+    _initFile = _mexicoCfgObj.getInitFilePathName()
     logger.info(" MEXICO Init file updated: " + _initFile)
 
     if _initFile:
 
-        _MICD_Inits=Mexico_Init_File(_initFile)
+        _MICD_Inits = Mexico_Init_File(_initFile)
 
-        for _portObj in _MICD_Inits.getPortObjList():
-            print(_portObj.getPortLineTab())
+        #for _portObj in _MICD_Inits.getPortObjList():
+           # print(_portObj.getPortLineTab())
+        for _modocc in _initializationDictPerModel.keys():
+            for _portObj in  _initializationDictPerModel[_modocc].keys():
+
+                _channelObj = _initializationDictPerModel[_modocc][_portObj]
+
+                print('channel: ' + _channelObj.name)
+                print('value: ' + str(_channelObj.init))
+
+                # if channel already set in init file
+                _MICDPortObj = _MICD_Inits.getPortObj(_channelObj.name)
+                if _MICDPortObj:
+                    #
+                    # test set value
+                    # if value is not the same that targeted value change it in Init file
+                    #
+                    if _MICDPortObj.initdefaultvalue != _channelObj.init:
+                        _MICDPortObj.initdefaultvalue = _channelObj.init
+
+                # channel is not defined in init file
+                else:
+
+                    # get actor corresponding to modocc in Mexico configuration
+                    _actorObj = _mexicoCfgObj.getActor(_modocc)
+
+                    # list micd corresponding to current actor in Mexico configuration
+                    # for each micd
+                    for _micd in actorObj.getMICDList():
+
+                        print("micd: "+_micd._fullPathName)
+                        # create micd object (i.e. parse MICD)
+                        _micdObj = MICD(_micd._fullPathName)
+
+                        # get an MicdPort Object for consumer port
+                        _consPortObj = _micdObj.getPortObj(_portObj.name)
+
+                        # if this object is not None => consumer has been found on MICD
+                        # get needed informations from MICD line
+                        if _consPortObj:
+
+                            # create a new MICD Port object to add in init file
+                            # this port will correspond to channel to add in init file
+
+                            _initPort = MICD_port(None, "OUT", None)
+
+                            _initPort.name = _channelObj.name
+                            _initPort.codingtype = _consPortObj.codingtype
+                            _initPort.unit = _consPortObj.unit
+                            _initPort.description = _consPortObj.description
+                            _initPort.convention = _consPortObj.convention
+                            _initPort.dim1 = _consPortObj.dim1
+                            _initPort.dim2 = _consPortObj.dim2
+                            _initPort.comformat = _consPortObj.comformat
+                            _initPort.fromto = _consPortObj.fromto
+                            _initPort.min = _consPortObj.min
+                            _initPort.max = _consPortObj.max
+                            _initPort.initdefaultvalue = _channelObj.init
+
+                            # add init port to initFile
+                            _MICD_Inits.AddPortfromPortObject(_initPort, "FUN_OUT")
+
+                            continue
+
+                    _MICD_Inits.savefile()
 
         for channel in sorted(_initializationDict.keys()):
             print('channel: ' + channel)
             print('value: ' + str(_initializationDict[channel].init))
+            print('consumer: ' + str(_initializationDict[channel].ports_consum[0].getIdentifier()))
 
     else:
         #
@@ -406,6 +473,11 @@ def AddInit(channelObj, portObj):
     # else create an empty dict for model key
     if channelObj.name not in _dict.keys():
         _dict[channelObj.name] = channelObj
+        if portObj.modocc not in _initializationDictPerModel.keys():
+            _initializationDictPerModel[portObj.modocc] = {}
+
+        _initializationDictPerModel[portObj.modocc][portObj] = channelObj
+
     else:
 
         if channelObj.init != _dict[channelObj.name].init:

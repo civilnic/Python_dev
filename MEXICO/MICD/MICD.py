@@ -291,21 +291,23 @@ This variable is not refreshed in RUN mode.'
         else:
             return None
 
-        # sheet data frame
-        _df = self._SheetAndDataFrame[_sheet]['DataFrame']
+        if _sheet in self._SheetAndDataFrame.keys():
+            # sheet data frame
+            _df = self._SheetAndDataFrame[_sheet]['DataFrame']
 
-        # column name dict equivalence
-        _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
+            # column name dict equivalence
+            _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
 
-        # port name list of current dataframe
-        _portList = list(_df[_dict['API2MICD']['Name']])
+            # port name list of current dataframe
+            _portList = list(_df[_dict['API2MICD']['Name']])
 
-        if portName in _portList:
-            return _df.iloc[_portList.index(portName)]
+            if portName in _portList:
+                return _df.iloc[_portList.index(portName)]
+            else:
+                # if not found return None
+                return None
         else:
-            # if not found return None
             return None
-
 
     def getPortSheet(self, portName):
 
@@ -381,7 +383,7 @@ This variable is not refreshed in RUN mode.'
 
 
     # add a port on MICD FUN_IN from a tab
-    def AddPortfromTab(self,lineTab,sheetName):
+    def AddPortfromTab(self, lineTab, sheetName):
 
         _arrayConfig = MICD.file_structure[sheetName]['PortObject_Attrib_Equiv']
 
@@ -391,7 +393,7 @@ This variable is not refreshed in RUN mode.'
 
 
 
-    def AddPortfromPortObject(self, MICDportObject,sheetName):
+    def AddPortfromPortObject(self, MICDportObject, sheetName):
 
         if 'ColNameEquiv' not in list(self._SheetAndDataFrame[sheetName].keys()):
 
