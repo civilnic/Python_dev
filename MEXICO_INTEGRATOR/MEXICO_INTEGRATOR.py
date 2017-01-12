@@ -339,22 +339,144 @@ def parseCsvFile(csvFile, flowFile):
                         # if S_USER exist in flow
                         if _channelObj:
 
-                            # if S_USER is link to targeted producer port (i.e port specified on CSV)
-                            if _channelObj.getProducer().getIdentifier() == _cnxCSVObj.getProdTriplet():
+                            # if S_USER is produced
+                            if _channelObj.getProducer():
+
+                                # if S_USER is link to targeted producer port (i.e port specified on CSV)
+                                if _channelObj.getProducer().getIdentifier() == _cnxCSVObj.getProdTriplet():
+
+                                    # create an alias on S_USER for consumer port
+                                    _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                        index=_cnxCSVObj.tabCons,
+                                                                        operator=_cnxCSVObj.operatorCons,
+                                                                        comment=globalComment, date=displayDate)
+                                    #
+                                    # ________test_________
+                                    #
+                                    if _cnxCSVObj.operatorCons:
+                                        _TargetConsummerAlias.operator = _cnxCSVObj.operatorCons
+
+                                    if _cnxCSVObj.tabCons:
+                                        _TargetConsummerAlias.index = _cnxCSVObj.tabCons
+
+                                    # add it in Alias dictionary
+                                    AddAlias(_TargetConsummerAlias, _consPortObj)
+
+                                    # apply algo inits
+                                    AlgoInits(_flotObj, _cnxCSVObj)
+
+                                # producer port link to S_USER in flow is not the one specified in CSV file
+                                else:
+
+                                    # if force channel option is activated => we want to rename previous S_USER in flow
+                                    if forceChannelNameFlag:
+
+                                        # get producer port linked to S_USER in flow
+                                        _prodPortToPatchObj = _channelObj.getProducer()
+
+                                        if len(_channelObj.getConsumerList()) == 0 \
+                                                and ((computeEYCname(_prodPortToPatchObj) != S_USER)
+                                                     or (_prodPortToPatchObj != S_USER)):
+
+                                            if channelEYCNameFlag:
+
+                                                # create an alias with EYC rule name
+                                                _TargetAlias = MexicoAlias(port=_prodPortToPatchObj.name,
+                                                                           channel=computeEYCname(_prodPortToPatchObj),
+                                                                           index=_prodPortToPatchObj.index,
+                                                                           operator=_prodPortToPatchObj.operator,
+                                                                           comment=globalComment, date=displayDate)
+
+                                                # add it in Alias dictionary
+                                                AddAlias(_TargetAlias, _prodPortToPatchObj)
+
+                                            else:
+                                                # create an alias on producer port name (equiv. to no alias)
+                                                _TargetAlias = MexicoAlias(port=_prodPortToPatchObj.name,
+                                                                           channel=_prodPortToPatchObj.name,
+                                                                           index=_prodPortToPatchObj.index,
+                                                                           operator=_prodPortToPatchObj.operator,
+                                                                           comment=globalComment, date=displayDate)
+
+                                                # add it in Alias dictionary
+                                                AddAlias(_TargetAlias, _prodPortToPatchObj)
+
+                                        # patch S_USER in flow
+                                        else:
+
+                                            # create patch aliases on port linked to S_USER in flow
+                                            _patchName = RenameChannel(_flotObj, S_USER, _cnxCSVObj, False, True)
+
+                                            logger.warning(
+                                                "[CheckCSV][line " + str(line_num) + "] Force Channel option is ON\n"
+                                                " -- Channel " + S_USER + " has been renamed into  " + _patchName)
+
+                                            # if channel renamed has an init, we have set it into channel new name
+                                            if _channelObj.init:
+
+                                                # create a fake copy of channel object and set name with patch name
+                                                _channelObjPatched = copy.copy(_channelObj)
+                                                _channelObjPatched.name = _patchName
+
+                                                # if an initialization was set on S_USER transfert it to the new S_USER
+                                                # patch signal
+                                                AddInit(_channelObjPatched, _channelObjPatched.getProducer())
+
+                                                logger.warning(
+                                                    "[CheckCSV][line " + str(line_num) + "] Force Channel option is ON\n"
+                                                    " -- Initialization " + _patchName +
+                                                    " has been renamed to  " + _channelObjPatched.init)
+
+                                        # create patch aliases on port linked to S_USER in flow
+                                        RenameChannel(_flotObj, S_USER, _cnxCSVObj, True, False)
+
+                                        # create an alias on S_USER for consumer port
+                                        _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                            index=_cnxCSVObj.tabCons,
+                                                                            operator=_cnxCSVObj.operatorCons,
+                                                                            comment=globalComment, date=displayDate)
+
+
+                                        # add it in Alias dictionary
+                                        AddAlias(_TargetConsummerAlias, _consPortObj)
+
+                                        # apply algo inits
+                                        AlgoInits(_flotObj, _cnxCSVObj)
+
+                                    else:
+
+                                        S_USER = _prodPortObj.channel
+
+                                        # create an alias on S_USER for consumer port
+                                        _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
+                                                                            index=_cnxCSVObj.tabCons,
+                                                                            operator=_cnxCSVObj.operatorCons,
+                                                                            comment=globalComment, date=displayDate)
+
+                                        # add it in Alias dictionary
+                                        AddAlias(_TargetConsummerAlias, _consPortObj)
+
+                                        # apply algo inits
+                                        AlgoInits(_flotObj, _cnxCSVObj)
+
+                            # S_USER exists in flow but is not produced:
+                            else:
+
+                                # create an alias on S_USER for producer port
+                                _TargetProducerAlias = MexicoAlias(port=_cnxCSVObj.portProd, channel=S_USER,
+                                                                    index=_cnxCSVObj.tabProd,
+                                                                    operator=_cnxCSVObj.operatorProd,
+                                                                    comment=globalComment, date=displayDate)
+
+                                # add it in Alias dictionary
+                                AddAlias(_TargetProducerAlias, _prodPortObj)
+
 
                                 # create an alias on S_USER for consumer port
                                 _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
-                                                                    index=_cnxCSVObj.operatorCons,
+                                                                    index=_cnxCSVObj.tabCons,
                                                                     operator=_cnxCSVObj.operatorCons,
                                                                     comment=globalComment, date=displayDate)
-                                #
-                                # ________test_________
-                                #
-                                if _cnxCSVObj.operatorCons:
-                                    _TargetConsummerAlias.operator = _cnxCSVObj.operatorCons
-
-                                if _cnxCSVObj.tabCons:
-                                    _TargetConsummerAlias.index = _cnxCSVObj.tabCons
 
                                 # add it in Alias dictionary
                                 AddAlias(_TargetConsummerAlias, _consPortObj)
@@ -362,99 +484,6 @@ def parseCsvFile(csvFile, flowFile):
                                 # apply algo inits
                                 AlgoInits(_flotObj, _cnxCSVObj)
 
-                            # producer port link to S_USER in flow is not the one specified in CSV file
-                            else:
-
-                                # if force channel option is activated => we want to rename previous S_USER in flow
-                                if forceChannelNameFlag:
-
-                                    # get producer port linked to S_USER in flow
-                                    _prodPortToPatchObj = _channelObj.getProducer()
-
-                                    if len(_channelObj.getConsumerList()) == 0 \
-                                            and ((computeEYCname(_prodPortToPatchObj) != S_USER)
-                                                 or (_prodPortToPatchObj != S_USER)):
-
-                                        if channelEYCNameFlag:
-
-                                            # create an alias with EYC rule name
-                                            _TargetAlias = MexicoAlias(port=_prodPortToPatchObj.name,
-                                                                       channel=computeEYCname(_prodPortToPatchObj),
-                                                                       index=_prodPortToPatchObj.index,
-                                                                       operator=_prodPortToPatchObj.operator,
-                                                                       comment=globalComment, date=displayDate)
-
-                                            # add it in Alias dictionary
-                                            AddAlias(_TargetAlias, _prodPortToPatchObj)
-
-                                        else:
-                                            # create an alias on producer port name (equiv. to no alias)
-                                            _TargetAlias = MexicoAlias(port=_prodPortToPatchObj.name,
-                                                                       channel=_prodPortToPatchObj.name,
-                                                                       index=_prodPortToPatchObj.index,
-                                                                       operator=_prodPortToPatchObj.operator,
-                                                                       comment=globalComment, date=displayDate)
-
-                                            # add it in Alias dictionary
-                                            AddAlias(_TargetAlias, _prodPortToPatchObj)
-
-                                    # patch S_USER in flow
-                                    else:
-
-                                        # create patch aliases on port linked to S_USER in flow
-                                        _patchName = RenameChannel(_flotObj, S_USER, _cnxCSVObj, False, True)
-
-                                        logger.warning(
-                                            "[CheckCSV][line " + str(line_num) + "] Force Channel option is ON\n"
-                                            " -- Channel " + S_USER + " has been renamed into  " + _patchName)
-
-                                        # if channel renamed has an init, we have set it into channel new name
-                                        if _channelObj.init:
-
-                                            # create a fake copy of channel object and set name with patch name
-                                            _channelObjPatched = copy.copy(_channelObj)
-                                            _channelObjPatched.name = _patchName
-
-                                            # if an initialization was set on S_USER transfert it to the new S_USER
-                                            # patch signal
-                                            AddInit(_channelObjPatched, _channelObjPatched.getProducer())
-
-                                            logger.warning(
-                                                "[CheckCSV][line " + str(line_num) + "] Force Channel option is ON\n"
-                                                " -- Initialization " + _patchName +
-                                                " has been renamed to  " + _channelObjPatched.init)
-
-                                    # create patch aliases on port linked to S_USER in flow
-                                    RenameChannel(_flotObj, S_USER, _cnxCSVObj, True, False)
-
-                                    # create an alias on S_USER for consumer port
-                                    _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
-                                                                        index=_cnxCSVObj.operatorCons,
-                                                                        operator=_cnxCSVObj.operatorCons,
-                                                                        comment=globalComment, date=displayDate)
-
-
-                                    # add it in Alias dictionary
-                                    AddAlias(_TargetConsummerAlias, _consPortObj)
-
-                                    # apply algo inits
-                                    AlgoInits(_flotObj, _cnxCSVObj)
-
-                                else:
-
-                                    S_USER = _prodPortObj.channel
-
-                                    # create an alias on S_USER for consumer port
-                                    _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
-                                                                        index=_cnxCSVObj.operatorCons,
-                                                                        operator=_cnxCSVObj.operatorCons,
-                                                                        comment=globalComment, date=displayDate)
-
-                                    # add it in Alias dictionary
-                                    AddAlias(_TargetConsummerAlias, _consPortObj)
-
-                                    # apply algo inits
-                                    AlgoInits(_flotObj, _cnxCSVObj)
 
                         # S_USER not exists in flow
                         else:
@@ -464,7 +493,7 @@ def parseCsvFile(csvFile, flowFile):
 
                             # create an alias on S_USER for consumer port
                             _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
-                                                                index=_cnxCSVObj.operatorCons,
+                                                                index=_cnxCSVObj.tabCons,
                                                                 operator=_cnxCSVObj.operatorCons,
                                                                 comment=globalComment, date=displayDate)
                             # add it in Alias dictionary
@@ -486,10 +515,8 @@ def parseCsvFile(csvFile, flowFile):
                        else:
                             # create an alias on S_USER for consumer port
                             _aliasObject = MexicoAlias( port=_cnxCSVObj.portCons, channel=_cnxCSVObj.Channel,
+                                                        operator=_cnxCSVObj.operatorCons,
                                                         comment=globalComment, date=displayDate)
-
-
-                       _aliasObject.operator = _cnxCSVObj.operatorCons
 
                        # add it in Alias dictionary
                        AddAlias(_aliasObject, _consPortObj)
@@ -497,15 +524,11 @@ def parseCsvFile(csvFile, flowFile):
                     else:
                         # create an alias on S_USER for consumer port
                         _aliasObject = MexicoAlias(port=_cnxCSVObj.portCons, channel=_cnxCSVObj.Channel,
+                                                   operator=_cnxCSVObj.operatorCons,
                                                    comment=globalComment, date=displayDate)
-
-                        _aliasObject.operator = _cnxCSVObj.operatorCons
 
                         # add it in Alias dictionary
                         AddAlias(_aliasObject, _consPortObj)
-
-
-
 
 
                 if (_testTab[9] and _csvConfTab[9]):
@@ -731,7 +754,7 @@ def AddInit(channelObj, portObj):
         if channelObj.init != _dict[channelObj.name].init:
 
             logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several initializations specified for port: "
-                           + portObj.getIdentifier + "--\n\t\tCannot set init: "+str(channelObj.init)+" because it as "
+                           + portObj.getIdentifier() + "--\n\t\tCannot set init: "+str(channelObj.init)+" because it as "
                             "already set to: "+_dict[channelObj.name].init)
         else:
             logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several initializations of same value specified "
