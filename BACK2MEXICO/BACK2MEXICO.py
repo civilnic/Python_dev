@@ -12,6 +12,9 @@ from FLOT.connexion import PotentialConnexionFromTab
 from FLOT.flot import flot
 from FLOT.alias import Alias,MexicoAlias
 from MEXICO.COUPLING.mexico_coupling import mexico_coupling
+from MEXICO.INIT.mexico_inits import Mexico_Init_File
+from MEXICO.MICD.MICD_port import MICD_port
+from MEXICO.MICD.MICD import MICD
 
 # date computation for information
 _date = datetime.now()
@@ -19,9 +22,6 @@ displayDate = str(_date.day) + "/" + str(_date.month) + "/" + str(_date.year)
 
 # création de l'objet logger qui va nous servir à écrire dans les logs
 logger = logging.getLogger()
-
-# CSV current line for logger
-line_num = 0
 
 comment = None
 
@@ -31,6 +31,7 @@ comment = None
 _aliasConsDict = {}
 _aliasProdDict = {}
 _initializationDict = {}
+_initializationDictPerModel = {}
 
 _mexicoCfgObj = None
 
@@ -38,6 +39,9 @@ _mexicoCfgObj = None
 def main():
 
     global _mexicoCfgObj, comment, logger
+
+    # date computation for information
+    _date = datetime.now()
 
     # on met le niveau du logger à DEBUG, comme ça il écrit tout
     logger.setLevel(logging.DEBUG)
@@ -193,9 +197,294 @@ def main():
                 print(_compResTab)
                 print(_mexicoCNXObj)
                 print(_cnxmCNXObj)
-                pass
+
+                #
+                # create an alias object for producer and consumer to be
+                # used if modification are needed
+                #
+                _consCnxmAlias = _cnxmCNXObj.getConsAlias()
+                _prodCnxmAlias = _cnxmCNXObj.getProdAlias()
+
+                _TargetConsCnxmAliasObj = MexicoAlias(AliasObj=_consCnxmAlias, date=displayDate, comment=comment)
+                _TargetProdCnxmAliasObj = MexicoAlias(AliasObj=_prodCnxmAlias, date=displayDate, comment=comment)
+
+                #
+                # comparison algorithm
+                #
+                # there is a signal difference => coupling on producer and consumer must be modified
+                #
+                if _compResTab[4]:
+
+                    # add new alias on consumer
+                    AddAlias(_TargetConsCnxmAliasObj, _mexicoConsDict[_port])
+
+                    # if producer is defined on cnxm flow and producer exist on mexico flow
+                    # add a new alias on producer also
+                    if _cnxmCNXObj.portProd:
+
+                        #
+                        # check that producer specified in cnxm flow exist on mexico flow:
+                        #
+                        if _cnxmCNXObj.getProdTriplet():
+
+                            #
+                            # get port object on mexico flow for producer
+                            #
+                            _prodPortObj = _mexicoFlotObj.getPort(_cnxmCNXObj.getProdTriplet())
+
+                            #
+                            # add new alias on producer
+                            #
+                            AddAlias(_TargetProdCnxmAliasObj, _prodPortObj)
+
+                        else:
+                            logger.warning("[BACK2MEXICO] -- Producer port didn t exist on mexico flow: "
+                                           + _cnxmCNXObj.modoccProd  + "/" + _cnxmCNXObj.portProd + "--\n\t\t ")
+                            pass
+
+                else:
+                    #
+                    # new operator or tab on producer to set
+                    #
+                    if _compResTab[2] or _compResTab[3]:
+
+                        #
+                        # check that producer specified in cnxm flow exist on mexico flow:
+                        #
+                        if _cnxmCNXObj.getProdTriplet():
+
+                            #
+                            # get port object on mexico flow for producer
+                            #
+                            _prodPortObj = _mexicoFlotObj.getPort(_cnxmCNXObj.getProdTriplet())
+
+                            #
+                            # add new alias on producer
+                            #
+                            AddAlias(_TargetProdCnxmAliasObj, _prodPortObj)
+
+                        else:
+                            logger.warning("[BACK2MEXICO] -- Producer port didn t exist on mexico flow: "
+                                           + _cnxmCNXObj.modoccProd  + "/" + _cnxmCNXObj.portProd + "--\n\t\t ")
+                            pass
+                    #
+                    # difference on consumer operator or tab
+                    #
+                    if _compResTab[8] or _compResTab[9]:
+                        #
+                        # add new alias on consumer
+                        #
+                        AddAlias(_TargetConsCnxmAliasObj, _mexicoConsDict[_port])
+
+                #
+                # there is an init difference
+                #
+                if _compResTab[5]:
+
+                    # create a channel object (ChannelObj)
+                    from FLOT.channel import channel
+                    channelObj = channel(_cnxmCNXObj.Channel)
+
+                    # add the initialization value
+                    channelObj.init = _cnxmCNXObj.init
+
+                    # link it consumer port
+                    channelObj.addPort(_mexicoConsDict[_port])
+
+                    # add to inits dictionary
+                    AddInit(channelObj, _mexicoConsDict[_port])
 
             # no difference for cnx  => nothing to doq
             else:
                 pass
+
+    print("**** ALIAS PROD ****")
+    for modele in _aliasProdDict.keys():
+
+        actorObj = _mexicoCfgObj.getActor(modele)
+
+        _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
+
+        print('modele: ' + modele)
+
+        if _aliasProdDict[modele]:
+
+            for port in sorted(_aliasProdDict[modele].keys()):
+                print('port: ' + port)
+                print(_aliasProdDict[modele][port])
+
+                _coulingFileObj.chgAddModify(_aliasProdDict[modele][port], "FUN_OUT")
+
+        _coulingFileObj.write()
+
+    print("**** ALIAS CONSO ****")
+    for modele in _aliasConsDict.keys():
+
+        actorObj = _mexicoCfgObj.getActor(modele)
+
+        _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
+
+        print('modele: ' + modele)
+
+        if _aliasConsDict[modele]:
+
+            for port in sorted(_aliasConsDict[modele].keys()):
+                print('port: ' + port)
+                print(_aliasConsDict[modele][port])
+
+                _coulingFileObj.chgAddModify(_aliasConsDict[modele][port], "FUN_IN")
+
+        _coulingFileObj.write()
+
+    print("**** INIT ****")
+    #
+    # get Init MICD from MEXICO configuration file
+    #
+    _initFile = _mexicoCfgObj.getInitFilePathName()
+    logger.info(" MEXICO Init file updated: " + _initFile)
+
+    if _initFile:
+
+        _MICD_Inits = Mexico_Init_File(_initFile)
+
+        #for _portObj in _MICD_Inits.getPortObjList():
+           # print(_portObj.getPortLineTab())
+        for _modocc in _initializationDictPerModel.keys():
+            for _portObj in  _initializationDictPerModel[_modocc].keys():
+
+                _channelObj = _initializationDictPerModel[_modocc][_portObj]
+
+                print('channel: ' + _channelObj.name)
+                print('value: ' + str(_channelObj.init))
+
+                # if channel already set in init file
+                _MICDPortObj = _MICD_Inits.getPortObj(_channelObj.name)
+                if _MICDPortObj:
+                    #
+                    # test set value
+                    # if value is not the same that targeted value change it in Init file
+                    #
+                    if _MICDPortObj.initdefaultvalue != _channelObj.init:
+                        _MICDPortObj.initdefaultvalue = _channelObj.init
+
+                # channel is not defined in init file
+                else:
+
+                    # get actor corresponding to modocc in Mexico configuration
+                    _actorObj = _mexicoCfgObj.getActor(_modocc)
+
+                    # list micd corresponding to current actor in Mexico configuration
+                    # for each micd
+                    for _micd in actorObj.getMICDList():
+
+                        print("micd: "+_micd._fullPathName)
+                        # create micd object (i.e. parse MICD)
+                        _micdObj = MICD(_micd._fullPathName)
+
+                        # get an MicdPort Object for consumer port
+                        _consPortObj = _micdObj.getPortObj(_portObj.name)
+
+                        # if this object is not None => consumer has been found on MICD
+                        # get needed informations from MICD line
+                        if _consPortObj:
+
+                            # create a new MICD Port object to add in init file
+                            # this port will correspond to channel to add in init file
+
+                            _initPort = MICD_port(None, "OUT", None)
+
+                            _initPort.name = _channelObj.name
+                            _initPort.codingtype = _consPortObj.codingtype
+                            _initPort.unit = _consPortObj.unit
+                            _initPort.description = _consPortObj.description
+                            _initPort.convention = _consPortObj.convention
+                            _initPort.dim1 = _consPortObj.dim1
+                            _initPort.dim2 = _consPortObj.dim2
+                            _initPort.comformat = _consPortObj.comformat
+                            _initPort.fromto = _consPortObj.fromto
+                            _initPort.min = _consPortObj.min
+                            _initPort.max = _consPortObj.max
+                            _initPort.initdefaultvalue = _channelObj.init
+
+                            # add init port to initFile
+                            _MICD_Inits.AddPortfromPortObject(_initPort, "FUN_OUT")
+
+                            continue
+
+                    _MICD_Inits.savefile()
+
+        for channel in sorted(_initializationDict.keys()):
+            print('channel: ' + channel)
+            print('value: ' + str(_initializationDict[channel].init))
+            print('consumer: ' + str(_initializationDict[channel].ports_consum[0].getIdentifier()))
+
+    else:
+        #
+        # log an error
+        #
+        pass
+
+# fill dictionary of coupling to be done from alias object
+# to sort coupling by model
+
+def AddAlias(aliasObj, portObj):
+
+    global logger, _aliasConsDict, _aliasProdDict
+
+    #
+    # set target dictionary
+    #
+    if portObj.type == "consumer":
+        _dict = _aliasConsDict
+    else:
+        _dict = _aliasProdDict
+
+    # test if model assoicate to port is alreday in coupling dict
+    # else create an empty dict for model key
+    if portObj.modocc not in _dict.keys():
+        _dict[portObj.modocc] = dict()
+
+    # test port key in dictionary for model
+    # if no aliases is specifed on
+    if portObj.name not in _dict[portObj.modocc].keys():
+        _dict[portObj.modocc][portObj.name] = aliasObj
+
+    # an alias exist for model/port in "alias to be done" dictionary
+    # check if it's the same coupling or not
+    # if not raise an CSV error
+    # else it 's a warning on CSV content
+    else:
+        # compare alias object
+        if aliasObj != _dict[portObj.modocc][portObj.name]:
+            logger.warning("[BACK2MEXICO][AddAlias] -- Several connections specified for port: "
+                           + portObj.getIdentifier() + "--\n\t\t ")
+
+
+#
+# fill dictionary of init to be done
+# sort init by model
+
+def AddInit(channelObj, portObj):
+
+    # target dictionary
+    _dict = _initializationDict
+
+    # test if model assoicate to port is alreday in init dict
+    # else create an empty dict for model key
+    if channelObj.name not in _dict.keys():
+        _dict[channelObj.name] = channelObj
+        if portObj.modocc not in _initializationDictPerModel.keys():
+            _initializationDictPerModel[portObj.modocc] = {}
+
+        _initializationDictPerModel[portObj.modocc][portObj] = channelObj
+
+    else:
+
+        if channelObj.init != _dict[channelObj.name].init:
+
+            logger.warning("[BACK2MEXICO][AddInit] -- Several initializations specified for port: "
+                           + portObj.getIdentifier + "--\n\t\tCannot set init: " + str(channelObj.init) + " because it"
+                                                                                                          " as "
+                                                                    " already set to: " + _dict[channelObj.name].init)
+
 main()

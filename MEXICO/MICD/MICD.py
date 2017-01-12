@@ -243,7 +243,7 @@ Passed before V_CETIME.',
 With this variable, the Environment or users can check the issue/date of models\n\
 This variable is not refreshed in RUN mode.'
         ]
-    print("End of empty file creation")
+
 
     def parse(self):
 
@@ -291,21 +291,23 @@ This variable is not refreshed in RUN mode.'
         else:
             return None
 
-        # sheet data frame
-        _df = self._SheetAndDataFrame[_sheet]['DataFrame']
+        if _sheet in self._SheetAndDataFrame.keys():
+            # sheet data frame
+            _df = self._SheetAndDataFrame[_sheet]['DataFrame']
 
-        # column name dict equivalence
-        _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
+            # column name dict equivalence
+            _dict = self._SheetAndDataFrame[_sheet]['ColNameEquiv']
 
-        # port name list of current dataframe
-        _portList = list(_df[_dict['API2MICD']['Name']])
+            # port name list of current dataframe
+            _portList = list(_df[_dict['API2MICD']['Name']])
 
-        if portName in _portList:
-            return _df.iloc[_portList.index(portName)]
+            if portName in _portList:
+                return _df.iloc[_portList.index(portName)]
+            else:
+                # if not found return None
+                return None
         else:
-            # if not found return None
             return None
-
 
     def getPortSheet(self, portName):
 
@@ -364,12 +366,14 @@ This variable is not refreshed in RUN mode.'
 
         for _sheet in ["FUN_IN", "FUN_OUT"]:
 
-            # sheet data frame
-            _df = self._SheetAndDataFrame[_sheet]['DataFrame']
+            if _sheet in self._SheetAndDataFrame.keys():
 
-            # base on previous list create port object to export
-            for _index, _row in _df.iterrows():
-                _PortObjList.append(self.createPortObj(_row, _sheet))
+                # sheet data frame
+                _df = self._SheetAndDataFrame[_sheet]['DataFrame']
+
+                # base on previous list create port object to export
+                for _index, _row in _df.iterrows():
+                    _PortObjList.append(self.createPortObj(_row, _sheet))
 
         return _PortObjList
 
@@ -379,7 +383,7 @@ This variable is not refreshed in RUN mode.'
 
 
     # add a port on MICD FUN_IN from a tab
-    def AddPortfromTab(self,lineTab,sheetName):
+    def AddPortfromTab(self, lineTab, sheetName):
 
         _arrayConfig = MICD.file_structure[sheetName]['PortObject_Attrib_Equiv']
 
@@ -389,7 +393,7 @@ This variable is not refreshed in RUN mode.'
 
 
 
-    def AddPortfromPortObject(self, MICDportObject,sheetName):
+    def AddPortfromPortObject(self, MICDportObject, sheetName):
 
         if 'ColNameEquiv' not in list(self._SheetAndDataFrame[sheetName].keys()):
 
@@ -529,7 +533,7 @@ This variable is not refreshed in RUN mode.'
         _dfTestTitles = list(map(callback, _dfTitles))
 
         # create the same kind of list on structure file column names
-        _colTitles = MICD.file_structure[sheet]['Header_name']
+        _colTitles = self.file_structure[sheet]['Header_name']
         _colTestTitles = list(map(callback,_colTitles))
 
         # test each value of configuration table
@@ -537,7 +541,6 @@ This variable is not refreshed in RUN mode.'
             if _testTitle in _dfTestTitles:
                 _dict['API2MICD'][_colTitles[_index]] = _dfTitles[_dfTestTitles.index(_testTitle)]
                 _dict['MICD2API'][_dfTitles[_dfTestTitles.index(_testTitle)]] = _colTitles[_index]
-
 
         return _dict
 
