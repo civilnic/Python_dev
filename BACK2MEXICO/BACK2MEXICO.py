@@ -3,6 +3,7 @@ import csv
 import copy
 import logging
 
+
 from logging.handlers import RotatingFileHandler,BaseRotatingHandler
 from datetime import datetime
 from optparse import OptionParser
@@ -13,7 +14,7 @@ from FLOT.flot import flot
 from FLOT.alias import Alias,MexicoAlias
 from MEXICO.COUPLING.mexico_coupling import mexico_coupling
 from MEXICO.INIT.mexico_inits import Mexico_Init_File
-from MEXICO.MICD.MICD_port import MICD_port
+from MEXICO.MICD.MICD_port import INIT_port
 from MEXICO.MICD.MICD import MICD
 
 # date computation for information
@@ -348,14 +349,20 @@ def main():
         _MICD_Inits = Mexico_Init_File(_initFile)
 
         #for _portObj in _MICD_Inits.getPortObjList():
-           # print(_portObj.getPortLineTab())
-        for _modocc in _initializationDictPerModel.keys():
-            for _portObj in  _initializationDictPerModel[_modocc].keys():
+         #   print(_portObj.getPortLineTab())
+
+
+        for _modocc in sorted(_initializationDictPerModel.keys()):
+
+            for _portObj in _initializationDictPerModel[_modocc].keys():
 
                 _channelObj = _initializationDictPerModel[_modocc][_portObj]
 
                 print('channel: ' + _channelObj.name)
                 print('value: ' + str(_channelObj.init))
+                for _port in _channelObj._ports_consum:
+                    print('cons: ')
+                    print(_port.getIdentifier())
 
                 # if channel already set in init file
                 _MICDPortObj = _MICD_Inits.getPortObj(_channelObj.name)
@@ -391,7 +398,7 @@ def main():
                             # create a new MICD Port object to add in init file
                             # this port will correspond to channel to add in init file
 
-                            _initPort = MICD_port(None, "OUT", None)
+                            _initPort = INIT_port(None, "OUT", None)
 
                             _initPort.name = _channelObj.name
                             _initPort.codingtype = _consPortObj.codingtype
@@ -406,12 +413,13 @@ def main():
                             _initPort.max = _consPortObj.max
                             _initPort.initdefaultvalue = _channelObj.init
 
+                            print(_initPort.getPortLineTab())
                             # add init port to initFile
                             _MICD_Inits.AddPortfromPortObject(_initPort, "FUN_OUT")
 
                             continue
 
-                    _MICD_Inits.savefile()
+                    _MICD_Inits.savefile("toto.xls")
 
         for channel in sorted(_initializationDict.keys()):
             print('channel: ' + channel)

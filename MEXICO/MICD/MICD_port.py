@@ -350,3 +350,37 @@ class MICD_port:
         _portLine.append(self.lastmodification)
 
         return _portLine
+
+
+class INIT_port(MICD_port):
+
+    """
+    Class to describe port in Init File
+    """
+
+
+    def __init__(self, portTab=None, type=None, configTab=None):
+        MICD_port.__init__(self, portTab, type, configTab)
+
+
+    def getPortLineTab(self):
+
+        # tab initialisation
+        _portLine = []
+
+        # tab construction
+        _portLine.append(self.name)
+        _portLine.append(self.codingtype)
+        _portLine.append(self.unit)
+        _portLine.append(self.description)
+        _portLine.append(self.convention)
+        _portLine.append(self.dim1)
+        _portLine.append(self.dim2)
+        _portLine.append(self.comformat)
+        _portLine.append(self.fromto)
+        _portLine.append(self.min)
+        _portLine.append(self.max)
+        _portLine.append(self.initdefaultvalue)
+
+
+        return _portLine
