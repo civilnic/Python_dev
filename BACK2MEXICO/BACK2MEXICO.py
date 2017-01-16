@@ -346,46 +346,69 @@ def main():
 
     if _initFile:
 
+        # Parse init file and create MICD object
         _MICD_Inits = Mexico_Init_File(_initFile)
 
         #for _portObj in _MICD_Inits.getPortObjList():
          #   print(_portObj.getPortLineTab())
 
-
+        # Initializations are stored by mod/occ in _initializationDictPerModel dictionary
+        # to read only one time each MICD
         for _modocc in sorted(_initializationDictPerModel.keys()):
 
+            # each initialization is then stored by consumer port object
             for _portObj in _initializationDictPerModel[_modocc].keys():
 
+                # get relative channel object in Mexico flow
                 _channelObj = _initializationDictPerModel[_modocc][_portObj]
 
-                print('channel: ' + _channelObj.name)
-                print('value: ' + str(_channelObj.init))
-                for _port in _channelObj._ports_consum:
-                    print('cons: ')
-                    print(_port.getIdentifier())
+                logger.info("\tChannel treated: " + _channelObj.name)
 
                 # if channel already set in init file
+                # try to get MICD port Obj (i.e. the line corresponding to channel in Initialization MICD)
                 _MICDPortObj = _MICD_Inits.getPortObj(_channelObj.name)
+
+
+                # If _MICDPortObj is not None that means that channel is already initialized in Init file.
+                # we have to test the initialized value and change it if different
                 if _MICDPortObj:
+
                     #
                     # test set value
                     # if value is not the same that targeted value change it in Init file
                     #
                     if _MICDPortObj.initdefaultvalue != _channelObj.init:
+
+
+                        logger.info("\t\tChannel was previously initialized to: " + _MICDPortObj.initdefaultvalue)
+                        logger.info("\t\tand is modified to: " + _channelObj.init)
+
+                        # change init value
                         _MICDPortObj.initdefaultvalue = _channelObj.init
+
+                        # add modification comment in init file (in description field)
+                        _MICDPortObj.description = comment
+
+                        # add init port to initFile
+                        _MICD_Inits.AddPortfromPortObject(_MICDPortObj, "FUN_OUT")
+
+                    else:
+
+                        logger.info("\t\tChannel is already initialized to: " + _channelObj.init)
 
                 # channel is not defined in init file
                 else:
+
+                    logger.info("\t\tChannel is not yet initialized")
 
                     # get actor corresponding to modocc in Mexico configuration
                     _actorObj = _mexicoCfgObj.getActor(_modocc)
 
                     # list micd corresponding to current actor in Mexico configuration
                     # for each micd
-                    for _micd in actorObj.getMICDList():
+                    for _micd in _actorObj.getMICDList():
 
-                        print("micd: "+_micd._fullPathName)
-                        # create micd object (i.e. parse MICD)
+                        # create micd object (i.e. parse MICD) from MICD
                         _micdObj = MICD(_micd._fullPathName)
 
                         # get an MicdPort Object for consumer port
@@ -403,7 +426,7 @@ def main():
                             _initPort.name = _channelObj.name
                             _initPort.codingtype = _consPortObj.codingtype
                             _initPort.unit = _consPortObj.unit
-                            _initPort.description = _consPortObj.description
+                            _initPort.description = comment
                             _initPort.convention = _consPortObj.convention
                             _initPort.dim1 = _consPortObj.dim1
                             _initPort.dim2 = _consPortObj.dim2
@@ -413,18 +436,15 @@ def main():
                             _initPort.max = _consPortObj.max
                             _initPort.initdefaultvalue = _channelObj.init
 
-                            print(_initPort.getPortLineTab())
                             # add init port to initFile
                             _MICD_Inits.AddPortfromPortObject(_initPort, "FUN_OUT")
 
-                            continue
+                            logger.info("\t\tNew channel is added to init file, value set to: " + _channelObj.init)
 
-                    _MICD_Inits.savefile("toto.xls")
+                            break
 
-        for channel in sorted(_initializationDict.keys()):
-            print('channel: ' + channel)
-            print('value: ' + str(_initializationDict[channel].init))
-            print('consumer: ' + str(_initializationDict[channel].ports_consum[0].getIdentifier()))
+        _MICD_Inits.savefile()
+
 
     else:
         #

@@ -1,4 +1,5 @@
 from MEXICO.MICD.MICD import MICD
+from MEXICO.MICD.MICD_port import INIT_port
 
 class Mexico_Init_File(MICD):
 
@@ -35,3 +36,32 @@ class Mexico_Init_File(MICD):
 
 
 
+    def createPortObj(self, rowDataFrame,sheet):
+
+        # tab to create port Object initialization
+        _portTab = []
+
+        # define port type following sheet name
+        _type = self.getPortType(sheet)
+
+        # local array of theorical header col names in MICD
+        _headerTab = self.file_structure[sheet]['Header_name']
+
+        # dictionnary of name equivalences between configuration array content
+        # i.e MICD.file_structure[sheet]['PortObject_Attrib_Equiv']
+        # and real sheet header in MICD
+        _dict = self._SheetAndDataFrame[sheet]['ColNameEquiv']
+
+        # to create port obj we extract from DataFrame only corresponding fields
+        # of MICD_portObjectConfigurationIN configuration tab
+        for _field in self.file_structure[sheet]['PortObject_Attrib_Equiv']:
+
+            # index of current _field in column tab
+            _index = self.file_structure[sheet]['PortObject_Attrib_Equiv'].index(_field)
+
+            # add
+            _portTab.append(rowDataFrame[_dict['API2MICD'][_headerTab[int(_index)]]])
+
+        _portObj = INIT_port(_portTab, _type, self.file_structure[sheet]['PortObject_Attrib_Equiv'])
+
+        return _portObj

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from datetime import datetime
 import xlwt, xlrd
@@ -105,7 +106,7 @@ class MICD:
 
     def __init__(self, pathname, modelname=None, modelversion=None, newfile=False):
 
-        self._pathName = pathname
+        self._pathName = os.path.abspath(pathname)
         self._modelName = modelname
         self._version = modelversion
         self._newFile = newfile
@@ -253,8 +254,6 @@ This variable is not refreshed in RUN mode.'
 
     def parse(self):
 
-        print("[MICD][parse] Parse excel file: " + self._pathName)
-
         # open with xlrd
         _xlrd_workbook = xlrd.open_workbook(self._pathName, on_demand=True)
         self._Workbook = copy(_xlrd_workbook)
@@ -269,9 +268,6 @@ This variable is not refreshed in RUN mode.'
             # MICD.file_structure
             # if sheet name is not recognize it's not parsed
             if _sheet not in self.file_structure.keys():
-                print("[MICD] unknown _sheet name: "+_sheet)
-                print("Possible sheet name are: ")
-                print(self.file_structure.keys())
                 continue
 
             # create empty dictionnary to store informations
@@ -325,7 +321,7 @@ This variable is not refreshed in RUN mode.'
         for _sheet in ["FUN_IN", "FUN_OUT"]:
 
             # define port type following sheet name
-            _type = getPortType(_sheet)
+            _type = self.getPortType(_sheet)
 
             # get port row
             _portRow = self.getPortRow(portName, _type)
@@ -352,7 +348,7 @@ This variable is not refreshed in RUN mode.'
         for _sheet in ["FUN_IN", "FUN_OUT"]:
 
             # define port type following sheet name
-            _type = getPortType(_sheet)
+            _type = self.getPortType(_sheet)
 
             # get port row
             _portRow = self.getPortRow(portName, _type)
@@ -419,8 +415,6 @@ This variable is not refreshed in RUN mode.'
 
             _dfColumnName.append(_dfconvertedName)
 
-        print("TRACE::::")
-        print(_dfColumnName)
         # _portArray is a list of list for pandas dataframe creation function
         # 1 x len of header tab
         _portArray = [MICDportObject.getPortLineTab()]
@@ -496,10 +490,10 @@ This variable is not refreshed in RUN mode.'
         :return True/False:
         """
 
-        _saveName=self._pathName
+        _saveName = self._pathName
 
         if saveName:
-            _saveName = saveName
+            _saveName = r'%s' % saveName
 
         # write workbook
         self.writeWorkbook()
@@ -518,8 +512,6 @@ This variable is not refreshed in RUN mode.'
             _styleToApply = MICD.xls_style
 
         self._SheetAndDataFrame[sheet]['XlsSheet'].write(row_index, col_index, value, _styleToApply)
-
-
 
 
 
@@ -558,10 +550,10 @@ This variable is not refreshed in RUN mode.'
         return _dict
 
 
-def getPortType(sheet):
-    _type = None
-    if sheet == "FUN_IN":
-        _type = "IN"
-    elif sheet == "FUN_OUT":
-        _type = "OUT"
-    return _type
+    def getPortType(self, sheet):
+        _type = None
+        if sheet == "FUN_IN":
+            _type = "IN"
+        elif sheet == "FUN_OUT":
+            _type = "OUT"
+        return _type
