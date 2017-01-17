@@ -171,8 +171,8 @@ class mexicoConfig:
     def getInitFilePathName(self):
 
         if self._initFile:
-            _InitActorObj=self._initFile[0]
-            _InitActorMicd=_InitActorObj.getMICDList()[0]
+            _InitActorObj = self._initFile[0]
+            _InitActorMicd = _InitActorObj.getMICDList()[0]
             return _InitActorMicd.fullPathName
         else:
             return None

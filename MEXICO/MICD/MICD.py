@@ -1,9 +1,11 @@
+import os
 import pandas as pd
 from datetime import datetime
 import xlwt, xlrd
 import re
 import sys
 from MEXICO.MICD.MICD_port import MICD_port
+from xlutils.copy import copy
 
 # from xltable import CellStyle,Table,Workbook,Worksheet
 
@@ -104,7 +106,7 @@ class MICD:
 
     def __init__(self, pathname, modelname=None, modelversion=None, newfile=False):
 
-        self._pathName = pathname
+        self._pathName = os.path.abspath(pathname)
         self._modelName = modelname
         self._version = modelversion
         self._newFile = newfile
@@ -118,6 +120,7 @@ class MICD:
             self.createemptyfile()
             print("[MICD] new empty MICD File is created")
         else:
+            print("[MICD] Parse existing file: " + self._pathName)
             self.parse()
 
     #
@@ -128,12 +131,12 @@ class MICD:
         # create excel workbook
         self._Workbook = xlwt.Workbook()
 
-        for _sheet in MICD.file_structure.keys():
+        for _sheet in self.file_structure.keys():
             self._SheetAndDataFrame[_sheet] = {}
             self._SheetAndDataFrame[_sheet]['XlsSheet'] = None
             self._SheetAndDataFrame[_sheet]['DataFrame'] = pd.DataFrame()
 
-            for _colTitle in MICD.file_structure[_sheet]['Header_name']:
+            for _colTitle in self.file_structure[_sheet]['Header_name']:
                 _dataFrame = self._SheetAndDataFrame[_sheet]['DataFrame']
                 _dataFrame[_colTitle] = ''
 
@@ -244,14 +247,16 @@ With this variable, the Environment or users can check the issue/date of models\
 This variable is not refreshed in RUN mode.'
         ]
 
+        # increase col width of comment field
+        self._SheetAndDataFrame['SIM_CTRL_IN']['XlsSheet'].col(self.file_structure['SIM_CTRL_IN']['Header_name'].index('Comment')).width = 20000
+        self._SheetAndDataFrame['SIM_CTRL_OUT']['XlsSheet'].col(self.file_structure['SIM_CTRL_OUT']['Header_name'].index('Comment')).width = 20000
+
 
     def parse(self):
 
-        print("[MICD]{parse] Parse excel file: " + self._pathName)
-
         # open with xlrd
-        #self._Workbook = xlrd.open_workbook(self._pathName)
-        #_sheet = self._Workbook.sheet_by_name(_sheetname)
+        _xlrd_workbook = xlrd.open_workbook(self._pathName, on_demand=True)
+        self._Workbook = copy(_xlrd_workbook)
 
         # parse MICD file with pandas
         _xl = pd.ExcelFile(self._pathName)
@@ -262,18 +267,18 @@ This variable is not refreshed in RUN mode.'
             # we assume here that MICD sheet name are always the same and equal to
             # MICD.file_structure
             # if sheet name is not recognize it's not parsed
-            if _sheet not in MICD.file_structure.keys():
-                print("[MICD] unknown _sheet name: "+_sheet)
+            if _sheet not in self.file_structure.keys():
                 continue
 
             # create empty dictionnary to store informations
             self._SheetAndDataFrame[_sheet] = {}
 
             # to store xlrd workbook if write is needed
-            self._SheetAndDataFrame[_sheet]['XlsSheet'] = None
+            self._SheetAndDataFrame[_sheet]['XlsSheet'] = self._Workbook.get_sheet(_xlrd_workbook.sheet_names().index(_sheet))
 
             # pandas dataframe of the sheet
             self._SheetAndDataFrame[_sheet]['DataFrame'] = _xl.parse(_sheet)  # create pandas dataframe
+            self._SheetAndDataFrame[_sheet]['DataFrame'] = self._SheetAndDataFrame[_sheet]['DataFrame'].fillna('')
 
             # create corresponding dictionnary for column name
             self._SheetAndDataFrame[_sheet]['ColNameEquiv'] = self.ColumNameEquiv(_sheet)
@@ -316,7 +321,7 @@ This variable is not refreshed in RUN mode.'
         for _sheet in ["FUN_IN", "FUN_OUT"]:
 
             # define port type following sheet name
-            _type = getPortType(_sheet)
+            _type = self.getPortType(_sheet)
 
             # get port row
             _portRow = self.getPortRow(portName, _type)
@@ -343,7 +348,7 @@ This variable is not refreshed in RUN mode.'
         for _sheet in ["FUN_IN", "FUN_OUT"]:
 
             # define port type following sheet name
-            _type = getPortType(_sheet)
+            _type = self.getPortType(_sheet)
 
             # get port row
             _portRow = self.getPortRow(portName, _type)
@@ -385,7 +390,7 @@ This variable is not refreshed in RUN mode.'
     # add a port on MICD FUN_IN from a tab
     def AddPortfromTab(self, lineTab, sheetName):
 
-        _arrayConfig = MICD.file_structure[sheetName]['PortObject_Attrib_Equiv']
+        _arrayConfig = self.file_structure[sheetName]['PortObject_Attrib_Equiv']
 
         _port = MICD_port(lineTab, getPortType(sheetName), _arrayConfig)
 
@@ -438,7 +443,7 @@ This variable is not refreshed in RUN mode.'
         _type = getPortType(sheet)
 
         # local array of theorical header col names in MICD
-        _headerTab = MICD.file_structure[sheet]['Header_name']
+        _headerTab = self.file_structure[sheet]['Header_name']
 
         # dictionnary of name equivalences between configuration array content
         # i.e MICD.file_structure[sheet]['PortObject_Attrib_Equiv']
@@ -447,15 +452,15 @@ This variable is not refreshed in RUN mode.'
 
         # to create port obj we extract from DataFrame only corresponding fields
         # of MICD_portObjectConfigurationIN configuration tab
-        for _field in MICD.file_structure[sheet]['PortObject_Attrib_Equiv']:
+        for _field in self.file_structure[sheet]['PortObject_Attrib_Equiv']:
 
             # index of current _field in column tab
-            _index = MICD.file_structure[sheet]['PortObject_Attrib_Equiv'].index(_field)
+            _index = self.file_structure[sheet]['PortObject_Attrib_Equiv'].index(_field)
 
             # add
             _portTab.append(rowDataFrame[_dict['API2MICD'][_headerTab[int(_index)]]])
 
-        _portObj = MICD_port(_portTab, _type, MICD.file_structure[sheet]['PortObject_Attrib_Equiv'])
+        _portObj = MICD_port(_portTab, _type, self.file_structure[sheet]['PortObject_Attrib_Equiv'])
 
         return _portObj
 
@@ -472,27 +477,29 @@ This variable is not refreshed in RUN mode.'
             for j, _colName in enumerate(_df.columns):
                 self.writeCell(_sheet, 0, j, _colName, titleStyle=True)
                 for i, value in enumerate(_df[_colName]):
-                    self.writeCell(_sheet,i+1,j, value, titleStyle=False)
+                    self.writeCell(_sheet, i+1, j, value, titleStyle=False)
 
 
 
 
     # function to save current MICD object (pathname attribute
     # is used to save the file
-    def savefile(self):
+    def savefile(self, saveName=None):
         """
         Method to save a BDS2XML tool input file from BDS2XML current object
         :return True/False:
         """
+
+        _saveName = self._pathName
+
+        if saveName:
+            _saveName = r'%s' % saveName
+
         # write workbook
         self.writeWorkbook()
 
-        # increase col width of comment field
-        self._SheetAndDataFrame['SIM_CTRL_IN']['XlsSheet'].col(self.file_structure['SIM_CTRL_IN']['Header_name'].index('Comment')).width = 20000
-        self._SheetAndDataFrame['SIM_CTRL_OUT']['XlsSheet'].col(self.file_structure['SIM_CTRL_OUT']['Header_name'].index('Comment')).width = 20000
-
-        print("[MICD] Save file to: "+self._pathName)
-        self._Workbook.save(self._pathName)
+        print("[MICD] Save file to: "+_saveName)
+        self._Workbook.save(_saveName)
 
 
     def writeCell(self,sheet,row_index,col_index,value,titleStyle=False):
@@ -505,8 +512,6 @@ This variable is not refreshed in RUN mode.'
             _styleToApply = MICD.xls_style
 
         self._SheetAndDataFrame[sheet]['XlsSheet'].write(row_index, col_index, value, _styleToApply)
-
-
 
 
 
@@ -545,10 +550,10 @@ This variable is not refreshed in RUN mode.'
         return _dict
 
 
-def getPortType(sheet):
-    _type = None
-    if sheet == "FUN_IN":
-        _type = "IN"
-    elif sheet == "FUN_OUT":
-        _type = "OUT"
-    return _type
+    def getPortType(self, sheet):
+        _type = None
+        if sheet == "FUN_IN":
+            _type = "IN"
+        elif sheet == "FUN_OUT":
+            _type = "OUT"
+        return _type
