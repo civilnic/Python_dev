@@ -255,7 +255,7 @@ This variable is not refreshed in RUN mode.'
     def parse(self):
 
         # open with xlrd
-        _xlrd_workbook = xlrd.open_workbook(self._pathName, on_demand=True)
+        _xlrd_workbook = xlrd.open_workbook(self._pathName)
         self._Workbook = copy(_xlrd_workbook)
 
         # parse MICD file with pandas
@@ -440,7 +440,7 @@ This variable is not refreshed in RUN mode.'
         _portTab = []
 
         # define port type following sheet name
-        _type = getPortType(sheet)
+        _type = self.getPortType(sheet)
 
         # local array of theorical header col names in MICD
         _headerTab = self.file_structure[sheet]['Header_name']
@@ -495,11 +495,13 @@ This variable is not refreshed in RUN mode.'
         if saveName:
             _saveName = r'%s' % saveName
 
+        _saveName = _saveName.replace("\\" , "/")
+
         # write workbook
         self.writeWorkbook()
 
         print("[MICD] Save file to: "+_saveName)
-        self._Workbook.save(_saveName)
+        self._Workbook.save(os.path.realpath(_saveName))
 
 
     def writeCell(self,sheet,row_index,col_index,value,titleStyle=False):
