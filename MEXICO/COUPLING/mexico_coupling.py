@@ -94,12 +94,20 @@ class mexico_coupling:
         if _testLine:
             return False
 
+        # if row begin with 'ICD Name' it's first line => skip it
+        _testLine = re.match(r'(?P<signal_name>^(ICD Name).*)', row[mexico_coupling.fieldnames[0]])
+        if _testLine:
+            return False
+
+        # create alias object from row
         aliasObj = Alias(row[mexico_coupling.fieldnames[0]],
                          row[mexico_coupling.fieldnames[1]],
                          row[mexico_coupling.fieldnames[4]],
                          row[mexico_coupling.fieldnames[3]],
                          row[mexico_coupling.fieldnames[2]]
                          )
+
+        # reference alias object on coupling object
         self.addAliasObj(aliasObj)
 
         return True

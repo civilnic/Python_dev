@@ -40,7 +40,7 @@ _possibleField = ['MODOCC_PROD', 'PORT_PROD', 'OP_PROD', 'TAB_PROD',
 # CSV current line for logger
 line_num = 0
 
-globalComment = "[2016-1072] SHT update FDEF models"
+globalComment = "[2016-1072] SHT fdefATA7XFG intg"
 
 #
 # dictionary of alias modification to do per model

@@ -368,20 +368,26 @@ def main():
                 # try to get MICD port Obj (i.e. the line corresponding to channel in Initialization MICD)
                 _MICDPortObj = _MICD_Inits.getPortObj(_channelObj.name)
 
-
                 # If _MICDPortObj is not None that means that channel is already initialized in Init file.
                 # we have to test the initialized value and change it if different
                 if _MICDPortObj:
-
+                    logger.info("\t\t --> Channel is initialized in initfile")
                     #
                     # test set value
                     # if value is not the same that targeted value change it in Init file
                     #
+                    try:
+                        if float(_MICDPortObj.initdefaultvalue) == float(_channelObj.init):
+                            logger.info("\t\t\tEquivalent initialization is set: "+_MICDPortObj.initdefaultvalue)
+                            logger.info("\t\t\tchannel required: "+_channelObj.init)
+                            continue
+                    except ValueError:
+                        pass
+
                     if _MICDPortObj.initdefaultvalue != _channelObj.init:
 
-
-                        logger.info("\t\tChannel was previously initialized to: " + _MICDPortObj.initdefaultvalue)
-                        logger.info("\t\tand is modified to: " + _channelObj.init)
+                        logger.info("\t\t\tChannel was previously initialized to: " + _MICDPortObj.initdefaultvalue)
+                        logger.info("\t\t\tand is modified to: " + _channelObj.init)
 
                         # change init value
                         _MICDPortObj.initdefaultvalue = _channelObj.init
@@ -393,13 +399,37 @@ def main():
                         _MICD_Inits.AddPortfromPortObject(_MICDPortObj, "FUN_OUT")
 
                     else:
-
-                        logger.info("\t\tChannel is already initialized to: " + _channelObj.init)
+                        logger.info("\t\t\tChannel is already initialized to: " + _channelObj.init)
 
                 # channel is not defined in init file
                 else:
+                    logger.info("\t\t --> Channel is not initialized in initfile")
+                    #
+                    _mexChannelObj = _mexicoFlotObj.getChannel(_channelObj.getIdentifier())
 
-                    logger.info("\t\tChannel is not yet initialized")
+                    if _mexChannelObj.init:
+
+                        logger.info("\t\t\tIn mexico flow Channel is initialized to: "+_mexChannelObj.init)
+
+                        try:
+                            if float(_mexChannelObj.init) == float(_channelObj.init):
+                                logger.info("\t\t\tEquivalent initialization is already set: "+_mexChannelObj.init)
+                                logger.info("\t\t\tChannel required: "+_channelObj.init)
+                                continue
+
+                            # if channel init is set to 0 => do not add into InitFile
+                            if float(_channelObj.init) == 0.0:
+                                logger.info("\t\t\tSpecified init not added (null initialization): " + _channelObj.init)
+                                continue
+
+                        except ValueError:
+
+                            if _mexChannelObj.init == _channelObj.init:
+                                logger.info("\t\t\tEquivalent initialization is already set: "+_mexChannelObj.init)
+                                logger.info("\t\t\tChannel required: "+_channelObj.init)
+
+                    else:
+                        logger.info("\t\t\tChannel is not yet initialized")
 
                     # get actor corresponding to modocc in Mexico configuration
                     _actorObj = _mexicoCfgObj.getActor(_modocc)
@@ -445,15 +475,16 @@ def main():
 
         _MICD_Inits.savefile()
 
-
     else:
         #
         # log an error
         #
         pass
 
+#
 # fill dictionary of coupling to be done from alias object
 # to sort coupling by model
+#
 
 def AddAlias(aliasObj, portObj):
 
@@ -491,7 +522,7 @@ def AddAlias(aliasObj, portObj):
 #
 # fill dictionary of init to be done
 # sort init by model
-
+#
 def AddInit(channelObj, portObj):
 
     # target dictionary
