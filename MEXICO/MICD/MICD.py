@@ -392,9 +392,9 @@ This variable is not refreshed in RUN mode.'
 
         _arrayConfig = self.file_structure[sheetName]['PortObject_Attrib_Equiv']
 
-        _port = MICD_port(lineTab, getPortType(sheetName), _arrayConfig)
+        _port = MICD_port(lineTab, self.getPortType(sheetName), _arrayConfig)
 
-        self.AddPortfromPortObject(_port,sheetName)
+        self.AddPortfromPortObject(_port, sheetName)
 
 
 
@@ -432,6 +432,20 @@ This variable is not refreshed in RUN mode.'
         #df2 = concat([df.ix[:2], line, df.ix[3:]]).reset_index(drop=True)
 
         return True
+
+    def RemovePortfromPortObject(self, MICDportObject, sheetName):
+
+        # sheet panda dataframe
+        _df = self._SheetAndDataFrame[sheetName]['DataFrame']
+
+        # column name dict equivalence
+        _dict = self._SheetAndDataFrame[sheetName]['ColNameEquiv']
+
+        # remove micd line for port name equal to  MICDportObject.name
+        _df.ix[_df[_dict['API2MICD']['Name']] == MICDportObject.name]
+
+        return True
+
 
 
     def createPortObj(self, rowDataFrame,sheet):

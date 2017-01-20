@@ -359,6 +359,8 @@ def main():
             # each initialization is then stored by consumer port object
             for _portObj in _initializationDictPerModel[_modocc].keys():
 
+                _portObj.pprint()
+
                 # get relative channel object in Mexico flow
                 _channelObj = _initializationDictPerModel[_modocc][_portObj]
 
@@ -372,15 +374,27 @@ def main():
                 # we have to test the initialized value and change it if different
                 if _MICDPortObj:
                     logger.info("\t\t --> Channel is initialized in initfile")
+
+                    # if targetted init is None => Init to remove
+                    if _channelObj.init is None:
+                        logger.info("\t\t\t init is None => remove from init file")
+
+                        # add init port to initFile
+                        _MICD_Inits.RemovePortfromPortObject(_MICDPortObj, "FUN_OUT")
+
+                        continue
+
                     #
                     # test set value
                     # if value is not the same that targeted value change it in Init file
                     #
                     try:
-                        if float(_MICDPortObj.initdefaultvalue) == float(_channelObj.init):
-                            logger.info("\t\t\tEquivalent initialization is set: "+_MICDPortObj.initdefaultvalue)
-                            logger.info("\t\t\tchannel required: "+_channelObj.init)
-                            continue
+                        # if channel
+                        if (_MICDPortObj.initdefaultvalue is not None) and (_channelObj.init is not None):
+                            if float(_MICDPortObj.initdefaultvalue) == float(_channelObj.init):
+                                logger.info("\t\t\tEquivalent initialization is set: "+_MICDPortObj.initdefaultvalue)
+                                logger.info("\t\t\tchannel required: "+_channelObj.init)
+                                continue
                     except ValueError:
                         pass
 
@@ -412,15 +426,16 @@ def main():
                         logger.info("\t\t\tIn mexico flow Channel is initialized to: "+_mexChannelObj.init)
 
                         try:
-                            if float(_mexChannelObj.init) == float(_channelObj.init):
-                                logger.info("\t\t\tEquivalent initialization is already set: "+_mexChannelObj.init)
-                                logger.info("\t\t\tChannel required: "+_channelObj.init)
-                                continue
-
-                            # if channel init is set to 0 => do not add into InitFile
-                            if float(_channelObj.init) == 0.0:
-                                logger.info("\t\t\tSpecified init not added (null initialization): " + _channelObj.init)
-                                continue
+                            if (_mexChannelObj.init is not None) and (_channelObj.init is not None):
+                                if float(_mexChannelObj.init) == float(_channelObj.init):
+                                    logger.info("\t\t\tEquivalent initialization is already set: "+_mexChannelObj.init)
+                                    logger.info("\t\t\tChannel required: "+_channelObj.init)
+                                    continue
+                            if _channelObj.init is not None:
+                                # if channel init is set to 0 => do not add into InitFile
+                                if float(_channelObj.init) == 0.0:
+                                    logger.info("\t\t\tSpecified init not added (null initialization): " + _channelObj.init)
+                                    continue
 
                         except ValueError:
 
