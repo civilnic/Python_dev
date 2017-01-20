@@ -342,15 +342,14 @@ def main():
     # get Init MICD from MEXICO configuration file
     #
     _initFile = _mexicoCfgObj.getInitFilePathName()
-    logger.info(" MEXICO Init file updated: " + _initFile)
+
 
     if _initFile:
 
+        logger.info(" MEXICO Init file updated: " + _initFile)
+
         # Parse init file and create MICD object
         _MICD_Inits = Mexico_Init_File(_initFile)
-
-        #for _portObj in _MICD_Inits.getPortObjList():
-         #   print(_portObj.getPortLineTab())
 
         # Initializations are stored by mod/occ in _initializationDictPerModel dictionary
         # to read only one time each MICD
@@ -358,8 +357,6 @@ def main():
 
             # each initialization is then stored by consumer port object
             for _portObj in _initializationDictPerModel[_modocc].keys():
-
-                _portObj.pprint()
 
                 # get relative channel object in Mexico flow
                 _channelObj = _initializationDictPerModel[_modocc][_portObj]
@@ -491,6 +488,7 @@ def main():
         _MICD_Inits.savefile()
 
     else:
+        logger.info(" No Init to update: ")
         #
         # log an error
         #

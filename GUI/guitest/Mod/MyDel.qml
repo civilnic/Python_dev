@@ -12,28 +12,28 @@ Item {
         height: Screen.height/10
 
 
-    Image{
-        source: s
-        width: height
-        height: Screen.height/10
-        anchors{
-            verticalCenter: parent.verticalCenter
-            leftMargin: 10
+        Image{
+            source: s
+            width: height
+            height: Screen.height/10
+            anchors{
+                verticalCenter: parent.verticalCenter
+                leftMargin: 10
+            }
         }
-    }
-    Text{
-        text:name
-        anchors.centerIn: baseRec
-        font.pixelSize: 22
-    }
-    Text{
-        text: p
-        font.pixelSize: 22
-        anchors{
-            verticalCenter: parent.verticalCenter
-            right:parent.right
+        Text{
+            text:name
+            anchors.centerIn: baseRec
+            font.pixelSize: 22
         }
-    }
+        Text{
+            text: p
+            font.pixelSize: 22
+            anchors{
+                verticalCenter: parent.verticalCenter
+                right:parent.right
+            }
+        }
     }
 
 }
