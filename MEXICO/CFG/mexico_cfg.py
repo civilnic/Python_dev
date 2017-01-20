@@ -47,6 +47,7 @@ class mexicoConfig:
                 pass
         except IOError:
             print("[mexicoConfig][conception] Cannot open MEXICO conception file: "+str(self.conceptionFile))
+            exit(1)
 
         tree = etree.parse(self.conceptionFile)
 
@@ -72,7 +73,11 @@ class mexicoConfig:
 
     def parse(self):
 
-        tree = etree.parse(self.pathName)
+        try:
+            tree = etree.parse(self.pathName)
+        except OSError:
+            print("[mexicoConfig][ssdb configuration]: Cannot open MEXICO SSDB configuration file"+self.pathName)
+            exit(1)
 
         root = tree.getroot()
 

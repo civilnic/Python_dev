@@ -88,9 +88,11 @@ class channel:
 
     def addPort(self, portObj):
         if portObj.type == "producer":
-            self._ports_prod.append(portObj)
+            if portObj not in self._ports_prod:
+                self._ports_prod.append(portObj)
         elif portObj.type == "consumer":
-            self._ports_consum.append(portObj)
+            if portObj not in self._ports_consum:
+                self._ports_consum.append(portObj)
 
     #
     # getProducer function

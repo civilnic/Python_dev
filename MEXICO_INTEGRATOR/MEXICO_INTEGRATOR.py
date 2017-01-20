@@ -242,7 +242,7 @@ def parseCsvFile(csvFile, flowFile):
                 _consPortObj = _flotObj.getPort(_cnxCSVObj.getConsTriplet())
 
                 # S_FLOW = channel link to consummer port in flow
-                S_FLOW = _consPortObj.channel
+                S_FLOW = _consPortObj.channel.name
                 S_FLOWObj = _flotObj.getChannel(S_FLOW)
 
                 # a difference on MOD_CONS or PORT_CONS is not possible
@@ -347,7 +347,7 @@ def parseCsvFile(csvFile, flowFile):
                             S_USER = _cnxCSVObj.Channel
                         # else S_USER = S_FLOW
                         else:
-                            S_USER = _prodPortObj.channel
+                            S_USER = _prodPortObj.channel.name
 
                         #  channel object link to specified signal name in flow
                         _channelObj = _flotObj.getChannel(S_USER)
@@ -461,7 +461,7 @@ def parseCsvFile(csvFile, flowFile):
 
                                     else:
 
-                                        S_USER = _prodPortObj.channel
+                                        S_USER = _prodPortObj.channel.name
 
                                         # create an alias on S_USER for consumer port
                                         _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_USER,
@@ -518,7 +518,7 @@ def parseCsvFile(csvFile, flowFile):
                             # apply algo inits
                             AlgoInits(_flotObj, _cnxCSVObj)
 
-                if (_testTab[8] and _csvConfTab[8]):
+                if ((_testTab[8] and _csvConfTab[8])) or ((_testTab[9] and _csvConfTab[9])):
 
                     if _cnxCSVObj.modoccCons in _aliasConsDict.keys():
 
@@ -547,57 +547,52 @@ def parseCsvFile(csvFile, flowFile):
                         AddAlias(_aliasObject, _consPortObj)
 
 
-                if (_testTab[9] and _csvConfTab[9]):
-                    pass
-
-
-
-
-
     finally:
         file.close()
 
-    print ("**** ALIAS PROD ****")
+    logger.info("**** ALIAS PROD ****")
     for modele in _aliasProdDict.keys():
 
         actorObj = _mexicoCfgObj.getActor(modele)
 
         _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
 
-        print('modele: ' + modele)
+        logger.info("modele: "+modele)
 
         if _aliasProdDict[modele]:
 
             for port in sorted(_aliasProdDict[modele].keys()):
-                print('port: ' + port)
-                print(_aliasProdDict[modele][port])
+                logger.info("port: " + port)
+                logger.info("alias:")
+                logger.info(_aliasProdDict[modele][port])
 
                 _coulingFileObj.chgAddModify(_aliasProdDict[modele][port], "FUN_OUT")
 
         _coulingFileObj.write()
 
-    print("**** ALIAS CONSO ****")
+    logger.info("**** ALIAS CONSO ****")
     for modele in _aliasConsDict.keys():
 
         actorObj = _mexicoCfgObj.getActor(modele)
 
         _coulingFileObj = mexico_coupling(actorObj.getFirstCplFile())
 
-        print('modele: ' + modele)
+        logger.info("modele: "+modele)
 
         if _aliasConsDict[modele]:
 
             for port in sorted(_aliasConsDict[modele].keys()):
 
-                print('port: ' + port)
-                print(_aliasConsDict[modele][port])
+                logger.info("port: " + port)
+                logger.info("alias: ")
+                logger.info(_aliasConsDict[modele][port])
 
                 _coulingFileObj.chgAddModify(_aliasConsDict[modele][port], "FUN_IN")
 
         _coulingFileObj.write()
 
 
-    print("**** INIT ****")
+    logger.info("**** INNI ****")
     #
     # get Init MICD from MEXICO configuration file
     #
@@ -605,147 +600,153 @@ def parseCsvFile(csvFile, flowFile):
 
     if _initFile:
 
-        logger.info(" MEXICO Init file updated: " + _initFile)
+        if len(_initializationDictPerModel.keys())>0:
 
-        # Parse init file and create MICD object
-        _MICD_Inits = Mexico_Init_File(_initFile)
+            logger.info(" MEXICO Init file updated: " + _initFile)
 
-        # Initializations are stored by mod/occ in _initializationDictPerModel dictionary
-        # to read only one time each MICD
-        for _modocc in sorted(_initializationDictPerModel.keys()):
+            # Parse init file and create MICD object
+            _MICD_Inits = Mexico_Init_File(_initFile)
 
-            # each initialization is then stored by consumer port object
-            for _portObj in _initializationDictPerModel[_modocc].keys():
+            # Initializations are stored by mod/occ in _initializationDictPerModel dictionary
+            # to read only one time each MICD
+            for _modocc in sorted(_initializationDictPerModel.keys()):
 
-                # get relative channel object in Mexico flow
-                _channelObj = _initializationDictPerModel[_modocc][_portObj]
+                # each initialization is then stored by consumer port object
+                for _portObj in _initializationDictPerModel[_modocc].keys():
 
-                logger.info("\tChannel treated: " + _channelObj.name)
+                    # get relative channel object in Mexico flow
+                    _channelObj = _initializationDictPerModel[_modocc][_portObj]
 
-                # if channel already set in init file
-                # try to get MICD port Obj (i.e. the line corresponding to channel in Initialization MICD)
-                _MICDPortObj = _MICD_Inits.getPortObj(_channelObj.name)
+                    logger.info("\tChannel treated: " + _channelObj.name)
 
-                # If _MICDPortObj is not None that means that channel is already initialized in Init file.
-                # we have to test the initialized value and change it if different
-                if _MICDPortObj:
-                    logger.info("\t\t --> Channel is initialized in initfile")
+                    # if channel already set in init file
+                    # try to get MICD port Obj (i.e. the line corresponding to channel in Initialization MICD)
+                    _MICDPortObj = _MICD_Inits.getPortObj(_channelObj.name)
 
-                    # if targetted init is None => Init to remove
-                    if _channelObj.init is None:
-                        logger.info("\t\t\t init is None => remove from init file")
+                    # If _MICDPortObj is not None that means that channel is already initialized in Init file.
+                    # we have to test the initialized value and change it if different
+                    if _MICDPortObj:
+                        logger.info("\t\t --> Channel is initialized in initfile")
 
-                        # add init port to initFile
-                        _MICD_Inits.RemovePortfromPortObject(_MICDPortObj, "FUN_OUT")
-
-                        continue
-
-                    #
-                    # test set value
-                    # if value is not the same that targeted value change it in Init file
-                    #
-                    try:
-                        # if channel
-                        if (_MICDPortObj.initdefaultvalue is not None) and (_channelObj.init is not None):
-                            if float(_MICDPortObj.initdefaultvalue) == float(_channelObj.init):
-                                logger.info("\t\t\tEquivalent initialization is set: "+_MICDPortObj.initdefaultvalue)
-                                logger.info("\t\t\tchannel required: "+_channelObj.init)
-                                continue
-                    except ValueError:
-                        pass
-
-                    if _MICDPortObj.initdefaultvalue != _channelObj.init:
-
-                        logger.info("\t\t\tChannel was previously initialized to: " + _MICDPortObj.initdefaultvalue)
-                        logger.info("\t\t\tand is modified to: " + _channelObj.init)
-
-                        # change init value
-                        _MICDPortObj.initdefaultvalue = _channelObj.init
-
-                        # add modification comment in init file (in description field)
-                        _MICDPortObj.description = globalComment
-
-                        # add init port to initFile
-                        _MICD_Inits.AddPortfromPortObject(_MICDPortObj, "FUN_OUT")
-
-                    else:
-                        logger.info("\t\t\tChannel is already initialized to: " + _channelObj.init)
-
-                # channel is not defined in init file
-                else:
-                    logger.info("\t\t --> Channel is not initialized in initfile")
-                    #
-                    _mexChannelObj = _flotObj.getChannel(_channelObj.getIdentifier())
-
-                    if _mexChannelObj.init:
-
-                        logger.info("\t\t\tIn mexico flow Channel is initialized to: "+_mexChannelObj.init)
-
-                        try:
-                            if (_mexChannelObj.init is not None) and (_channelObj.init is not None):
-                                if float(_mexChannelObj.init) == float(_channelObj.init):
-                                    logger.info("\t\t\tEquivalent initialization is already set: "+_mexChannelObj.init)
-                                    logger.info("\t\t\tChannel required: "+_channelObj.init)
-                                    continue
-                            if _channelObj.init is not None:
-                                # if channel init is set to 0 => do not add into InitFile
-                                if float(_channelObj.init) == 0.0:
-                                    logger.info("\t\t\tSpecified init not added (null initialization): " + _channelObj.init)
-                                    continue
-
-                        except ValueError:
-
-                            if _mexChannelObj.init == _channelObj.init:
-                                logger.info("\t\t\tEquivalent initialization is already set: "+_mexChannelObj.init)
-                                logger.info("\t\t\tChannel required: "+_channelObj.init)
-
-                    else:
-                        logger.info("\t\t\tChannel is not yet initialized")
-
-                    # get actor corresponding to modocc in Mexico configuration
-                    _actorObj = _mexicoCfgObj.getActor(_modocc)
-
-                    # list micd corresponding to current actor in Mexico configuration
-                    # for each micd
-                    for _micd in _actorObj.getMICDList():
-
-                        # create micd object (i.e. parse MICD) from MICD
-                        _micdObj = MICD(_micd._fullPathName)
-
-                        # get an MicdPort Object for consumer port
-                        _consPortObj = _micdObj.getPortObj(_portObj.name)
-
-                        # if this object is not None => consumer has been found on MICD
-                        # get needed informations from MICD line
-                        if _consPortObj:
-
-                            # create a new MICD Port object to add in init file
-                            # this port will correspond to channel to add in init file
-
-                            _initPort = INIT_port(None, "OUT", None)
-
-                            _initPort.name = _channelObj.name
-                            _initPort.codingtype = _consPortObj.codingtype
-                            _initPort.unit = _consPortObj.unit
-                            _initPort.description = globalComment
-                            _initPort.convention = _consPortObj.convention
-                            _initPort.dim1 = _consPortObj.dim1
-                            _initPort.dim2 = _consPortObj.dim2
-                            _initPort.comformat = _consPortObj.comformat
-                            _initPort.fromto = _consPortObj.fromto
-                            _initPort.min = _consPortObj.min
-                            _initPort.max = _consPortObj.max
-                            _initPort.initdefaultvalue = _channelObj.init
+                        # if targetted init is None => Init to remove
+                        if _channelObj.init is None:
+                            logger.info("\t\t\t init is None => remove from init file")
 
                             # add init port to initFile
-                            _MICD_Inits.AddPortfromPortObject(_initPort, "FUN_OUT")
+                            _MICD_Inits.RemovePortfromPortObject(_MICDPortObj, "FUN_OUT")
 
-                            logger.info("\t\tNew channel is added to init file, value set to: " + _channelObj.init)
+                            continue
 
-                            break
+                        #
+                        # test set value
+                        # if value is not the same that targeted value change it in Init file
+                        #
+                        try:
+                            # if channel
+                            if (_MICDPortObj.initdefaultvalue is not None) and (_channelObj.init is not None):
+                                if float(_MICDPortObj.initdefaultvalue) == float(_channelObj.init):
+                                    logger.info("\t\t\tEquivalent initialization is already set in init file: "+_MICDPortObj.initdefaultvalue)
+                                    logger.info("\t\t\tinit required in csv: "+_channelObj.init)
+                                    logger.info("\t\t\t=> nothing to do for this channel: ")
+                                    continue
+                        except ValueError:
+                            pass
 
-        _MICD_Inits.savefile()
+                        if _MICDPortObj.initdefaultvalue != _channelObj.init:
 
+                            logger.info("\t\t\tChannel was previously initialized to: " + _MICDPortObj.initdefaultvalue)
+                            logger.info("\t\t\tand is modified to: " + _channelObj.init)
+
+                            # change init value
+                            _MICDPortObj.initdefaultvalue = _channelObj.init
+
+                            # add modification comment in init file (in description field)
+                            _MICDPortObj.description = globalComment
+
+                            # add init port to initFile
+                            _MICD_Inits.AddPortfromPortObject(_MICDPortObj, "FUN_OUT")
+
+                        else:
+                            logger.info("\t\t\tChannel is already initialized in flot to: " + _channelObj.init)
+
+                    # channel is not defined in init file
+                    else:
+                        logger.info("\t\t --> Channel is not initialized in initfile")
+                        #
+                        _mexChannelObj = _flotObj.getChannel(_channelObj.getIdentifier())
+
+                        if _mexChannelObj.init:
+
+                            logger.info("\t\t\tIn mexico flow Channel is initialized to: "+_mexChannelObj.init)
+
+                            try:
+                                if (_mexChannelObj.init is not None) and (_channelObj.init is not None):
+                                    if float(_mexChannelObj.init) == float(_channelObj.init):
+                                        logger.info("\t\t\tEquivalent initialization is already set in flot (from MICD): " + _mexChannelObj.init)
+                                        logger.info("\t\t\tinit required in csv: " + _channelObj.init)
+                                        logger.info("\t\t\t=> nothing to do for this channel: ")
+                                        continue
+                                if _channelObj.init is not None:
+                                    # if channel init is set to 0 => do not add into InitFile
+                                    if float(_channelObj.init) == 0.0:
+                                        logger.info("\t\t\tSpecified init not added (null initialization): " + _channelObj.init)
+                                        continue
+
+                            except ValueError:
+
+                                if _mexChannelObj.init == _channelObj.init:
+                                    logger.info("\t\t\tEquivalent initialization is already set in flot (from MICD): " + _mexChannelObj.init)
+                                    logger.info("\t\t\tinit required in csv: " + _channelObj.init)
+                                    logger.info("\t\t\t=> nothing to do for this channel: ")
+
+                        else:
+                            logger.info("\t\t\tChannel is not yet initialized")
+
+                        # get actor corresponding to modocc in Mexico configuration
+                        _actorObj = _mexicoCfgObj.getActor(_modocc)
+
+                        # list micd corresponding to current actor in Mexico configuration
+                        # for each micd
+                        for _micd in _actorObj.getMICDList():
+
+                            # create micd object (i.e. parse MICD) from MICD
+                            _micdObj = MICD(_micd._fullPathName)
+
+                            # get an MicdPort Object for consumer port
+                            _consPortObj = _micdObj.getPortObj(_portObj.name)
+
+                            # if this object is not None => consumer has been found on MICD
+                            # get needed informations from MICD line
+                            if _consPortObj:
+
+                                # create a new MICD Port object to add in init file
+                                # this port will correspond to channel to add in init file
+
+                                _initPort = INIT_port(None, "OUT", None)
+
+                                _initPort.name = _channelObj.name
+                                _initPort.codingtype = _consPortObj.codingtype
+                                _initPort.unit = _consPortObj.unit
+                                _initPort.description = globalComment
+                                _initPort.convention = _consPortObj.convention
+                                _initPort.dim1 = _consPortObj.dim1
+                                _initPort.dim2 = _consPortObj.dim2
+                                _initPort.comformat = _consPortObj.comformat
+                                _initPort.fromto = _consPortObj.fromto
+                                _initPort.min = _consPortObj.min
+                                _initPort.max = _consPortObj.max
+                                _initPort.initdefaultvalue = _channelObj.init
+
+                                # add init port to initFile
+                                _MICD_Inits.AddPortfromPortObject(_initPort, "FUN_OUT")
+
+                                logger.info("\t\tNew channel is added to init file, value set to: " + _channelObj.init)
+
+                                break
+
+            _MICD_Inits.savefile()
+        else:
+            logger.info("No init to update")
     else:
         #
         # log an error
@@ -850,7 +851,7 @@ def AlgoInits(flotObj,cnxCSVObj,specSignalName=False):
     else:
 
         # get S_USER channel object
-        S_USERObj = flotObj.getChannel(S_USER)
+        S_USERObj = copy.copy(flotObj.getChannel(S_USER))
 
         # IF USER_INIT is not None, apply it on the new signal S_USER
         if cnxCSVObj.init:
