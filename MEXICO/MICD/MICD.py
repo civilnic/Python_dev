@@ -400,6 +400,7 @@ This variable is not refreshed in RUN mode.'
 
     def AddPortfromPortObject(self, MICDportObject, sheetName):
 
+
         if 'ColNameEquiv' not in list(self._SheetAndDataFrame[sheetName].keys()):
 
             # create corresponding dictionnary for column name
@@ -419,19 +420,47 @@ This variable is not refreshed in RUN mode.'
         # 1 x len of header tab
         _portArray = [MICDportObject.getPortLineTab()]
 
+        # create a 'port' dataframe from previous array containing port informations
         _portdf = pd.DataFrame(_portArray, columns=_dfColumnName)
 
-        # MICD dataframe merge
-        _micdDf = self._SheetAndDataFrame[sheetName]['DataFrame']
+        # get MICD complete dataframe with data type set to 'str'
+        _micdDf = self._SheetAndDataFrame[sheetName]['DataFrame'].astype('str')
 
-        _frames = [_micdDf,_portdf]
+        # get port list from MICD
+        _portNameList = _micdDf[_dict['API2MICD']['Name']].tolist()
 
-        self._SheetAndDataFrame[sheetName]['DataFrame'] = pd.concat(_frames)
+        #
+        # if port name already exist in MICD
+        # update corresponding row in MICD
+        #
+        if MICDportObject.name in _portNameList:
 
-        #line = DataFrame({"onset": 30.0, "length": 1.3}, index=[3])
-        #df2 = concat([df.ix[:2], line, df.ix[3:]]).reset_index(drop=True)
+            # get row index in MICD
+            _index = _portNameList.index(MICDportObject.name)
 
-        return True
+            # loop on column for row designed by _index in MICD
+            for _columnName in _dfColumnName:
+
+                # replace cell values with dataframe created from input MICDportObject
+                _micdDf.at[_index, _columnName] = _portdf.get_value(0, _columnName)
+
+            # update micd dataframe with updated dataframe
+            self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf
+
+            return False
+        else:
+
+            # create a temporary list of dataframe to concatenate them
+            _frames = [_micdDf, _portdf]
+
+            # add dataframe created from input MICDportObject at the end of MICD dataframe
+            _micdDf = pd.concat(_frames)
+
+            # update micd dataframe with updated dataframe
+            self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf
+
+            return True
+
 
     def RemovePortfromPortObject(self, MICDportObject, sheetName):
 
