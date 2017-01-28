@@ -11,7 +11,7 @@ class FDEF_XML:
     """
 
 
-    def __init__(self, pathname, type):
+    def __init__(self, pathname, type, source=None,sourceType=None, tool=None):
         """
         Attributes are:
         _ path name of the file
@@ -20,18 +20,13 @@ class FDEF_XML:
         self.PathName = pathname
         self.Type = type
 
-        self.sourceInfos = None
+        self._sourceInfos = source
+        self._sourceType = sourceType
+        self._generationTool = tool
         self._doc = None
         self._RootElement = None
         self._LabelRootElement = None
         self._LabelCurrentElement = None
-
-        @property
-        def sourceInfos(self):
-            return self.sourceInfos
-        @sourceInfos.setter
-        def sourceInfos(self, sourceInfos):
-            self.sourceInfos = sourceInfos
 
         self.fileInit()
        # self.WriteAndClose()
@@ -50,7 +45,7 @@ class FDEF_XML:
             'configurationTable',
             type=self.Type,
             generationDate=_displaydate,
-            generationTool="outil perso"
+            generationTool=self._generationTool
         )
 
         # add configurationSources and sourceFile XML element into XML tree
@@ -61,8 +56,8 @@ class FDEF_XML:
         etree.SubElement(
             _configSource,
             "sourceFile",
-            type="",
-            pathname=""
+            type=self._sourceType,
+            pathname=self._sourceInfos
         )
 
         # create configurationEntity, it will be the root element of A429Label sub element
@@ -96,11 +91,20 @@ class FDEF_XML:
                                                         labelNumber=str("%.3d" % labelObj.number),
                                                         sdi=labelObj.sdi
                                                      )
+        # convert ssm type for FDEF
+        if labelObj.ssmtype == "BNR":
+            _ssmtype = "status_ssm_bnr"
+        elif labelObj.ssmtype == "DW":
+            _ssmtype = "status_ssm_dis"
+        elif labelObj.ssmtype == "BCD":
+            _ssmtype = "status_ssm_bcd"
+        elif labelObj.ssmtype == "":
+            _ssmtype = "status_no_ssm"
 
         _ssmElement = etree.SubElement(
                                         self._LabelCurrentElement,
                                         "ssm",
-                                        type=labelObj.ssmtype
+                                        type=_ssmtype
                                      )
 
         _parameterElement = etree.SubElement(

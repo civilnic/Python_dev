@@ -27,11 +27,11 @@ class A429Label:
     @property
     def ssmtype(self):
         if self.labeltype == "BNR":
-            self._ssmtype = "status_ssm_bnr"
+            self._ssmtype = "BNR"
         elif self.labeltype == "DW":
-            self._ssmtype = "status_ssm_dis"
+            self._ssmtype = "DW"
         elif self.labeltype == "BCD":
-            self._ssmtype = "status_ssm_bcd"
+            self._ssmtype = "BCD"
         elif self.labeltype == "HYB":
             # we parse parameters list of current label
             # if one parameter is BNR => status will be BNR type
@@ -40,18 +40,18 @@ class A429Label:
             if self.ParameterList:
                 for paramobj in self.ParameterList:
                     if paramobj.formatparam == "BNR":
-                        self._ssmtype = "status_ssm_bnr"
+                        self._ssmtype = "BNR"
                         break
                     elif paramobj.formatparam == "BCD":
-                        self._ssmtype = "status_ssm_bcd"
+                        self._ssmtype = "BCD"
                         break
                     else:
-                        self._ssmtype = "status_no_ssm"
+                        self._ssmtype = ""
                     pass
             else:
-                self._ssmtype = "status_no_ssm"
+                self._ssmtype = ""
         else:
-            self._ssmtype = "status_no_ssm"
+            self._ssmtype = ""
 
         return self._ssmtype
 

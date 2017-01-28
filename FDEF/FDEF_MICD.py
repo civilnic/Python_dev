@@ -76,6 +76,7 @@ class FDEF_MICD(MICD):
         self.AddPortfromPortObject(_micdPort,_sheet_name)
 
         for parameterObj in labelObj.getParameterList():
+
             AddParameterToMICD(self, parameterObj,_sheet_name)
 
         return True

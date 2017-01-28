@@ -37,11 +37,10 @@ class BDS_FWC(BDS):
             try:
                 tree = etree.parse(self.ConnectorMapFile)
             except:
-                print ("Canoot open FWC connector map file: "+self.ConnectorMapFile)
+                print("Cannot open FWC connector map file: "+self.ConnectorMapFile)
                 return None
 
-
-        for input in tree.xpath("/FWC_connector_map/input"):
+        for input in tree.xpath("/MSP_ATA31/FWC/connector_map/input"):
 
             connector = input.get("connector")
 
@@ -49,7 +48,7 @@ class BDS_FWC(BDS):
                 self.ConnectorMap[connector] = dict()
             self.ConnectorMap[connector]["type"] = input.get("type")
             self.ConnectorMap[connector]["source"] = input.get("source")
-            self.ConnectorMap[connector]["idfwc"] = input.get("idfwc")
+            self.ConnectorMap[connector]["id"] = input.get("id")
 
     def parse_BDS(self):
         """
@@ -342,7 +341,30 @@ class BDS_FWC(BDS):
             elif DicoLine["FORMAT"] == "HYB":
                 if LabelObj.labeltype:
                     LabelObj.labeltype = "HYB"
-                ParamObj = A429ParamOpaque(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"])
+                if DicoLine["TYPE NAME"] == "NUM":
+                    if DicoLine["RANGE MAX"] =="" or DicoLine["RESOLUTION"] =="":
+                        ParamObj = A429ParamOpaque(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number,
+                                                   msb_bcd, DicoLine["SIGNIFICANTS BITS"])
+                    else:
+                        ParamObj = A429ParamBNR(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bnr,
+                                            DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"],
+                                            self.ComputeResolutionBNR(DicoLine["SIGNIFICANTS BITS"],
+                                                                      DicoLine["RANGE MAX"]))
+                    ParamObj.accuracy = DicoLine["FULL SCALE CODING ACCURACY"]
+                    ParamObj.signed = True
+                elif DicoLine["TYPE NAME"] == "BOOLEAN":
+                    ParamObj = A429ParamDIS(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number)
+
+                    if LabelObj.nature == "IN":
+                        ParamObj.BitNumber = DicoLine["BIT IN"]
+                        ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION"]
+                        ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION"]
+                    elif LabelObj.nature == "OUT":
+                        ParamObj.BitNumber = DicoLine["BIT OUT"]
+                        ParamObj.state0 = DicoLine["STATE 0 PARAMETER DEFINITION OUT"]
+                        ParamObj.state1 = DicoLine["STATE 1 PARAMETER DEFINITION OUT"]
+                else:
+                    ParamObj = A429ParamOpaque(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"])
             elif DicoLine["FORMAT"] == "BCD":
                 ParamObj = A429ParamBCD(DicoLine["IDENTIFICATOR"], DicoLine["NATURE"], LabelObj.number, msb_bcd, DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"], self.ComputeResolutionBCD(DicoLine["SIGNIFICANTS BITS"], DicoLine["RANGE MAX"]))
             else:
@@ -422,7 +444,7 @@ class BDS_FWC(BDS):
 
         # set formatted name (i.e simulation label name)
         if LabelObj.pins in self.ConnectorMap.keys():
-            connectorId = self.ConnectorMap[LabelObj.pins]['idfwc']
+            connectorId = self.ConnectorMap[LabelObj.pins]['id']
         else:
             connectorId = ""
 
