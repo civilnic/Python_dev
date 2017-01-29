@@ -8,6 +8,8 @@ _ an readable BDS files (.xls format)
 _ MEXICO flow for cnx FDEF -> system
 """
 import logging
+import csv
+
 from os.path import abspath
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
@@ -17,6 +19,7 @@ from lxml import etree
 from BDS.BDSXLS import BDSXLS
 from BDS.BDS_EIS import BDS_EIS
 from BDS.BDS_FWC import BDS_FWC
+from BDS.BDS_SDAC import BDS_SDAC
 from FDEF.FDEF_XML import FDEF_XML
 from FDEF.FDEF_MICD import FDEF_MICD
 
@@ -77,7 +80,7 @@ def main():
     logger.addHandler(steam_handler)
 
     # command line treatment
-    parser = OptionParser("usage: %prog --xml <xmlConfigFile> --fwc --eis --sdac --flow")
+    parser = OptionParser("usage: %prog --xml <xmlConfigFile> --fwc --eis --sdac --flot")
     parser.add_option("--xml", dest="xml", help="xml configuration file of the tool",
                       type="string", metavar="FILE")
     parser.add_option("--fwc", dest="fwc", action="store_true", help="activate generation for FWC system")
@@ -100,13 +103,20 @@ def main():
 
     parseConfigFile(_xml, _fwc, _eis, _sdac, _flot)
 
-#
-# Treatment for each system:
-# _ parse BDS file
-# _ create both .xml files
-# _ create MICD for FDEF
-# _ create flow between FDEF and dedicated system
-#
+    #
+    # Treatment for each system:
+    # _ parse BDS file
+    # _ create both .xml files
+    # _ create MICD for FDEF
+    # _ create flow between FDEF and dedicated system
+    #
+
+    with open(ToolConfigDict["FLOT"], 'w') as csvfile:
+        fieldnames = ['Producer_Model / Occ', 'Producer_variable' , 'Operator', 'SDB_Channel_Name', 'Init_Value',
+                      'Operator', 'Consumer_Model / Occ', 'Consumer_variable']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
+
+        writer.writeheader()
 
     if _fwc:
         _syst = 'FWC'
@@ -114,7 +124,7 @@ def main():
         # parse BDS FWC
         _bdsFWC = BDS_FWC(ToolConfigDict[_syst]["BDS"], _xml)
 
-        ComputeFDEF_XML_BDS(_bdsFWC,_syst)
+        _LabelListFWC = ComputeFDEF_XML_BDS(_bdsFWC,_syst)
 
     if _eis:
         _syst = 'EIS'
@@ -122,15 +132,29 @@ def main():
         # parse BDS FWC
         _bdsEIS = BDS_EIS(ToolConfigDict[_syst]["BDS"], _xml)
 
-        ComputeFDEF_XML_BDS(_bdsEIS,_syst)
+        _LabelListEIS = ComputeFDEF_XML_BDS(_bdsEIS,_syst)
 
     if _sdac:
         _syst = 'SDAC'
 
         # parse BDS FWC
-        _bdsSDAC = BDS_FWC(ToolConfigDict[_syst]["BDS"], _xml)
+        _bdsSDAC = BDS_SDAC(ToolConfigDict[_syst]["BDS"], _xml)
 
-        ComputeFDEF_XML_BDS(_bdsSDAC,_syst)
+        _LabelListSDAC = ComputeFDEF_XML_BDS(_bdsSDAC,_syst)
+
+
+
+def CnxFDEFToSyst(csv_writer,FdefLabelList,syst):
+
+    _modOccFdef = ToolConfigDict[syst]["FDEF"]["MNEMO"]
+
+    for _modoccSyst in ToolConfigDict[syst]["MODEL"].keys():
+        pass
+
+
+    for _labelObj in FdefLabelList:
+        pass
+
 
 #
 # Parse XML configuration file for BDS information
@@ -151,14 +175,14 @@ def ComputeFDEF_XML_BDS(bds_file,syst):
     _xmlRootPath = ToolConfigDict[syst]["FDEF"]["XML_PATH"]
     _xmlRootName = ToolConfigDict[syst]["FDEF"]["XML_ROOT_NAME"]
 
-    _xml_conso_file = FDEF_XML(_xmlRootPath + "A429_conso_" + _xmlRootName + "_" + _version + ".xml",
+    _xml_conso_file = FDEF_XML(_xmlRootPath + "\\A429_conso_" + _xmlRootName + "_" + _version + ".xml",
                                "A429",
                                source=ToolConfigDict[syst]["BDS"],
                                sourceType="BDS",
                                tool="MSP_ATA31_GENTOOL"
                                )
 
-    _xml_prod_file = FDEF_XML(_xmlRootPath + "A429_prod_" + _xmlRootName + "_" + _version + ".xml",
+    _xml_prod_file = FDEF_XML(_xmlRootPath + "\\A429_prod_" + _xmlRootName + "_" + _version + ".xml",
                                "A429",
                                source=ToolConfigDict[syst]["BDS"],
                                sourceType="BDS",
@@ -186,6 +210,8 @@ def ComputeFDEF_XML_BDS(bds_file,syst):
     print("**micdFile save file**")
     _micdFdef.savefile()
 
+    return _labelObjList
+
 #
 # Parse XML configuration file for BDS information
 #
@@ -203,6 +229,9 @@ def parseConfigFile(xml_file,flag_fwc,flag_eis,flag_sdac,flag_flot):
         except:
             print("Cannot open ATA31 tool configuration file: " + xml_file)
             return None
+
+    for _elem in tree.xpath("/MSP_ATA31/flot"):
+        ToolConfigDict["FLOT"] = abspath(_elem.get("path") + '\\' + _elem.get("filename"))
 
     #
     #  FWS

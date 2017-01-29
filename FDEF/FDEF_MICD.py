@@ -40,7 +40,7 @@ class FDEF_MICD(MICD):
         _micdPort.simulationlevel = "True"
         _micdPort.notsimudatacustom = "False"
         _micdPort.convention = " sdi: "+str(labelObj.sdi)+"  ssm type: "+str(labelObj.ssmtype)
-        _micdPort.fromto = "from: "+str(labelObj.source)+" to FWC"
+        _micdPort.fromto = str(labelObj.source)
         _micdPort.interfacelevel = "format"
 
         # add label data to MICD

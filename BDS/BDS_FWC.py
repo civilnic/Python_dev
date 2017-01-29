@@ -12,23 +12,24 @@ class BDS_FWC(BDS):
     Class to defined BDS data file
     """
     ConnectorMap = dict()
+    ConfigXMLPath = "/MSP_ATA31/FWC/connector_map/input"
 
     def __init__(self, pathname, connectormapfile):
         """
         Attributes are:
         _ path name of the file
         """
-        super(BDS_FWC, self).__init__()
+        super().__init__()
+
 
         self.PathName=pathname
         self.ConnectorMapFile = connectormapfile
 
-
-        self.parseMapFile()
+        self.parseMapFile(self.ConfigXMLPath)
         self.parse_BDS()
 
 
-    def parseMapFile(self):
+    def parseMapFile(self, pathXML):
         """
         Method to parse connector map file (to create formatted label name of FWC)
         """
@@ -40,12 +41,14 @@ class BDS_FWC(BDS):
                 print("Cannot open FWC connector map file: "+self.ConnectorMapFile)
                 return None
 
-        for input in tree.xpath("/MSP_ATA31/FWC/connector_map/input"):
+        for input in tree.xpath(pathXML):
 
             connector = input.get("connector")
 
             if connector not in self.ConnectorMap.keys():
+                print(connector)
                 self.ConnectorMap[connector] = dict()
+            print(input.get("id"))
             self.ConnectorMap[connector]["type"] = input.get("type")
             self.ConnectorMap[connector]["source"] = input.get("source")
             self.ConnectorMap[connector]["id"] = input.get("id")
@@ -469,3 +472,5 @@ class BDS_FWC(BDS):
                                             + "_B" + str(ParamObj.BitNumber) + "_" + parametername
         else:
             ParamObj.SimuPreFormattedName = str(LabelObj.source) + "_L" + str("%03d" % LabelObj.number) + "_" + parametername
+
+        ParamObj.SimuPreFormattedName = ParamObj.SimuPreFormattedName.replace(" ", "_")

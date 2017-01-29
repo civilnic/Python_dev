@@ -83,25 +83,25 @@
 	</FWC>
 	
 	<EIS standard="S12.0">
-		<BDS path="" filename="">
-			<ExtractedBDS path="./Results/" filename="FWC_F10A.xls"/>
+		<BDS path="../DATA/" filename="param_A429.csv">
+			<ExtractedBDS path="./Results/" filename="EIS_STD12.xls"/>
 		</BDS>
-		<Model path="" filename="" mnemo="" occ="">
+		<Model path="." filename="ICD_PKG_EIS2_eis2in_1" mnemo="PKG_EIS_eis2in" occ="1">
 			<regexp_A429words in="%sourceKey%a4_w%IntSdi%%3DigitLabel%"/>
 			<regexp_A429refresh in="cfg_ds__noLabRef_%sourceKey%_%3DigitLabel%_%BinSdi%"/>
 		</Model> 
-		<Model path="" filename="" mnemo="" occ="">
+		<Model path="." filename="ICD_PKG_EIS2_eis2out_1" mnemo="PKG_EIS_eis2out" occ="1">
 			<regexp_A429words in="N/A" out="DMCOUT_DMC(1|2|3)a4_w%IntSdi%%3DigitLabel%"/>
 			<regexp_A429refresh in="N/A" out="N/A"/>
 		</Model>
-		<fdef path="" filename="" mnemo="" occ="1">
+		<fdef path="./Results/XML/" filename="ICD_fdef_EIS_1.xls" version="1.0" mnemo="fdef_EIS" occ="1">
 			<regexp_Source regexp="ADF.*|ADR.*|CFDIU|DME.*|EEC.*|FQI.|ILS.|IRS.|LGC.|TCAS|VOR.|RA." />
 			<regexp_A429words in="N/A" out="%sourceKey%a4_w%IntSdi%%3DigitLabel%"/>		
 			<regexp_A429refresh in="N/A" out="%sourceKey%a4_w%IntSdi%%3DigitLabel%_R"/>
-			<xml_files path="" root_name=""/>			
+			<xml_files path="./Results/XML/" root_name="fdef_EIS"/>			
 		</fdef>
 		
-		<flot path="" filename=""/>
+		<flot path="." filename="FLOT_EIS.csv"/>
 
 	</EIS>
 	
@@ -155,7 +155,18 @@
 			<input type="A429" connector="LMP11J,K" source="SFCC1" id="SFCC1" ata31="False"/>
 			<input type="A429" connector="RMP11A,B" source="SFCC2" id="SFCC2" ata31="False"/>
 			<input type="A429" connector="LMP15G,H" source="TPIU" id="TPIU" ata31="False"/>
+			<input type="A429" connector="LMP06A,B,C" source="G QTY XMTR" id="G_QTY_XMTR" ata31="False"/>
+			<input type="A429" connector="RMP06H,J,K" source="Y QTY XMTR" id="Y_QTY_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP06D,E,F" source="B QTY XMTR" id="B_QTY_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP12A,B" source="TEMP DXMTR" id="TEMP_DXMTR" ata31="False"/>
+			<input type="A429" connector="LMP12C,D" source="PRESS XMTR" id="PRESS_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP12E,F" source="PRESS XMTR" id="PRESS_XMTR" ata31="False"/>
+			<input type="A429" connector="RMP12G,H" source="PRESS XMTR" id="PRESS_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP11A,B" source="TEMP DXMTR" id="TEMP_DXMTR" ata31="False"/>
+			<input type="A429" connector="RMP12J,K" source="TEMP DXMTR" id="TEMP_DXMTR" ata31="False"/>
+			<input type="A429" connector="LMP07A,B,C" source="RVDT" id="RVDT" ata31="False"/>
+			<input type="A429" connector="LMP07D,E,F" source="RVDT" id="RVDT" ata31="False"/>
 		</connector_map>
 	</SDAC>	
-	<flot path="" filename=""/>
+	<flot path="." filename="test_flot.csv"/>
 </MSP_ATA31>
