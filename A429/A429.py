@@ -436,9 +436,9 @@ def isfloat(value):
     return False
 
 def convertNature(nature):
-    if nature == 'O':
+    if nature == 'O' or nature == 'OUT':
         nature = "OUT"
-    elif nature == "I":
+    elif nature == "I" or nature == 'IN':
         nature = "IN"
     elif nature == "ENTREE":
         nature = "IN"
