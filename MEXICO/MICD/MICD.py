@@ -297,6 +297,7 @@ This variable is not refreshed in RUN mode.'
             return None
 
         if _sheet in self._SheetAndDataFrame.keys():
+
             # sheet data frame
             _df = self._SheetAndDataFrame[_sheet]['DataFrame']
 
@@ -420,14 +421,14 @@ This variable is not refreshed in RUN mode.'
         # 1 x len of header tab
         _portArray = [MICDportObject.getPortLineTab()]
 
-        # create a 'port' dataframe from previous array containing port informations
-        _portdf = pd.DataFrame(_portArray, columns=_dfColumnName)
-
         # get MICD complete dataframe with data type set to 'str'
         _micdDf = self._SheetAndDataFrame[sheetName]['DataFrame'].astype('str')
 
         # get port list from MICD
         _portNameList = _micdDf[_dict['API2MICD']['Name']].tolist()
+
+        # create a 'port' dataframe from previous array containing port informations
+        _portdf = pd.DataFrame(_portArray, columns=_dfColumnName).astype('str')
 
         #
         # if port name already exist in MICD
@@ -455,7 +456,12 @@ This variable is not refreshed in RUN mode.'
             _micdDf = pd.concat(_frames)
 
         # update micd dataframe with updated dataframe
+<<<<<<< HEAD
         self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf.reset_index(drop=True)
+=======
+        self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf.drop_duplicates(_dict['API2MICD']['Name'], keep='last')
+        self._SheetAndDataFrame[sheetName]['DataFrame'] = self._SheetAndDataFrame[sheetName]['DataFrame'].reset_index(drop=True)
+>>>>>>> origin/HEAD
 
         return True
 

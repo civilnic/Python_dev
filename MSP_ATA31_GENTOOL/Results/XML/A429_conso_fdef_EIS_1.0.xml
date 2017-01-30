@@ -1,0 +1,6 @@
+<configurationTable generationDate="29/1/2017" generationTool="MSP_ATA31_GENTOOL" type="A429">
+  <configurationSources>
+    <sourceFile pathname="F:\Mes documents\Nicolas\Boulot\Developpement\Python\Python_dev\DATA\param_A429.csv" type="BDS"/>
+  </configurationSources>
+  <configurationEntity/>
+</configurationTable>

@@ -1,60 +1,172 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<FWC_connector_map>
-	<!--input type="A429" connector="LMP04J,K,RMP04A,B" source="SDAC1_2" idfwc="WV1"/-->
-	<input type="A429" connector="LMP04J,K" source="SDAC1" idfwc="WV1"/>
-	<input type="A429" connector="RMP04A,B" source="SDAC2" idfwc="WV3"/> 
-	<input type="A429" connector="LMP06G,H" source="CSAS" idfwc="XX1"/>
-	<input type="A429" connector="RMP05E,F" source="ATSU" idfwc="TX1"/>
-	<input type="A429" connector="LMP08E,F" source="SDCU1" idfwc="WQ1"/>
-	<input type="A429" connector="RMP08E,F" source="SDCU2" idfwc="WQ2"/>
-	<input type="A429" connector="LMP05E,F" source="SATCOMLS" idfwc="RV2"/>
-	<input type="A429" connector="LMP10G,H" source="SATCOMHS" idfwc="RV1"/>
-	<input type="A429" connector="LMP07G,H" source="LGCIU1" idfwc="GB1"/>
-	<input type="A429" connector="RMP07C,D" source="LGCIU2" idfwc="GB2"/>
-	<input type="A429" connector="LMP07A,B" source="FQI1A_1B" idfwc="QT1"/>
-	<input type="A429" connector="RMP07J,K" source="FQI2A_2B" idfwc="QT2"/>
-	<input type="A429" connector="LMP06E,F" source="ETCU" idfwc="undef"/>
-	<input type="A429" connector="LMP04A,B" source="ECU1A" idfwc="KS0"/>
-	<input type="A429" connector="LMP08A,B" source="ECU1B" idfwc="KS1"/>
-	<input type="A429" connector="RMP04J,K" source="ECU2A" idfwc="KS2"/>
-	<input type="A429" connector="RMP08J,K" source="ECU2B" idfwc="KS3"/>
-	<input type="A429" connector="LMP08C,D" source="EIU1" idfwc="KS8"/>
-	<input type="A429" connector="LMP05G,H" source="DMC_L" idfwc="WT1"/>
-	<input type="A429" connector="RMP05C,D" source="DMC_R" idfwc="WT2"/>
-	<input type="A429" connector="RMP08G,H" source="EIU2" idfwc="KS9"/>
-	<input type="A429" connector="LMP10J,K" source="EEC1A" idfwc="KS4"/>
-	<input type="A429" connector="RMP09A,B" source="EEC1B" idfwc="KS5"/>
-	<input type="A429" connector="RMP10A,B" source="EEC2A" idfwc="KS6"/>
-	<input type="A429" connector="LMP09J,K" source="EEC2B" idfwc="KS7"/>
-	<input type="A429" connector="LMP04G,H" source="FAC1" idfwc="CC1"/>
-	<input type="A429" connector="RMP04C,D" source="FAC2" idfwc="CC2"/>
-	<input type="A429" connector="RMP08A,B" source="FCU1B_2B" idfwc="CA1"/>
-	<input type="A429" connector="LMP04E,F" source="FMGC1_FGC" idfwc="CA2"/>
-	<input type="A429" connector="RMP04E,F" source="FMGC2_FGC" idfwc="CA3"/>
-	<input type="A429" connector="RMP05J,K" source="CFDIU" idfwc="TW1"/>
-	<input type="A429" connector="LMP07J,K" source="ADC1" idfwc="FP1"/>
-	<input type="A429" connector="RMP07A,B" source="ADC2" idfwc="FP2"/>
-	<input type="A429" connector="LMP08J,K" source="ADC3" idfwc="FP3"/>
-	<input type="A429" connector="RMP05A,B" source="TCAS" idfwc="SG1"/>
-	<input type="A429" connector="LMP07C,D" source="ILS1" idfwc="RT1"/>
-	<input type="A429" connector="RMP07G,H" source="ILS2" idfwc="RT2"/>
-	<input type="A429" connector="LMP07E,F" source="GPSH1" idfwc="SN3"/>
-	<input type="A429" connector="LMP09G,H" source="GPS1" idfwc="SN1"/>
-	<input type="A429" connector="RMP07E,F" source="GPSH2" idfwc="SN4"/>
-	<input type="A429" connector="RMP09C,D" source="GPS2" idfwc="SN2"/>
-	<input type="A429" connector="LMP06J,K" source="HUDC1" idfwc="FH1"/>
-	<input type="A429" connector="RMP06A,B" source="HUDC2" idfwc="FH2"/>
-	<input type="A429" connector="LMP04C,D" source="RA1" idfwc="SA1"/>
-	<input type="A429" connector="RMP04G,H" source="RA2" idfwc="SA2"/>
-	<input type="A429" connector="LMP08G,H" source="FCDC1" idfwc="CE1"/>
-	<input type="A429" connector="RMP08C,D" source="FCDC2" idfwc="CE2"/>
-	<input type="A429" connector="LMP09E,F" source="MDSDS1" idfwc="undef"/>
-	<input type="A429" connector="RMP09E,F" source="MDSDS2" idfwc="undef"/>
-	<input type="A429" connector="RMP05G,H" source="ECP" idfwc="WT3"/>
-	<input type="A429" connector="LMP05J,K" source="OPP_FWC" idfwc="WW4"/>
-	<input type="A429" connector="RMP06C,D" source="SPE_FWC" idfwc="undef"/>
-	<input type="A429" connector="LTP13B,C,D" source="SYNC.L.FLP" idfwc="undef"/>
-	<input type="A429" connector="LTP13G,H,J" source="SYNC.L.SLT" idfwc="undef"/>
-	<input type="A429" connector="RTP13F,G,H" source="SYNC.R.FLP" idfwc="undef"/>
-	<input type="A429" connector="RTP13A,B,C" source="SYNC.R.SLT" idfwc="undef"/>
-</FWC_connector_map>
+
+<MSP_ATA31>
+	<FWC standard="F10A">
+		<BDS path="../DATA/" filename="SIGFIL_FF10A_SE5A.DAT">
+			<ExtractedBDS path="./Results/" filename="FWC_F10A.xls"/>
+		</BDS>
+		<Model path="." filename="ICD_FWC_1.xls" mnemo="FWC_1" occ="1">
+			<regexp_A429words in="E_%sourceKey%_%3DigitLabel%_%IntSdi%_1" out="S_%sourceKey%_%3DigitLabel%_%IntSdi%_1"/>
+			<regexp_A429refresh in="E_BE_%sourceKey%_%3DigitLabel%_%IntSdi%_1" out="N/A"/>
+		</Model> 
+		<Model path="." filename="ICD_FWC_2.xls" mnemo="FWC_2" occ="1">
+			<regexp_A429words in="E_%sourceKey%_%3DigitLabel%_%IntSdi%_2" out="S_%sourceKey%_%3DigitLabel%_%IntSdi%_2"/>
+			<regexp_A429refresh in="E_BE_%sourceKey%_%3DigitLabel%_%IntSdi%_2" out="N/A"/>
+		</Model>
+		<fdef path="./Results/XML/" filename="ICD_fdef_FWC_1.xls" version="1.0" mnemo="fdef_FWC" occ="1">
+			<regexp_Source regexp="ECU..|EEC..|EIU.|ADC.|LGCIU.|FQI.A_.B|ILS.|RA.|GPS.|GPS..|SDCU.|SYNC_\w_\w{3}" />
+			<regexp_A429words in="N/A" out="E_%sourceKey%_%3DigitLabel%_%IntSdi%_1"/>		
+			<regexp_A429refresh in="N/A" out="E_%sourceKey%_%3DigitLabel%_%IntSdi%_1_R"/>
+			<xml_files path="./Results/XML/" root_name="fdef_FWC"/>
+		</fdef>
+		
+		<flot path="." filename="FLOT_FWC.csv"/>
+	
+		<connector_map>
+			<input type="A429" connector="LMP04J,K" source="SDAC1" id="WV1" ata31="True"/>
+			<input type="A429" connector="RMP04A,B" source="SDAC2" id="WV3" ata31="True"/> 
+			<input type="A429" connector="LMP06G,H" source="CSAS" id="XX1" ata31="False"/>
+			<input type="A429" connector="RMP05E,F" source="ATSU" id="TX1" ata31="False"/>
+			<input type="A429" connector="LMP08E,F" source="SDCU1" id="WQ1" ata31="False"/>
+			<input type="A429" connector="RMP08E,F" source="SDCU2" id="WQ2" ata31="False"/>
+			<input type="A429" connector="LMP05E,F" source="SATCOMLS" id="RV2" ata31="False"/>
+			<input type="A429" connector="LMP10G,H" source="SATCOMHS" id="RV1" ata31="False"/>
+			<input type="A429" connector="LMP07G,H" source="LGCIU1" id="GB1" ata31="False"/>
+			<input type="A429" connector="RMP07C,D" source="LGCIU2" id="GB2" ata31="False"/>
+			<input type="A429" connector="LMP07A,B" source="FQI1A_1B" id="QT1" ata31="False"/>
+			<input type="A429" connector="RMP07J,K" source="FQI2A_2B" id="QT2" ata31="False"/>
+			<input type="A429" connector="LMP06E,F" source="ETCU" id="undef" ata31="False"/>
+			<input type="A429" connector="LMP04A,B" source="ECU1A" id="KS0" ata31="False"/>
+			<input type="A429" connector="LMP08A,B" source="ECU1B" id="KS1" ata31="False"/>
+			<input type="A429" connector="RMP04J,K" source="ECU2A" id="KS2" ata31="False"/>
+			<input type="A429" connector="RMP08J,K" source="ECU2B" id="KS3" ata31="False"/>
+			<input type="A429" connector="LMP08C,D" source="EIU1" id="KS8" ata31="False"/>
+			<input type="A429" connector="LMP05G,H" source="DMC_L" id="WT1" ata31="True"/>
+			<input type="A429" connector="RMP05C,D" source="DMC_R" id="WT2" ata31="True"/>
+			<input type="A429" connector="RMP08G,H" source="EIU2" id="KS9" ata31="False"/>
+			<input type="A429" connector="LMP10J,K" source="EEC1A" id="KS4" ata31="False"/>
+			<input type="A429" connector="RMP09A,B" source="EEC1B" id="KS5" ata31="False"/>
+			<input type="A429" connector="RMP10A,B" source="EEC2A" id="KS6" ata31="False"/>
+			<input type="A429" connector="LMP09J,K" source="EEC2B" id="KS7" ata31="False"/>
+			<input type="A429" connector="LMP04G,H" source="FAC1" id="CC1" ata31="False"/>
+			<input type="A429" connector="RMP04C,D" source="FAC2" id="CC2" ata31="False"/>
+			<input type="A429" connector="RMP08A,B" source="FCU1B_2B" id="CA1" ata31="False"/>
+			<input type="A429" connector="LMP04E,F" source="FMGC1_FGC" id="CA2" ata31="False"/>
+			<input type="A429" connector="RMP04E,F" source="FMGC2_FGC" id="CA3" ata31="False"/>
+			<input type="A429" connector="RMP05J,K" source="CFDIU" id="TW1" ata31="False"/>
+			<input type="A429" connector="LMP07J,K" source="ADC1" id="FP1" ata31="False"/>
+			<input type="A429" connector="RMP07A,B" source="ADC2" id="FP2" ata31="False"/>
+			<input type="A429" connector="LMP08J,K" source="ADC3" id="FP3" ata31="False"/>
+			<input type="A429" connector="RMP05A,B" source="TCAS" id="SG1" ata31="False"/>
+			<input type="A429" connector="LMP07C,D" source="ILS1" id="RT1" ata31="False"/>
+			<input type="A429" connector="RMP07G,H" source="ILS2" id="RT2" ata31="False"/>
+			<input type="A429" connector="LMP07E,F" source="GPSH1" id="SN3" ata31="False"/>
+			<input type="A429" connector="LMP09G,H" source="GPS1" id="SN1" ata31="False"/>
+			<input type="A429" connector="RMP07E,F" source="GPSH2" id="SN4" ata31="False"/>
+			<input type="A429" connector="RMP09C,D" source="GPS2" id="SN2" ata31="False"/>
+			<input type="A429" connector="LMP06J,K" source="HUDC1" id="FH1" ata31="False"/>
+			<input type="A429" connector="RMP06A,B" source="HUDC2" id="FH2" ata31="False"/>
+			<input type="A429" connector="LMP04C,D" source="RA1" id="SA1" ata31="False"/>
+			<input type="A429" connector="RMP04G,H" source="RA2" id="SA2" ata31="False"/>
+			<input type="A429" connector="LMP08G,H" source="FCDC1" id="CE1" ata31="False"/>
+			<input type="A429" connector="RMP08C,D" source="FCDC2" id="CE2" ata31="False"/>
+			<input type="A429" connector="LMP09E,F" source="MDSDS1" id="undef" ata31="False"/>
+			<input type="A429" connector="RMP09E,F" source="MDSDS2" id="undef" ata31="False"/>
+			<input type="A429" connector="RMP05G,H" source="ECP" id="WT3" ata31="False"/>
+			<input type="A429" connector="LMP05J,K" source="OPP_FWC" id="WW4" ata31="True"/>
+			<input type="A429" connector="RMP06C,D" source="SPE_FWC" id="undef" ata31="False"/>
+			<input type="A429" connector="LTP13B,C,D" source="SYNC_L_FLP" id="WE" ata31="False"/>
+			<input type="A429" connector="LTP13G,H,J" source="SYNC_L_SLT" id="WE" ata31="False"/>
+			<input type="A429" connector="RTP13F,G,H" source="SYNC_R_FLP" id="WE" ata31="False"/>
+			<input type="A429" connector="RTP13A,B,C" source="SYNC_R_SLT" id="WE" ata31="False"/>
+		</connector_map>
+	</FWC>
+	
+	<EIS standard="S12.0">
+		<BDS path="../DATA/" filename="param_A429.csv">
+			<ExtractedBDS path="./Results/" filename="EIS_STD12.xls"/>
+		</BDS>
+		<Model path="." filename="ICD_PKG_EIS2_eis2in_1" mnemo="PKG_EIS_eis2in" occ="1">
+			<regexp_A429words in="%sourceKey%a4_w%IntSdi%%3DigitLabel%"/>
+			<regexp_A429refresh in="cfg_ds__noLabRef_%sourceKey%_%3DigitLabel%_%BinSdi%"/>
+		</Model> 
+		<Model path="." filename="ICD_PKG_EIS2_eis2out_1" mnemo="PKG_EIS_eis2out" occ="1">
+			<regexp_A429words in="N/A" out="DMCOUT_DMC(1|2|3)a4_w%IntSdi%%3DigitLabel%"/>
+			<regexp_A429refresh in="N/A" out="N/A"/>
+		</Model>
+		<fdef path="./Results/XML/" filename="ICD_fdef_EIS_1.xls" version="1.0" mnemo="fdef_EIS" occ="1">
+			<regexp_Source regexp="ADF.*|ADR.*|CFDIU|DME.*|EEC.*|FQI.|ILS.|IRS.|LGC.|TCAS|VOR.|RA." />
+			<regexp_A429words in="N/A" out="%sourceKey%a4_w%IntSdi%%3DigitLabel%"/>		
+			<regexp_A429refresh in="N/A" out="%sourceKey%a4_w%IntSdi%%3DigitLabel%_R"/>
+			<xml_files path="./Results/XML/" root_name="fdef_EIS"/>			
+		</fdef>
+		
+		<flot path="." filename="FLOT_EIS.csv"/>
+
+	</EIS>
+	
+	
+	<SDAC standard="SE5A">
+		<BDS path="../DATA/" filename="SIGFIL_FF10A_SE5A.DAT">
+			<ExtractedBDS path="./Results/" filename="SDAC_SE5A.xls"/>
+		</BDS>
+		<Model path="." filename="ICD_SDAC.xls" mnemo="icp_sdac" occ="1">
+			<regexp_A429words in="A4%sourceKey%_SDAC%Occ%_%BinSdi%_%3DigitLabel%_I" out="A4SDAC%Occ%_%BinSdi%_%3DigitLabel%_O"/>
+			<regexp_A429refresh in="N/A"/>
+		</Model>
+		<fdef path="./Results/XML/" filename="ICD_fdef_SDAC_1.xls" version="1.0" mnemo="fdef_SDAC" occ="1">
+			<regexp_Source regexp=".*" />
+			<regexp_A429words in="N/A" out="%sourceKey%a4_w%IntSdi%%3DigitLabel%"/>		
+			<regexp_A429refresh in="N/A" out="%sourceKey%a4_w%IntSdi%%3DigitLabel%_R"/>
+			<xml_files path="./Results/XML/" root_name="fdef_SDAC"/>	
+		</fdef>
+		
+		<flot path="." filename="FLOT_SDAC.csv"/>
+		<connector_map>
+			<input type="A429" connector="RMP15A,B" source="ACHC" id="ACHC" ata31="False"/>
+			<input type="A429" connector="LMP07H,J" source="ATC1" id="ATC1" ata31="False"/>
+			<input type="A429" connector="RMP15C,D" source="ATC2" id="ATC2" ata31="False"/>
+			<input type="A429" connector="LMP11G,H" source="BCL1" id="BCL1" ata31="False"/>
+			<input type="A429" connector="RMP11C,D" source="BCL2" id="BCL2" ata31="False"/>
+			<input type="A429" connector="LMP12G,H" source="BMC1" id="BMC1" ata31="False"/>
+			<input type="A429" connector="RMP12C,D" source="BMC2" id="BMC2" ata31="False"/>
+			<input type="A429" connector="LMP14G,H" source="BSCU1" id="BSCU1" ata31="False"/>
+			<input type="A429" connector="RMP14C,D" source="BSCU2" id="BSCU2" ata31="False"/>
+			<input type="A429" connector="LMP08E,F" source="CIDS1" id="CIDS1" ata31="False"/>
+			<input type="A429" connector="LMP08G,H" source="CIDS2" id="CIDS2" ata31="False"/>
+			<input type="A429" connector="LMP13G,H" source="CPCU1" id="CPCU1" ata31="False"/>
+			<input type="A429" connector="RMP13C,D" source="CPCU2" id="CPCU2" ata31="False"/>
+			<input type="A429" connector="RMP08E,F" source="CVR" id="CVR" ata31="False"/>
+			<input type="A429" connector="LMP12J,K" source="ECB" id="ECB" ata31="False"/>
+			<input type="A429" connector="LMP14J,K" source="ECS1" id="ECS1" ata31="False"/>
+			<input type="A429" connector="RMP14A,B" source="ECS2" id="ECS2" ata31="False"/>
+			<input type="A429" connector="LMP10G,H" source="EGIU1_1" id="EGIU1_1" ata31="False"/>
+			<input type="A429" connector="RMP10A,B" source="EGIU1_2" id="EGIU1_2" ata31="False"/>
+			<input type="A429" connector="RMP10C,D" source="EGIU2_1" id="EGIU2_1" ata31="False"/>
+			<input type="A429" connector="LMP10J,K" source="EGIU2_2" id="EGIU2_2" ata31="False"/>
+			<input type="A429" connector="LMP09E,F" source="EIU1" id="EIU1" ata31="False"/>
+			<input type="A429" connector="RMP09E,F" source="EIU2" id="EIU2" ata31="False"/>
+			<input type="A429" connector="LMP15J,K" source="FCHC" id="FCHC" ata31="False"/>
+			<input type="A429" connector="RMP12A,B" source="EVMU" id="EVMU" ata31="False"/>
+			<input type="A429" connector="LMP13J,K" source="PACK1_CONT" id="PACK1_CONT" ata31="False"/>
+			<input type="A429" connector="RMP13A,B" source="PACK2_CONT" id="PACK2_CONT" ata31="False"/>
+			<input type="A429" connector="RMP07B,C" source="PHC1" id="PHC1" ata31="False"/>
+			<input type="A429" connector="RMP08C,D" source="PHC2" id="PHC2" ata31="False"/>
+			<input type="A429" connector="LMP11J,K" source="SFCC1" id="SFCC1" ata31="False"/>
+			<input type="A429" connector="RMP11A,B" source="SFCC2" id="SFCC2" ata31="False"/>
+			<input type="A429" connector="LMP15G,H" source="TPIU" id="TPIU" ata31="False"/>
+			<input type="A429" connector="LMP06A,B,C" source="G QTY XMTR" id="G_QTY_XMTR" ata31="False"/>
+			<input type="A429" connector="RMP06H,J,K" source="Y QTY XMTR" id="Y_QTY_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP06D,E,F" source="B QTY XMTR" id="B_QTY_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP12A,B" source="TEMP DXMTR" id="TEMP_DXMTR" ata31="False"/>
+			<input type="A429" connector="LMP12C,D" source="PRESS XMTR" id="PRESS_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP12E,F" source="PRESS XMTR" id="PRESS_XMTR" ata31="False"/>
+			<input type="A429" connector="RMP12G,H" source="PRESS XMTR" id="PRESS_XMTR" ata31="False"/>
+			<input type="A429" connector="LMP11A,B" source="TEMP DXMTR" id="TEMP_DXMTR" ata31="False"/>
+			<input type="A429" connector="RMP12J,K" source="TEMP DXMTR" id="TEMP_DXMTR" ata31="False"/>
+			<input type="A429" connector="LMP07A,B,C" source="RVDT" id="RVDT" ata31="False"/>
+			<input type="A429" connector="LMP07D,E,F" source="RVDT" id="RVDT" ata31="False"/>
+		</connector_map>
+	</SDAC>	
+	<flot path="." filename="test_flot.csv"/>
+</MSP_ATA31>
