@@ -441,13 +441,11 @@ This variable is not refreshed in RUN mode.'
             # loop on column for row designed by _index in MICD
             for _columnName in _dfColumnName:
 
-                # replace cell values with dataframe created from input MICDportObject
-                _micdDf.at[_index, _columnName] = _portdf.get_value(0, _columnName)
+                if _micdDf.at[_index, _columnName] != _portdf.get_value(0, _columnName):
 
-            # update micd dataframe with updated dataframe
-            self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf
+                    # replace cell values with dataframe created from input MICDportObject
+                    _micdDf.at[_index, _columnName] = _portdf.get_value(0, _columnName)
 
-            return False
         else:
 
             # create a temporary list of dataframe to concatenate them
@@ -456,10 +454,10 @@ This variable is not refreshed in RUN mode.'
             # add dataframe created from input MICDportObject at the end of MICD dataframe
             _micdDf = pd.concat(_frames)
 
-            # update micd dataframe with updated dataframe
-            self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf
+        # update micd dataframe with updated dataframe
+        self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf.reset_index(drop=True)
 
-            return True
+        return True
 
 
     def RemovePortfromPortObject(self, MICDportObject, sheetName):

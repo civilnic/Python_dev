@@ -272,12 +272,14 @@ def parseCsvFile(csvFile, flowFile):
                     #       an simple initialization
                     #       a aliaa on signal
                     if _cnxCSVObj.getProdTriplet() is None:
-
+                        print("TOOOOOOOOOOOOOOOOOOOTTTTTTTTTTTTOOOOOOOOOOOOO")
                         #
                         # if SIGNAL column is present in CSV
                         # its a simple initialization and/or an alias
                         # this test not use _csvConfTab[4] because it can be forced to TRUE with EYC name option
                         if _possibleField[4] in row.keys():
+
+                            print("TTTTTTTTTTTEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSTTTTTTTTTT")
 
                             # if S_USER from CSV if not None
                             # It's a simple alias case
@@ -546,6 +548,9 @@ def parseCsvFile(csvFile, flowFile):
                         # add it in Alias dictionary
                         AddAlias(_aliasObject, _consPortObj)
 
+                if ((_testTab[5] and _csvConfTab[5])):
+                    # Apply init algorithm
+                    AlgoInits(_flotObj, _cnxCSVObj)
 
     finally:
         file.close()
