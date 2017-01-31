@@ -36,7 +36,7 @@ def main():
     formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
     # création d'un handler qui va rediriger une écriture du log vers
     # un fichier en mode 'append', avec 1 backup et une taille max de 1Mo
-    file_handler = RotatingFileHandler('MSP_ATA31_GENTOOL.log', 'w', 1000000, 1)
+    file_handler = RotatingFileHandler('XLS2FDEF.log', 'w', 1000000, 1)
 
     # on lui met le niveau sur DEBUG, on lui dit qu'il doit utiliser le formateur
     # créé précédement et on ajoute ce handler au logger
@@ -51,17 +51,67 @@ def main():
     logger.addHandler(steam_handler)
 
     # command line treatment
-    parser = OptionParser("usage: %prog --xls <xmlConfigFile> ")
+    parser = OptionParser("usage: %prog --xls <xmlConfigFile> --modName ")
     parser.add_option("--xls", dest="xls", help="bds file (.xls format)",
                       type="string", metavar="FILE")
-
+    parser.add_option("--modName", dest="modName", help="Model name",
+                      type="string", metavar="FILE")
+    parser.add_option("--version", dest="version", help="version",
+                      type="string", metavar="FILE")
     (options, args) = parser.parse_args()
 
-    if len(args) != 1:
+    if len(args) != 0:
         logger.info("incorrect number of arguments")
         parser.error("incorrect number of arguments")
 
     _xls = options.xls
+    _modName = options.modName
+    _version = options.version
 
+    _bdsObj = BDSXLS(path_name=_xls)
+
+
+    _micdFdef = FDEF_MICD("ICD_"+ _modName + "_" + _version + ".xls",
+                          _modName,
+                          _version
+                             )
+
+    _xml_conso_file = FDEF_XML("A429_conso_" + _modName + "_" + _version + ".xml",
+                               "A429",
+                               source=_xls,
+                               sourceType="BDS",
+                               tool="XSL2FDEF"
+                               )
+
+    _xml_prod_file = FDEF_XML("A429_prod_" + _modName + "_" + _version + ".xml",
+                              "A429",
+                              source=_xls,
+                              sourceType="BDS",
+                              tool="XSL2FDEF"
+                              )
+
+
+    _labelObjList = _bdsObj.get_LabelObjList(nature="IN")
+
+    for _labelObj in _labelObjList:
+        if len(_labelObj.ParameterList) > 0:
+            _micdFdef.AddLabelToMICD(_labelObj)
+            _xml_prod_file.AddLabel(_labelObj)
+
+
+    _labelObjList = _bdsObj.get_LabelObjList(nature="OUT")
+
+    for _labelObj in _labelObjList:
+        if len(_labelObj.ParameterList) > 0:
+            _micdFdef.AddLabelToMICD(_labelObj)
+            _xml_conso_file.AddLabel(_labelObj)
+
+
+    print("**xml_file save file**")
+    _xml_conso_file.WriteAndClose()
+    _xml_prod_file.WriteAndClose()
+
+    print("**micdFile save file**")
+    _micdFdef.savefile()
 
 main()

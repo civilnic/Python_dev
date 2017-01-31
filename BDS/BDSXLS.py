@@ -2,7 +2,7 @@ import xlwt
 import xlrd
 from re import match
 from BDS.BDS import BDS
-from A429.A429 import (A429Label, A429ParamDIS, A429ParamBNR, A429ParamBCD, A429ParamOpaque)
+from A429.A429 import (A429Label, A429ParamDIS, A429ParamBNR, A429ParamBCD, A429ParamOpaque, A429ParamISO5)
 
 class BDSXLS(BDS):
     """
@@ -11,15 +11,16 @@ class BDSXLS(BDS):
     xls_style = xlwt.easyxf('font: name Arial, bold off, height 200;')
 
     file_structure = {
-        'IN': ['A429 Label Name','From','Port Name','Type','Label Number','SDI','Label type','Ssm Type','Parameter Name','Parameter Format','Description','Unit','Parameter MSB','Size','Signed','Range','Bool False Def','Bool True Def','Comments'],
-        'OUT': ['A429 Label Name','From','Port Name','Type','Label Number','SDI','Label type','Ssm Type','Parameter Name','Parameter Format','Description','Unit','Parameter MSB','Size','Signed','Range','Bool False Def','Bool True Def','Comments']
+        'IN': ['System','A429 Label Name','From','Port Name','Type','Label Number','SDI','Label type','Ssm Type','Parameter Name','Parameter Format','Description','Unit','Parameter MSB','Size','Signed','Range','Bool False Def','Bool True Def','Comments'],
+        'OUT': ['System','A429 Label Name','From','Port Name','Type','Label Number','SDI','Label type','Ssm Type','Parameter Name','Parameter Format','Description','Unit','Parameter MSB','Size','Signed','Range','Bool False Def','Bool True Def','Comments']
     }
 
-    def __init__(self, path_name , new):
+    def __init__(self, path_name , new=False):
         """
         Attributes are:
         _ path name of the file
         """
+        self.new = new
         self.PathName = path_name
         self.Workbook = None
         self.SheetAndIndex = {}
@@ -27,7 +28,7 @@ class BDSXLS(BDS):
         # heritage of BDS class
         super().__init__()
 
-        if new is True:
+        if self.new is True:
             for sheet in BDSXLS.file_structure.keys():
                 self.SheetAndIndex[sheet]={}
                 self.SheetAndIndex[sheet]['ColIndex'] = 0
@@ -52,41 +53,121 @@ class BDSXLS(BDS):
                 # sheet name match *_IN => it's a FUN_IN sheet name
                 # this test is usefull in case of multiple input port sheets
                 if _testOnSheetNameFUNIN:
-                    _sheet = "FUN_IN"
-                    _portType = "IN"
-
+                    _sheet = "IN"
                 elif _testOnSheetNameFUNOUT:
-                    _sheet = "FUN_OUT"
-                    _portType = "OUT"
+                    _sheet = "OUT"
 
                 else:
                     continue
 
-                _sheet = self._Workbook.sheet_by_name(_sheetname)
+                _worksheet = self._Workbook.sheet_by_name(_sheetname)
 
                 self.SheetAndIndex[_sheetname] = {}
                 self.SheetAndIndex[_sheetname]['ColIndex'] = 0
-                self.SheetAndIndex[_sheetname]['ColNbr'] = _sheet.ncols
+                self.SheetAndIndex[_sheetname]['ColNbr'] = _worksheet.ncols
                 self.SheetAndIndex[_sheetname]['RowIndex'] = 0
-                self.SheetAndIndex[_sheetname]['RowNbr'] = _sheet.nrows
-                self.SheetAndIndex[_sheetname]['Header'] = _sheet.row_values(0)
+                self.SheetAndIndex[_sheetname]['RowNbr'] = _worksheet.nrows
+                self.SheetAndIndex[_sheetname]['Header'] = _worksheet.row_values(0)
                 self.SheetAndIndex[_sheetname]['XlsSheet'] = None
 
-                for _rowidx in range(1, _sheet.nrows):  # Iterate through rows
+                _fieldList = BDSXLS.file_structure[_sheet]
 
-                    for _indice,_field in enumerate(BDSXLS.file_structure[_sheet]): # iterate through columns
+                for _rowidx in range(1, _worksheet.nrows):  # Iterate through rows
+
+                    _line = _worksheet.row_values(_rowidx)
+
+                    _labelNumber = str("%.3d" % int(_line[_fieldList.index("Label Number")]))
+
+                    LabelObj = A429Label(_labelNumber,
+                                         _line[_fieldList.index("SDI")],
+                                         _line[_fieldList.index("Label type")],
+                                         _sheet,
+                                         _line[_fieldList.index("System")]
+                                         )
+
+                    LabelObj.source = _line[_fieldList.index("From")]
+                    LabelObj.ssmtype = _line[_fieldList.index("Ssm Type")]
+
+                    # ref this labelObject on BDSXLS Obj
+                    LabelObj = self.add_Label(LabelObj)
+
+                    LabelObj.SimuFormattedName = _line[_fieldList.index("A429 Label Name")]
+
+                    if _line[_fieldList.index("Label type")] == "BNR":
+
+                        ParamObj = A429ParamBNR(_line[_fieldList.index("Parameter Name")],
+                                                _sheet,
+                                                _labelNumber,
+                                                _line[_fieldList.index("Parameter MSB")],
+                                                _line[_fieldList.index("Size")],
+                                                _line[_fieldList.index("Range")],
+                                                self.ComputeResolutionBNR(_line[_fieldList.index("Size")],
+                                                                          _line[_fieldList.index("Range")]
+                                                                         )
+                        )
+                        ParamObj.signed = _line[_fieldList.index("Signed")]
+
+                    elif _line[_fieldList.index("Label type")] == "BCD":
+
+                        ParamObj = A429ParamBCD(_line[_fieldList.index("Parameter Name")],
+                                                _sheet,
+                                                _labelNumber,
+                                                _line[_fieldList.index("Parameter MSB")],
+                                                _line[_fieldList.index("Size")],
+                                                _line[_fieldList.index("Range")],
+                                                self.ComputeResolutionBCD(_line[_fieldList.index("Size")],
+                                                                          _line[_fieldList.index("Range")]
+                                                                         )
+                                                )
+                        ParamObj.signed = _line[_fieldList.index("Signed")]
+
+                    elif _line[_fieldList.index("Label type")] == "DW":
+
+                        ParamObj = A429ParamDIS(_line[_fieldList.index("Parameter Name")],
+                                                _sheet,
+                                                _labelNumber)
+                        ParamObj.BitNumber = _line[_fieldList.index("Parameter MSB")]
+                        ParamObj.state0 = _line[_fieldList.index("Bool False Def")]
+                        ParamObj.state1 = _line[_fieldList.index("Bool True Def")]
+
+                    elif _line[_fieldList.index("Label type")] == "ISO5":
+
+                        ParamObj = A429ParamISO5(   _line[_fieldList.index("Parameter Name")],
+                                                    _sheet,
+                                                    _labelNumber,
+                                                    _line[_fieldList.index("Parameter MSB")],
+                                                    _line[_fieldList.index("Size")]
+                                                 )
+
+                    elif _line[_fieldList.index("Label type")] == "Opaque":
+
+                        ParamObj = A429ParamOpaque( _line[_fieldList.index("Parameter Name")],
+                                                    _sheet,
+                                                    _labelNumber,
+                                                    _line[_fieldList.index("Parameter MSB")],
+                                                    _line[_fieldList.index("Size")]
+                                                   )
+
+                    else:
+                        pass
+                        # print ("[BDS_EIS][ParseLine] Type non reconnu: " + DicoLine['FORMAT_PARAM'])
 
 
+                    ParamObj.formatparam = _line[_fieldList.index("Parameter Format")]
+                    ParamObj.comments = _line[_fieldList.index("Comments")]
+                    ParamObj.parameter_def = _line[_fieldList.index("Description")]
+                    ParamObj.unit = _line[_fieldList.index("Unit")]
+                    ParamObj.codingtype = _line[_fieldList.index("Type")]
+                    ParamObj.SimuPreFormattedName = _line[_fieldList.index("Port Name")]
 
-                    _line = _sheet.row_values(_rowidx)
+                    # reference parameter on current labelObj
+                    LabelObj.refParameter(ParamObj)
 
 
-
-
-            #TODO: initialisation de la classe BDSXLS sur un fichier existant: parsing et initialisation des index
 
     def __del__(self):
-        self.savefile()
+        if self.new is True:
+            self.savefile()
 
     def createemptyfile(self):
         """
@@ -156,6 +237,8 @@ class BDSXLS(BDS):
     def fillLineDict(self, ParameterObj, linedict):
 
         LabelObj=ParameterObj.labelObj
+
+        linedict['System'] = LabelObj.system
 
         # 'From'
         linedict['From'] = LabelObj.source

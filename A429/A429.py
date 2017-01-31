@@ -246,9 +246,9 @@ class A429Parameter:
         convert_sign = str(signed)
 
         if signed:
-            if (convert_sign == "yes") or (convert_sign =="O"):
+            if (convert_sign == "yes") or (convert_sign =="O") or (convert_sign =="1"):
                 self._signed = "1"
-            elif (convert_sign == "no") or (convert_sign =="N"):
+            elif (convert_sign == "no") or (convert_sign =="N") or (convert_sign =="0"):
                 self._signed = "0"
             elif convert_sign == "True":
                 self._signed = "1"
