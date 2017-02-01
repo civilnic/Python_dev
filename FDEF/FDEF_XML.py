@@ -192,4 +192,5 @@ class FDEF_XML:
                 integerCodingType=_paramType
             )
         else:
+            ParamObj.print()
             print("[FDEF_XML]{AddPatameter] Unknwon param coding type: " + ParamObj.codingtype)

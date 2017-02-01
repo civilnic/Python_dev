@@ -91,7 +91,7 @@ class BDS:
         n_digit = 0
         nombre_bits=int(nb_bits)
 
-        if len(re.findall("\s", range)) > 0:
+        if len(re.findall("\s", str(range))) > 0:
             range_chaine = range.split(" ")
             range = float(range_chaine[-1])
         else:

@@ -197,7 +197,7 @@ def ComputeFDEF_XML_BDS(bds_file,syst):
             _micdFdef.AddLabelToMICD(labelObj)
             _xml_prod_file.AddLabel(labelObj)
             for parameterObj in labelObj.getParameterList():
-                #parameterObj.labelObj.print(False)
+              #  parameterObj.labelObj.print(True)
                 _extractBds.AddLine(parameterObj)
 
     print("**bds2xml_file save file**")
@@ -222,7 +222,6 @@ def parseConfigFile(xml_file,flag_fwc,flag_eis,flag_sdac,flag_flot):
     """
     Method to parse configuration file
     """
-    print(xml_file)
     if xml_file:
         try:
             tree = etree.parse(xml_file)

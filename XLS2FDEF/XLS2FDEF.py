@@ -68,50 +68,64 @@ def main():
     _modName = options.modName
     _version = options.version
 
+    logger.info("#####################")
+    logger.info("#### Parameters #####")
+    logger.info("#####################")
+    logger.info("# xls file: " + _xls)
+    logger.info("# modele name: " + _modName)
+    logger.info("# version: " + _version)
+
+    logger.info("Parse BDS (xls file)")
     _bdsObj = BDSXLS(path_name=_xls)
 
+    # output file names
+    _micdName = "ICD_"+ _modName + "_" + _version + ".xls"
+    _xmlIn = "A429_conso_" + _modName + "_" + _version + ".xml"
+    _xmlOut = "A429_prod_" + _modName + "_" + _version + ".xml"
 
-    _micdFdef = FDEF_MICD("ICD_"+ _modName + "_" + _version + ".xls",
+    logger.info("Create FDEF MICD: " +_micdName)
+    _micdFdef = FDEF_MICD(_micdName,
                           _modName,
                           _version
                              )
 
-    _xml_conso_file = FDEF_XML("A429_conso_" + _modName + "_" + _version + ".xml",
+    logger.info("Create FDEF xml consumer file: " + _xmlIn)
+    _xml_conso_file = FDEF_XML(_xmlIn,
                                "A429",
                                source=_xls,
                                sourceType="BDS",
                                tool="XSL2FDEF"
                                )
-
-    _xml_prod_file = FDEF_XML("A429_prod_" + _modName + "_" + _version + ".xml",
+    logger.info("Create FDEF xml producer file: " + _xmlOut)
+    _xml_prod_file = FDEF_XML(_xmlOut,
                               "A429",
                               source=_xls,
                               sourceType="BDS",
                               tool="XSL2FDEF"
                               )
 
+    logger.info("Create Label IN list and add them into MICD + XML file")
+    _labelObjListIN = _bdsObj.get_LabelObjList(nature="IN")
 
-    _labelObjList = _bdsObj.get_LabelObjList(nature="IN")
-
-    for _labelObj in _labelObjList:
+    for _labelObj in _labelObjListIN:
         if len(_labelObj.ParameterList) > 0:
             _micdFdef.AddLabelToMICD(_labelObj)
             _xml_prod_file.AddLabel(_labelObj)
 
+    logger.info("Create Label OUT list and add them into MICD + XML file")
+    _labelObjListOUT = _bdsObj.get_LabelObjList(nature="OUT")
 
-    _labelObjList = _bdsObj.get_LabelObjList(nature="OUT")
-
-    for _labelObj in _labelObjList:
+    for _labelObj in _labelObjListOUT:
         if len(_labelObj.ParameterList) > 0:
             _micdFdef.AddLabelToMICD(_labelObj)
             _xml_conso_file.AddLabel(_labelObj)
 
 
-    print("**xml_file save file**")
+    logger.info("Save XML files")
     _xml_conso_file.WriteAndClose()
     _xml_prod_file.WriteAndClose()
 
-    print("**micdFile save file**")
+    logger.info("Save MICD file")
     _micdFdef.savefile()
 
 main()

@@ -365,8 +365,8 @@ class A429ParamBCD(A429Parameter):
         self.lsb = int(self.msb) - int(self.nb_bits) + 1
         self.signed = "0"
 
-        if len(re.findall("\s", range)) > 0:
-            range_chaine = range.split(" ")
+        if len(re.findall("\s", str(range))) > 0:
+            range_chaine = str(range).split(" ")
             self.range = float(range_chaine[-1])
         else:
             self.range = float(range)

@@ -93,7 +93,7 @@ class BDSXLS(BDS):
 
                     LabelObj.SimuFormattedName = _line[_fieldList.index("A429 Label Name")]
 
-                    if _line[_fieldList.index("Label type")] == "BNR":
+                    if _line[_fieldList.index("Parameter Format")] == "BNR":
 
                         ParamObj = A429ParamBNR(_line[_fieldList.index("Parameter Name")],
                                                 _sheet,
@@ -107,7 +107,7 @@ class BDSXLS(BDS):
                         )
                         ParamObj.signed = _line[_fieldList.index("Signed")]
 
-                    elif _line[_fieldList.index("Label type")] == "BCD":
+                    elif _line[_fieldList.index("Parameter Format")] == "BCD":
 
                         ParamObj = A429ParamBCD(_line[_fieldList.index("Parameter Name")],
                                                 _sheet,
@@ -121,7 +121,7 @@ class BDSXLS(BDS):
                                                 )
                         ParamObj.signed = _line[_fieldList.index("Signed")]
 
-                    elif _line[_fieldList.index("Label type")] == "DW":
+                    elif _line[_fieldList.index("Parameter Format")] == "DW":
 
                         ParamObj = A429ParamDIS(_line[_fieldList.index("Parameter Name")],
                                                 _sheet,
@@ -130,16 +130,16 @@ class BDSXLS(BDS):
                         ParamObj.state0 = _line[_fieldList.index("Bool False Def")]
                         ParamObj.state1 = _line[_fieldList.index("Bool True Def")]
 
-                    elif _line[_fieldList.index("Label type")] == "ISO5":
+                    elif _line[_fieldList.index("Parameter Format")] == "ISO5":
 
-                        ParamObj = A429ParamISO5(   _line[_fieldList.index("Parameter Name")],
+                        ParamObj = A429ParamISO5( _line[_fieldList.index("Parameter Name")],
                                                     _sheet,
                                                     _labelNumber,
                                                     _line[_fieldList.index("Parameter MSB")],
                                                     _line[_fieldList.index("Size")]
                                                  )
 
-                    elif _line[_fieldList.index("Label type")] == "Opaque":
+                    elif _line[_fieldList.index("Parameter Format")] == "Opaque":
 
                         ParamObj = A429ParamOpaque( _line[_fieldList.index("Parameter Name")],
                                                     _sheet,
@@ -163,7 +163,7 @@ class BDSXLS(BDS):
                     # reference parameter on current labelObj
                     LabelObj.refParameter(ParamObj)
 
-
+                    #LabelObj.print(True)
 
     def __del__(self):
         if self.new is True:
@@ -305,3 +305,11 @@ class BDSXLS(BDS):
 
             # 'ECHEL'
             linedict['Range'] = ParameterObj.range
+
+        elif isinstance(ParameterObj, A429ParamOpaque) or isinstance(ParameterObj, A429ParamISO5):
+
+            # 'TAIL'
+            linedict['Size'] = ParameterObj.nb_bits
+
+            # 'POSI'
+            linedict['Parameter MSB'] = ParameterObj.msb
