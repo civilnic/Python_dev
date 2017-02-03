@@ -72,12 +72,12 @@ class BDS_EIS(BDS):
         if DicoLine['FORMAT_PARAM'] == "BNR":
 
             ParamObj = A429ParamBNR(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
-                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBNR(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBNR(DicoLine["TAILLE"], DicoLine["ECHEL"]))
             ParamObj.signed = DicoLine["SIGNE"]
 
         elif DicoLine['FORMAT_PARAM'] == "BCD":
             ParamObj = A429ParamBCD(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
-                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBCD(DicoLine["TAILLE"],DicoLine["ECHEL"]))
+                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBCD(DicoLine["TAILLE"], DicoLine["ECHEL"]))
             ParamObj.signed = DicoLine["SIGNE"]
 
         elif DicoLine['FORMAT_PARAM'] == "DW":
@@ -89,12 +89,12 @@ class BDS_EIS(BDS):
 
         elif DicoLine['FORMAT_PARAM'] == "ISO5":
 
-            ParamObj = A429ParamISO5(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],DicoLine["TAILLE"])
+            ParamObj = A429ParamISO5(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"], DicoLine["TAILLE"])
 
 
         elif DicoLine['FORMAT_PARAM'] == "Opaque":
 
-            ParamObj = A429ParamOpaque(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],DicoLine["TAILLE"])
+            ParamObj = A429ParamOpaque(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"], DicoLine["TAILLE"])
 
         else:
             #print ("[BDS_EIS][ParseLine] Type non reconnu: " + DicoLine['FORMAT_PARAM'])

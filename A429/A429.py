@@ -246,9 +246,9 @@ class A429Parameter:
         convert_sign = str(signed)
 
         if signed:
-            if (convert_sign == "yes") or (convert_sign =="O"):
+            if (convert_sign == "yes") or (convert_sign =="O") or (convert_sign =="1"):
                 self._signed = "1"
-            elif (convert_sign == "no") or (convert_sign =="N"):
+            elif (convert_sign == "no") or (convert_sign =="N") or (convert_sign =="0"):
                 self._signed = "0"
             elif convert_sign == "True":
                 self._signed = "1"
@@ -365,8 +365,8 @@ class A429ParamBCD(A429Parameter):
         self.lsb = int(self.msb) - int(self.nb_bits) + 1
         self.signed = "0"
 
-        if len(re.findall("\s", range)) > 0:
-            range_chaine = range.split(" ")
+        if len(re.findall("\s", str(range))) > 0:
+            range_chaine = str(range).split(" ")
             self.range = float(range_chaine[-1])
         else:
             self.range = float(range)
@@ -436,9 +436,9 @@ def isfloat(value):
     return False
 
 def convertNature(nature):
-    if nature == 'O':
+    if nature == 'O' or nature == 'OUT':
         nature = "OUT"
-    elif nature == "I":
+    elif nature == "I" or nature == 'IN':
         nature = "IN"
     elif nature == "ENTREE":
         nature = "IN"

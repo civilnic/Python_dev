@@ -1,5 +1,6 @@
 from MEXICO.MICD.MICD import MICD
 from MEXICO.MICD.MICD import MICD_port
+from A429.A429 import (A429Label, A429ParamDIS, A429ParamBNR, A429ParamBCD, A429ParamOpaque, A429ParamISO5)
 
 
 class FDEF_MICD(MICD):
@@ -76,7 +77,6 @@ class FDEF_MICD(MICD):
         self.AddPortfromPortObject(_micdPort,_sheet_name)
 
         for parameterObj in labelObj.getParameterList():
-
             AddParameterToMICD(self, parameterObj,_sheet_name)
 
         return True
@@ -111,21 +111,18 @@ def AddParameterToMICD(micdFile, ParameterObj,sheet_name):
     else:
         _micdPort.unit = "wu"
 
-
-    if _labelObj.labeltype == "DW":
-        _micdPort.convention = _micdPort.convention+"\n bit position: "+str(ParameterObj.BitNumber)
-
-    else:
+    if isinstance(ParameterObj, A429ParamBNR) or isinstance(ParameterObj, A429ParamBCD):
         _micdPort.convention = _micdPort.convention + "\n number of bits: " + str(ParameterObj.nb_bits)
+        _micdPort.convention = _micdPort.convention + "\n msb: " + str(ParameterObj.msb)
+        _micdPort.convention = _micdPort.convention + "\n signed: " + ParameterObj.signed
+        _micdPort.convention = _micdPort.convention + "\n range: " + str(ParameterObj.range)
+    elif isinstance(ParameterObj, A429ParamDIS):
+        _micdPort.convention = _micdPort.convention+"\n bit position: "+str(ParameterObj.BitNumber)
+    elif isinstance(ParameterObj, A429ParamISO5) or isinstance(ParameterObj, A429ParamOpaque):
+        _micdPort.convention = _micdPort.convention + "\n number of bits: " + str(ParameterObj.nb_bits)
+        _micdPort.convention = _micdPort.convention + "\n msb: " + str(ParameterObj.msb)
 
-        if ParameterObj.formatparam != "DW":
-            _micdPort.convention = _micdPort.convention + "\n msb: " + str(ParameterObj.msb)
 
-        if _labelObj.labeltype != "ISO5" and ParameterObj.formatparam != "DW":
-            _micdPort.convention = _micdPort.convention + "\n signed: " + ParameterObj.signed
-            if hasattr(ParameterObj, "range"):
-                _micdPort.convention = _micdPort.convention + "\n range: " + str(ParameterObj.range)
-
-    micdFile.AddPortfromPortObject(_micdPort,sheet_name)
+    micdFile.AddPortfromPortObject(_micdPort, sheet_name)
 
     return True

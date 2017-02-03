@@ -1,0 +1,55 @@
+<configurationTable generationDate="1/2/2017" generationTool="XSL2FDEF" type="A429">
+  <configurationSources>
+    <sourceFile pathname="F:\Mes documents\Nicolas\Boulot\Developpement\Python\Python_dev\MSP_ATA31_GENTOOL\Results\FWC_F10A.xls" type="BDS"/>
+  </configurationSources>
+  <configurationEntity>
+    <A429Label labelNumber="127" name="E_WE_127_0_1" sdi="00" type="BNR">
+      <ssm type="status_ssm_bnr">
+        <parameter comment="SSM of label E_WE_127_0_1" name="E_WE_127_0_1_SSM" type="status">
+          <signal name="E_WE_127_0_1_SSM"/>
+        </parameter>
+      </ssm>
+      <parameter comment="RH SLATS POS SYS 2" name="SRSLTPOS" type="float">
+        <signal comment="RH SLATS POS SYS 2" lsb="17" msb="28" name="SYNC_R_SLT_L127_SRSLTPOS" nbBit="12" signed="1" startBit="1" type="float">
+          <float floatCodingType="BNR" floatResolution="0.0439453125"/>
+        </signal>
+      </parameter>
+    </A429Label>
+    <A429Label labelNumber="127" name="E_WE_127_3_1" sdi="11" type="BNR">
+      <ssm type="status_ssm_bnr">
+        <parameter comment="SSM of label E_WE_127_3_1" name="E_WE_127_3_1_SSM" type="status">
+          <signal name="E_WE_127_3_1_SSM"/>
+        </parameter>
+      </ssm>
+      <parameter comment="LH SLATS POS SYS 1" name="SLSLTPOS" type="float">
+        <signal comment="LH SLATS POS SYS 1" lsb="17" msb="28" name="SYNC_L_SLT_L127_SLSLTPOS" nbBit="12" signed="1" startBit="1" type="float">
+          <float floatCodingType="BNR" floatResolution="0.0439453125"/>
+        </signal>
+      </parameter>
+    </A429Label>
+    <A429Label labelNumber="137" name="E_WE_137_0_1" sdi="00" type="BNR">
+      <ssm type="status_ssm_bnr">
+        <parameter comment="SSM of label E_WE_137_0_1" name="E_WE_137_0_1_SSM" type="status">
+          <signal name="E_WE_137_0_1_SSM"/>
+        </parameter>
+      </ssm>
+      <parameter comment="RH FLAPS POS SYS 2" name="SRFLPPOS" type="float">
+        <signal comment="RH FLAPS POS SYS 2" lsb="17" msb="28" name="SYNC_R_FLP_L137_SRFLPPOS" nbBit="12" signed="1" startBit="1" type="float">
+          <float floatCodingType="BNR" floatResolution="0.0439453125"/>
+        </signal>
+      </parameter>
+    </A429Label>
+    <A429Label labelNumber="137" name="E_WE_137_3_1" sdi="11" type="BNR">
+      <ssm type="status_ssm_bnr">
+        <parameter comment="SSM of label E_WE_137_3_1" name="E_WE_137_3_1_SSM" type="status">
+          <signal name="E_WE_137_3_1_SSM"/>
+        </parameter>
+      </ssm>
+      <parameter comment="LH FLAPS POS SYS 1" name="SLFLPPOS" type="float">
+        <signal comment="LH FLAPS POS SYS 1" lsb="17" msb="28" name="SYNC_L_FLP_L137_SLFLPPOS" nbBit="12" signed="1" startBit="1" type="float">
+          <float floatCodingType="BNR" floatResolution="0.0439453125"/>
+        </signal>
+      </parameter>
+    </A429Label>
+  </configurationEntity>
+</configurationTable>
