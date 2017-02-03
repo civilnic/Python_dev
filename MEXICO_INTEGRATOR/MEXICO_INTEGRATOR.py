@@ -272,16 +272,14 @@ def parseCsvFile(csvFile, flowFile):
                     #       an simple initialization
                     #       a aliaa on signal
                     if _cnxCSVObj.getProdTriplet() is None:
-                        print("TOOOOOOOOOOOOOOOOOOOTTTTTTTTTTTTOOOOOOOOOOOOO")
+
                         #
                         # if SIGNAL column is present in CSV
                         # its a simple initialization and/or an alias
                         # this test not use _csvConfTab[4] because it can be forced to TRUE with EYC name option
                         if _possibleField[4] in row.keys():
 
-                            print("TTTTTTTTTTTEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSTTTTTTTTTT")
-
-                            # if S_USER from CSV if not None
+                            # if S_USER from CSV is not None
                             # It's a simple alias case
                             if _cnxCSVObj.Channel:
 
@@ -304,31 +302,32 @@ def parseCsvFile(csvFile, flowFile):
                         # => it a DCNX
                         else:
 
-                            if S_FLOW != _cnxCSVObj.portCons:
+                            pass
+                           # if S_FLOW != _cnxCSVObj.portCons:
 
                                 # create an alias on S_USER for consumer port
-                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons,
-                                                                    channel=_cnxCSVObj.portCons,
-                                                                    index=_cnxCSVObj.tabCons,
-                                                                    operator=_cnxCSVObj.operatorCons,
-                                                                    comment=globalComment, date=displayDate)
+                           #     _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons,
+                           #                                         channel=_cnxCSVObj.portCons,
+                           #                                         index=_cnxCSVObj.tabCons,
+                           #                                         operator=_cnxCSVObj.operatorCons,
+                           #                                         comment=globalComment, date=displayDate)
 
                                 # add it in Alias dictonary
-                                AddAlias(_TargetConsummerAlias, _consPortObj)
+                           #     AddAlias(_TargetConsummerAlias, _consPortObj)
 
-                            else:
+                           # else:
 
                                 # create an alias on S_USER for consumer port
-                                _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_FLOW+"_DCNX",
-                                                                    index=_cnxCSVObj.tabCons,
-                                                                    operator=_cnxCSVObj.operatorCons,
-                                                                    comment=globalComment, date=displayDate)
+                           #     _TargetConsummerAlias = MexicoAlias(port=_cnxCSVObj.portCons, channel=S_FLOW+"_DCNX",
+                           #                                         index=_cnxCSVObj.tabCons,
+                           #                                         operator=_cnxCSVObj.operatorCons,
+                           #                                         comment=globalComment, date=displayDate)
 
                                 # add it in Alias dictonary
-                                AddAlias(_TargetConsummerAlias, _consPortObj)
+                           #     AddAlias(_TargetConsummerAlias, _consPortObj)
 
                             # Apply init algorithm
-                            AlgoInits(_flotObj, _cnxCSVObj, True)
+                           # AlgoInits(_flotObj, _cnxCSVObj, True)
 
 
                     # a model/port producer is speficied in CSV
@@ -549,8 +548,12 @@ def parseCsvFile(csvFile, flowFile):
                         AddAlias(_aliasObject, _consPortObj)
 
                 if ((_testTab[5] and _csvConfTab[5])):
-                    # Apply init algorithm
-                    AlgoInits(_flotObj, _cnxCSVObj)
+
+                    if ((_testTab[4] and _csvConfTab[4]) and not channelEYCNameFlag):
+                        AlgoInits(_flotObj, _cnxCSVObj)
+                    else:
+                        _cnxCSVObj.Channel = _consPortObj.channel.name
+                        AlgoInits(_flotObj, _cnxCSVObj)
 
     finally:
         file.close()
@@ -594,10 +597,11 @@ def parseCsvFile(csvFile, flowFile):
 
                 _coulingFileObj.chgAddModify(_aliasConsDict[modele][port], "FUN_IN")
 
+        logger.info("update coupling file: " + _coulingFileObj.pathname)
         _coulingFileObj.write()
 
 
-    logger.info("**** INNI ****")
+    logger.info("**** INITS ****")
     #
     # get Init MICD from MEXICO configuration file
     #
@@ -605,7 +609,7 @@ def parseCsvFile(csvFile, flowFile):
 
     if _initFile:
 
-        if len(_initializationDictPerModel.keys())>0:
+        if len(_initializationDictPerModel.keys()) > 0:
 
             logger.info(" MEXICO Init file updated: " + _initFile)
 
@@ -679,31 +683,32 @@ def parseCsvFile(csvFile, flowFile):
                         logger.info("\t\t --> Channel is not initialized in initfile")
                         #
                         _mexChannelObj = _flotObj.getChannel(_channelObj.getIdentifier())
+                        if _mexChannelObj:
+                            if _mexChannelObj.init:
 
-                        if _mexChannelObj.init:
+                                logger.info("\t\t\tIn mexico flow Channel is initialized to: "+_mexChannelObj.init)
 
-                            logger.info("\t\t\tIn mexico flow Channel is initialized to: "+_mexChannelObj.init)
+                                try:
+                                    if (_mexChannelObj.init is not None) and (_channelObj.init is not None):
+                                        if float(_mexChannelObj.init) == float(_channelObj.init):
+                                            logger.info("\t\t\tEquivalent initialization is already set in flot (from MICD): " + _mexChannelObj.init)
+                                            logger.info("\t\t\tinit required in csv: " + _channelObj.init)
+                                            logger.info("\t\t\t=> nothing to do for this channel: ")
+                                            continue
+                                    if _channelObj.init is not None:
+                                        # if channel init is set to 0 => do not add into InitFile
+                                        if float(_channelObj.init) == 0.0:
+                                            logger.info("\t\t\tSpecified init not added (null initialization): " + _channelObj.init)
+                                            continue
 
-                            try:
-                                if (_mexChannelObj.init is not None) and (_channelObj.init is not None):
-                                    if float(_mexChannelObj.init) == float(_channelObj.init):
+                                except ValueError:
+
+                                    if _mexChannelObj.init == _channelObj.init:
                                         logger.info("\t\t\tEquivalent initialization is already set in flot (from MICD): " + _mexChannelObj.init)
                                         logger.info("\t\t\tinit required in csv: " + _channelObj.init)
                                         logger.info("\t\t\t=> nothing to do for this channel: ")
-                                        continue
-                                if _channelObj.init is not None:
-                                    # if channel init is set to 0 => do not add into InitFile
-                                    if float(_channelObj.init) == 0.0:
-                                        logger.info("\t\t\tSpecified init not added (null initialization): " + _channelObj.init)
-                                        continue
-
-                            except ValueError:
-
-                                if _mexChannelObj.init == _channelObj.init:
-                                    logger.info("\t\t\tEquivalent initialization is already set in flot (from MICD): " + _mexChannelObj.init)
-                                    logger.info("\t\t\tinit required in csv: " + _channelObj.init)
-                                    logger.info("\t\t\t=> nothing to do for this channel: ")
-
+                            else:
+                                logger.info("\t\t\tChannel is not yet initialized")
                         else:
                             logger.info("\t\t\tChannel is not yet initialized")
 
@@ -938,7 +943,7 @@ def AddInit(channelObj, portObj):
 
 def AddAlias(aliasObj, portObj):
 
-    global logger,line_num,_aliasCons,_aliasProd
+    global logger, line_num, _aliasCons, _aliasProd
 
     #
     # set target dictionary

@@ -139,7 +139,9 @@ class Alias:
 
         # port concerning by alias
         self._portname = portname
-
+        self._signal = None
+        self._indice = None
+        self._operator = None
         # regexp to test Signal Name field:
         # the field can have the following format:
         # signal_name
@@ -275,3 +277,17 @@ class Alias:
     @comment.setter
     def comment(self, comment):
         self._comment = comment
+
+
+    def __str__(self):
+        if self.indice and self.operator:
+            _signalName = self.signal+"["+str(self.indice)+"]#"+self.operator
+        elif self.indice and not self.operator:
+            _signalName = self.signal+"["+str(self.indice)+"]"
+        elif not self.indice and self.operator:
+            _signalName = self.signal+"#"+self.operator
+        else:
+            _signalName = self.signal
+
+        return str(self.portname)+"|"+str(_signalName)+"|"+str(self.date)+"|"+str(self.comment)+"|"+\
+               str(self.sheetname)
