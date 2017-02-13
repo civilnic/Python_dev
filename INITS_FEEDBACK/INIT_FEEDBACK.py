@@ -52,7 +52,8 @@ def main():
     logger.addHandler(steam_handler)
 
     # command line treatment
-    parser = OptionParser("usage: %prog --xls <xlsFile> --mexico <mexicoCfgFile> --cp <mexicoconceptionFile>")
+    parser = OptionParser("usage: %prog --xls <xlsFile> --mexico <mexicoCfgFile> --cp <mexicoconceptionFile> "
+                          "--cmt <comment> --fuselage --motorization")
     parser.add_option("--xls", dest="xlsFile", help="XLS file containing inits to feedback to MEXICO base",
                       type="string", metavar="FILE")
     parser.add_option("--mexico", dest="mexicoCfgFile", help="Mexico configuration file (.xml)",

@@ -570,9 +570,9 @@ def parseCsvFile(csvFile, flowFile):
         if _aliasProdDict[modele]:
 
             for port in sorted(_aliasProdDict[modele].keys()):
-                logger.info("port: " + port)
-                logger.info("alias:")
-                logger.info(_aliasProdDict[modele][port])
+               # logger.info("port: " + port)
+                #logger.info("alias:")
+               # logger.info(_aliasProdDict[modele][port])
 
                 _coulingFileObj.chgAddModify(_aliasProdDict[modele][port], "FUN_OUT")
 
@@ -591,9 +591,9 @@ def parseCsvFile(csvFile, flowFile):
 
             for port in sorted(_aliasConsDict[modele].keys()):
 
-                logger.info("port: " + port)
-                logger.info("alias: ")
-                logger.info(_aliasConsDict[modele][port])
+               # logger.info("port: " + port)
+              #  logger.info("alias: ")
+               # logger.info(_aliasConsDict[modele][port])
 
                 _coulingFileObj.chgAddModify(_aliasConsDict[modele][port], "FUN_IN")
 
@@ -656,7 +656,7 @@ def parseCsvFile(csvFile, flowFile):
                                 if float(_MICDPortObj.initdefaultvalue) == float(_channelObj.init):
                                     logger.info("\t\t\tEquivalent initialization is already set in init file: "+_MICDPortObj.initdefaultvalue)
                                     logger.info("\t\t\tinit required in csv: "+_channelObj.init)
-                                    logger.info("\t\t\t=> nothing to do for this channel: ")
+                                    logger.info("\t\t\t=> nothing to do for this channel ")
                                     continue
                         except ValueError:
                             pass
@@ -686,7 +686,7 @@ def parseCsvFile(csvFile, flowFile):
                         if _mexChannelObj:
                             if _mexChannelObj.init:
 
-                                logger.info("\t\t\tIn mexico flow Channel is initialized to: "+_mexChannelObj.init)
+                                logger.info("\t\t\tIn MEXICO flot Channel is initialized to: "+_mexChannelObj.init)
 
                                 try:
                                     if (_mexChannelObj.init is not None) and (_channelObj.init is not None):
@@ -708,9 +708,9 @@ def parseCsvFile(csvFile, flowFile):
                                         logger.info("\t\t\tinit required in csv: " + _channelObj.init)
                                         logger.info("\t\t\t=> nothing to do for this channel: ")
                             else:
-                                logger.info("\t\t\tChannel is not yet initialized")
+                                logger.info("\t\t\tChannel is not initialized in MEXICO flot")
                         else:
-                            logger.info("\t\t\tChannel is not yet initialized")
+                            logger.info("\t\t\tChannel didn't exist in MEXICO flot")
 
                         # get actor corresponding to modocc in Mexico configuration
                         _actorObj = _mexicoCfgObj.getActor(_modocc)
@@ -935,8 +935,9 @@ def AddInit(channelObj, portObj):
                            + portObj.getIdentifier() + "--\n\t\tCannot set init: "+str(channelObj.init)+" because it as "
                             "already set to: "+_dict[channelObj.name].init)
         else:
-            logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several initializations of same value specified "
-                           "for port: "+ portObj.getIdentifier()+ "--\n\t\t")
+            pass
+            #logger.warning("[CheckCSV][line " + str(line_num) + "] -- Several initializations of same value specified "
+            #              "for port: "+ portObj.getIdentifier()+ "--\n\t\t")
 
 # fill dictionary of coupling to be done from alias object
 # to sort coupling by model

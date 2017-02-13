@@ -1,15 +1,12 @@
 """
-Tool to generate XML and MICD file for FDEF from a BDS in XLS format.
+Tool to generate XML and MICD file for FDEF from a BDS in XLS2FDEF format.
 """
 
 import logging
-import csv
 
-from os.path import abspath
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from optparse import OptionParser
-from lxml import etree
 
 from BDS.BDSXLS import BDSXLS
 from FDEF.FDEF_XML import FDEF_XML
@@ -19,12 +16,8 @@ from FDEF.FDEF_MICD import FDEF_MICD
 _date = datetime.now()
 displayDate = str(_date.day) + "/" + str(_date.month) + "/" + str(_date.year)
 
-# création de l'objet logger qui va nous servir à écrire dans les logs
+# create logger object
 logger = logging.getLogger()
-
-#
-# global variables
-#
 
 def main():
 
@@ -51,22 +44,23 @@ def main():
     logger.addHandler(steam_handler)
 
     # command line treatment
-    parser = OptionParser("usage: %prog --xls <xmlConfigFile> --modName ")
+    parser = OptionParser("usage: %prog --xls <xls bds file> --modName <model name> --version <model version>")
     parser.add_option("--xls", dest="xls", help="bds file (.xls format)",
-                      type="string", metavar="FILE")
+                      type="string", metavar="FILE", default=None)
     parser.add_option("--modName", dest="modName", help="Model name",
-                      type="string", metavar="FILE")
-    parser.add_option("--version", dest="version", help="version",
-                      type="string", metavar="FILE")
+                      type="string", metavar="FILE", default=None)
+    parser.add_option("--version", dest="version", help="Model version",
+                      type="string", metavar="FILE", default=None)
     (options, args) = parser.parse_args()
-
-    if len(args) != 0:
-        logger.info("incorrect number of arguments")
-        parser.error("incorrect number of arguments")
 
     _xls = options.xls
     _modName = options.modName
     _version = options.version
+
+    if (_xls is None) or (_modName is None) or (_version is None) or (len(args) == 0):
+        logger.info("incorrect number of arguments")
+        parser.error("incorrect number of arguments")
+
 
     logger.info("#####################")
     logger.info("#### Parameters #####")
