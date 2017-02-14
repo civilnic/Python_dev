@@ -1,5 +1,10 @@
 """
-Tool to generate XML and MICD file for FDEF from a BDS in XLS2FDEF format.
+Tool to generate XML and MICD file for FDEF from a BDS in XLS2FDEF format (.xls).
+Parameters
+----------
+    --xls <BDS FILE>            -->  BDS file in unified format
+    --modName <Model Name>      --> model name for example fdef_sdac/1
+    --version <Model version>   --> model version (to be set on MICD)
 """
 
 import logging
@@ -58,7 +63,6 @@ def main():
     _version = options.version
 
     if (_xls is None) or (_modName is None) or (_version is None) or (len(args) == 0):
-        logger.info("incorrect number of arguments")
         parser.error("incorrect number of arguments")
 
 
@@ -73,7 +77,7 @@ def main():
     _bdsObj = BDSXLS(path_name=_xls)
 
     # output file names
-    _micdName = "ICD_"+ _modName + "_" + _version + ".xls"
+    _micdName = "ICD_" + _modName + "_" + _version + ".xls"
     _xmlIn = "A429_conso_" + _modName + "_" + _version + ".xml"
     _xmlOut = "A429_prod_" + _modName + "_" + _version + ".xml"
 
@@ -81,7 +85,7 @@ def main():
     _micdFdef = FDEF_MICD(_micdName,
                           _modName,
                           _version
-                             )
+                          )
 
     logger.info("Create FDEF xml consumer file: " + _xmlIn)
     _xml_conso_file = FDEF_XML(_xmlIn,
