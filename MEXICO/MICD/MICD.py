@@ -378,6 +378,10 @@ This variable is not refreshed in RUN mode.'
                 # sheet data frame
                 _df = self._SheetAndDataFrame[_sheet]['DataFrame']
 
+                # if data frame is empty go to next sheet
+                if _df.empty:
+                    continue
+
                 # base on previous list create port object to export
                 for _index, _row in _df.iterrows():
                     _PortObjList.append(self.createPortObj(_row, _sheet))

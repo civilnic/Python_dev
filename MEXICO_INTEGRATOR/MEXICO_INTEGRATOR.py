@@ -620,6 +620,9 @@ def parseCsvFile(csvFile, flowFile):
             # to read only one time each MICD
             for _modocc in sorted(_initializationDictPerModel.keys()):
 
+                _currentMICD = None
+                _micdObj = None
+
                 # each initialization is then stored by consumer port object
                 for _portObj in _initializationDictPerModel[_modocc].keys():
 
@@ -719,8 +722,12 @@ def parseCsvFile(csvFile, flowFile):
                         # for each micd
                         for _micd in _actorObj.getMICDList():
 
-                            # create micd object (i.e. parse MICD) from MICD
-                            _micdObj = MICD(_micd._fullPathName)
+                            if ((_currentMICD is None) or (_currentMICD != _micd._fullPathName)):
+                                _currentMICD = _micd._fullPathName
+
+                            if _micdObj is None:
+                                # create micd object (i.e. parse MICD) from MICD
+                                _micdObj = MICD(_micd._fullPathName)
 
                             # get an MicdPort Object for consumer port
                             _consPortObj = _micdObj.getPortObj(_portObj.name)
