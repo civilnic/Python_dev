@@ -52,7 +52,8 @@ def main():
     logger.addHandler(steam_handler)
 
     # command line treatment
-    parser = OptionParser("usage: %prog --xls <xlsFile> --mexico <mexicoCfgFile> --cp <mexicoconceptionFile>")
+    parser = OptionParser("usage: %prog --xls <xlsFile> --mexico <mexicoCfgFile> --cp <mexicoconceptionFile> "
+                          "--cmt <comment> --fuselage --motorization")
     parser.add_option("--xls", dest="xlsFile", help="XLS file containing inits to feedback to MEXICO base",
                       type="string", metavar="FILE")
     parser.add_option("--mexico", dest="mexicoCfgFile", help="Mexico configuration file (.xml)",
@@ -166,6 +167,9 @@ def setInitialization(mexicoCfgObj,mexicoFlowFile):
             # Initializations are stored by mod/occ in _initializationDictPerModel dictionary
             # to read only one time each MICD
             for _modocc in sorted(_initializationDictPerModel.keys()):
+
+                _currentMICD = None
+                _micdObj = None
 
                 # each initialization is then stored by consumer port
                 for _port in _initializationDictPerModel[_modocc].keys():
@@ -304,8 +308,13 @@ def setInitialization(mexicoCfgObj,mexicoFlowFile):
                         # for each micd
                         for _micd in _actorObj.getMICDList():
 
-                            # create micd object (i.e. parse MICD) from MICD
-                            _micdObj = MICD(_micd._fullPathName)
+                            if ((_currentMICD is None) or (_currentMICD != _micd._fullPathName)):
+                                _currentMICD = _micd._fullPathName
+
+                            if _micdObj is None:
+                                # create micd object (i.e. parse MICD) from MICD
+                                _micdObj = MICD(_micd._fullPathName)
+
 
                             # get an MicdPort Object for consumer port
                             _consPortObj = _micdObj.getPortObj(_portObj.name)
@@ -353,11 +362,12 @@ def setInitialization(mexicoCfgObj,mexicoFlowFile):
 
 def checkInitValueConsistency(initValue,PortType):
 
-    _testOnPortType = re.match(r'(boolean|bool|logical)', str(PortType), re.IGNORECASE)
+    _testTypeBool = re.match(r'(boolean|bool)', str(PortType), re.IGNORECASE)
+    _testTypeLogical = re.match(r'(logical)', str(PortType), re.IGNORECASE)
     _testOnInitValue = re.match(r'(True|False)', str(initValue), re.IGNORECASE)
 
-    # if port type is boolean or logical
-    if _testOnPortType:
+    # if port type is boolean
+    if _testTypeBool:
 
         # if init value is not True or False
         if not _testOnInitValue:
@@ -366,6 +376,17 @@ def checkInitValueConsistency(initValue,PortType):
                 _initValue = 'False'
             else:
                 _initValue = 'True'
+        else:
+            _initValue = initValue
+
+    # if port type is logical
+    elif _testTypeLogical:
+
+        if _testOnInitValue:
+            if initValue == 'True':
+                _initValue = 1
+            else:
+                _initValue = 0
         else:
             _initValue = initValue
 

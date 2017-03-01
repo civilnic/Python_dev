@@ -2,14 +2,23 @@ import re
 
 class A429Label:
     """
-    Class to defined A429Label data
+    Class to defined A429 Label
+
+    All parameter object of the label (describe by A429Parameter class)
+    are stored on the attribut ParameterList
     """
 
     def __init__(self, number, sdi, labeltype, nature, system):
-        """
-        Attributes are:
-        _ path name of the file
-        """
+        '''
+        A429 Label Class initializer
+
+        :param number: label number
+        :param sdi: sdi value (this value is converted on binary on two digit, i.e '2' => '10')
+        :param labeltype:   label type, possible values are BNR / DW (discrete) / BCD / HYB
+        :param nature:  IN/OUT
+        :param system:  system emmtting/receiving the label.
+        '''
+
         self.number = int(number)
         self.sdi = convertSDI(sdi)
         self.labeltype = labeltype
@@ -26,6 +35,11 @@ class A429Label:
 
     @property
     def ssmtype(self):
+        '''
+        Function to set the SSM type of a label.
+        Mainly to determine the SSM type is case of HYB label depending their content.
+        :return ssm type set:
+        '''
         if self.labeltype == "BNR":
             self._ssmtype = "BNR"
         elif self.labeltype == "DW":
@@ -103,13 +117,28 @@ class A429Label:
         self._source = source
 
     def refParameter(self, paramObj):
+        '''
+        Function to reference a parameter object in a label object
+        :param paramObj:
+        :return None:
+        '''
         self.ParameterList.append(paramObj)
         paramObj.labelObj = self
 
     def getParameterList(self):
+        '''
+        Function to get the list of parameter Object of the label
+        :return ParameterList:
+        '''
         return self.ParameterList
 
-    def print(self, DisplayParam):
+    def print(self, DisplayParam=False):
+        '''
+        Function for debug purpose. To display the label object "content".
+        If DisplayParam is True parameters of the label are also displayed.
+        :param DisplayParam:
+        :return None:
+        '''
         print ("Label number: "+str(self.number))
         print ("\tLabel sdi: "+str(self.sdi))
         print ("\tLabel type: "+str(self.labeltype))
@@ -124,15 +153,22 @@ class A429Label:
                 param.print()
 
     def createIndentifier(self):
-
-        """" create a unique label identifer to store on BDS label dictionary """
+        '''
+        Function to create a unique label identifer to store on BDS label dictionary
+        This identifier is a tuple made of the following fields of label obecjt:
+            identifier = (self.nature, self.system, self.number, str(self.sdi), self.source)
+        :return label identifier:
+        '''
 
         identifier = (self.nature, self.system, self.number, str(self.sdi), self.source)
         return identifier
 
 
     def computeSsmType(self):
-
+        '''
+        Method to compute SSM type
+        :return:
+        '''
         """" compute attribute ssmtype if not attribute is not set """
 
         if not self.ssmtype:
@@ -163,11 +199,19 @@ class A429Label:
 
 
 class A429Parameter:
-    """
-    Base class to defined A429 signal type
-    """
+    '''
+    Root class for A429 Parameter definition.
+    All other following "parameter class" herit from it.
+    '''
+
 
     def __init__(self, name, nature,label):
+        '''
+        A429 Parameter class initializer
+        :param name: parameter name
+        :param nature:  IN/OUT
+        :param label:   label number
+        '''
         self.name = name
         self.nature = convertNature(nature)
         self.label = int(label)
@@ -258,6 +302,10 @@ class A429Parameter:
             self._signed = "0"
 
     def print(self):
+        '''
+        Function for debug purpose. To display the parameter object "content".
+        :return None:
+        '''
         print("\t\tParameter name: " + str(self.name))
         print("\t\t\tParameter nature: " + str(self.nature))
         print("\t\t\tParameter codingtype: " + str(self._codingtype))
@@ -268,11 +316,19 @@ class A429Parameter:
 
 
 class A429ParamDIS(A429Parameter):
-    """
+    '''
     Base class to defined A429 BOOL signal type
-    """
+    '''
 
     def __init__(self, name, nature, label):
+        '''
+        Initializer for A429ParamDIS class
+        :param name: parameter name
+        :param nature: IN/OUT
+        :param label: label number
+        '''
+
+        # call parent class initializer
         A429Parameter.__init__(self, name, nature, label)
 
         self.codingtype = "boolean"
@@ -309,17 +365,31 @@ class A429ParamDIS(A429Parameter):
         self._state1 = state1
 
     def print(self):
+        '''
+        Method to specifically display Discrete (DW) parameter object elements
+        :return:
+        '''
         super(A429ParamDIS, self).print()
         print("\t\t\tParameter BitNumber: " + str(self.BitNumber))
         print("\t\t\tParameter state0: " + str(self.state0))
         print("\t\t\tParameter state1: " + str(self.state1))
 
 class A429ParamBNR(A429Parameter):
-    """
+    '''
     Base class to defined A429 BOOL signal type
-    """
+    '''
 
     def __init__(self, name, nature, label, msb, nb_bits, range, resolution):
+        '''
+        Initializer for A429ParamBNR class
+        :param name: Parameter name
+        :param nature: IN/OUT
+        :param label: label number
+        :param msb: most significant bit position in the frame (usually > 8 < 29)
+        :param nb_bits: parameter number of bits (parameter size)
+        :param range: paramter range
+        :param resolution:  parameter resolution
+        '''
         A429Parameter.__init__(self,name, nature, label)
         self.codingtype = "float"
         self.msb = int(msb)
@@ -342,6 +412,10 @@ class A429ParamBNR(A429Parameter):
                 self.accuracy = None
 
     def print(self):
+        '''
+        Method to specifically display BNR parameter object elements
+        :return:
+        '''
         super(A429ParamBNR, self).print()
         print("\t\t\tParameter msb: " + str(self.msb))
         print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
@@ -353,11 +427,21 @@ class A429ParamBNR(A429Parameter):
 
 
 class A429ParamBCD(A429Parameter):
-    """
+    '''
     Base class to defined A429 BOOL signal type
-    """
+    '''
 
     def __init__(self, name, nature, label, msb, nb_bits, range, resolution):
+        '''
+        Initializer for A429ParamBCD class
+        :param name: paramter name
+        :param nature: IN/OUT
+        :param label: label number
+        :param msb: most significant bit position in the frame (usually > 8 < 29)
+        :param nb_bits: parameter number of bits (parameter size)
+        :param range: paramter range
+        :param resolution:  parameter resolution
+        '''
         A429Parameter.__init__(self,name, nature, label)
         self.codingtype = "int"
         self.msb = int(msb)
@@ -374,6 +458,10 @@ class A429ParamBCD(A429Parameter):
         self.resolution = float(resolution)
 
     def print(self):
+        '''
+        Method to specifically display BCD parameter object elements
+        :return:
+        '''
         super(A429ParamBCD, self).print()
         print("\t\t\tParameter msb: " + str(self.msb))
         print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
@@ -381,11 +469,19 @@ class A429ParamBCD(A429Parameter):
         print("\t\t\tParameter resolution: " + str(self.resolution))
 
 class A429ParamOpaque(A429Parameter):
-    """
-    Base class to defined A429 Opaque parameter type
-    """
+    '''
+     Base class to defined A429 Opaque parameter type
+    '''
 
     def __init__(self, name, nature, label, msb, nb_bits):
+        '''
+        Initializer for A429ParamOpaque class
+        :param name: paramter name
+        :param nature: IN/OUT
+        :param label: label number
+        :param msb: most significant bit position in the frame (usually > 8 < 29)
+        :param nb_bits: parameter number of bits (parameter size)
+        '''
         A429Parameter.__init__(self, name, nature, label)
         self.codingtype = "int"
         self.msb = int(msb)
@@ -400,17 +496,29 @@ class A429ParamOpaque(A429Parameter):
         self.signed = "0"
 
     def print(self):
+        '''
+        Method to specifically display Opaque parameter object elements
+        :return:
+        '''
         super(A429ParamOpaque,self).print()
         print("\t\t\tParameter msb: " + str(self.msb))
         print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
 
 
 class A429ParamISO5(A429Parameter):
-    """
+    '''
     Base class to defined A429 ISO5 parameter type
-    """
+    '''
 
     def __init__(self, name, nature, label, msb, nb_bits):
+        '''
+        Initializer of class A429ParamISO5
+        :param name: paramter name
+        :param nature: IN/OUT
+        :param label: label number
+        :param msb: most significant bit position in the frame (usually > 8 < 29)
+        :param nb_bits: parameter number of bits (parameter size)
+        '''
         A429Parameter.__init__(self, name, nature, label)
         self.codingtype = "char"
         self.msb = int(msb)
@@ -422,6 +530,10 @@ class A429ParamISO5(A429Parameter):
 
 
     def print(self):
+        '''
+        Method to specifically display ISO5 parameter object elements
+        :return:
+        '''
         super(A429ParamISO5,self).print()
         print("\t\t\tParameter msb: " + str(self.msb))
         print("\t\t\tParameter nb_bits: " + str(self.nb_bits))
@@ -429,13 +541,26 @@ class A429ParamISO5(A429Parameter):
 
 
 def isfloat(value):
-  try:
-    float(value)
-    return True
-  except:
-    return False
+    '''
+    Function to test if value parameter is a float
+    :param value:
+    :return True/False:
+    '''
+    try:
+        float(value)
+        return True
+    except:
+        return False
 
 def convertNature(nature):
+    '''
+    Function to convert nature of paramter or label to IN/OUT
+    ex:
+        'ENTREE' --> 'IN'
+        'O'     --> 'OUT'
+    :param nature:
+    :return nature set:
+    '''
     if nature == 'O' or nature == 'OUT':
         nature = "OUT"
     elif nature == "I" or nature == 'IN':
@@ -450,6 +575,14 @@ def convertNature(nature):
     return nature
 
 def convertSDI(sdi):
+    '''
+    Function to convert SDI parameter on two digit binary
+    ex:
+    '1' --> '01'
+    '2' --> '10'
+    :param sdi:
+    :return sdi value:
+    '''
 
     # set formatted name (i.e simulation label name)pip
     try:

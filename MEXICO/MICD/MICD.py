@@ -255,11 +255,12 @@ This variable is not refreshed in RUN mode.'
     def parse(self):
 
         # open with xlrd
-        _xlrd_workbook = xlrd.open_workbook(self._pathName)
+        # specify encoding to avoid unknwon encoding issue
+        _xlrd_workbook = xlrd.open_workbook(self._pathName, encoding_override="cp1252")
         self._Workbook = copy(_xlrd_workbook)
 
         # parse MICD file with pandas
-        _xl = pd.ExcelFile(self._pathName)
+        _xl = pd.ExcelFile(_xlrd_workbook, engine="xlrd")
 
         # loop over MICD sheets name to create dataframe
         for _sheet in _xl.sheet_names:
@@ -377,6 +378,10 @@ This variable is not refreshed in RUN mode.'
                 # sheet data frame
                 _df = self._SheetAndDataFrame[_sheet]['DataFrame']
 
+                # if data frame is empty go to next sheet
+                if _df.empty:
+                    continue
+
                 # base on previous list create port object to export
                 for _index, _row in _df.iterrows():
                     _PortObjList.append(self.createPortObj(_row, _sheet))
@@ -456,8 +461,7 @@ This variable is not refreshed in RUN mode.'
             _micdDf = pd.concat(_frames)
 
         # update micd dataframe with updated dataframe
-        self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf.drop_duplicates(_dict['API2MICD']['Name'], keep='last')
-        self._SheetAndDataFrame[sheetName]['DataFrame'] = self._SheetAndDataFrame[sheetName]['DataFrame'].reset_index(drop=True)
+        self._SheetAndDataFrame[sheetName]['DataFrame'] = _micdDf.reset_index(drop=True)
 
         return True
 
