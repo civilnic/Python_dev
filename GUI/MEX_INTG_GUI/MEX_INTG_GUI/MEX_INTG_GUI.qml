@@ -1,16 +1,30 @@
-import QtQuick 2.8
-import QtQuick.Window 2.2
+import QtQuick 2.4
+import QtQuick.Controls 1.3
+import QtQuick.Layouts 1.1
 
-Window {
-    visible: true
-    width: 640
-    height: 480
-    title: qsTr("Hello World")
+ApplicationWindow {
+    title: qsTr("Fenêtre de connexion")
+    width: 400
+    height: 200
 
-    MainForm {
-        anchors.fill: parent
-        mouseArea.onClicked: {
-            console.log(qsTr('Clicked on background. Text: "' + textEdit.text + '"'))
+    TableView {
+
+        model: myModel
+    }
+
+
+
+    menuBar: MenuBar {
+        Menu {
+            title: qsTr("&File")
+            MenuItem {
+                text : "Une action"
+                onTriggered: console.log("Magique cette barre de menu")
+            }
         }
     }
+    statusBar: StatusBar {
+        Label { text: "QML test" }
+    }
+
 }
