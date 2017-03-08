@@ -1,4 +1,5 @@
 import csv
+import sys
 import re
 import xlrd
 import os
@@ -148,6 +149,9 @@ class Alias:
         # signal_name#operator
         # signal_name[indice]
         # signal_name{indice]#operator
+
+        if not sheetName:
+            print("[ERROR] Empty Sheet Name for port "+str(portname))
 
         _testOnSignal = re.match(r'(?P<signal_name>\w+)(?:\[(?P<indice>\d+)\])*(?:#(?P<operator>\w+))*', channelname)
 

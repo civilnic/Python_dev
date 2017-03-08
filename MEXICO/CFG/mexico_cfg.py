@@ -74,7 +74,8 @@ class mexicoConfig:
     def parse(self):
 
         try:
-            tree = etree.parse(self.pathName)
+            _parser = etree.XMLParser(remove_comments=True)
+            tree = etree.parse(self.pathName, parser=_parser)
         except OSError:
             print("[mexicoConfig][ssdb configuration]: Cannot open MEXICO SSDB configuration file"+self.pathName)
             exit(1)
@@ -88,6 +89,8 @@ class mexicoConfig:
 
                 if element.attrib['dataDirWin']:
                     self._mexicoRootPath = os.path.abspath(self.filePath+"\\"+element.attrib['dataDirWin'])
+                else:
+                    self._mexicoRootPath = os.path.abspath(self.filePath+"\\")
 
             # ssdb file are listed in Base elements
             if element.tag == "Base":
