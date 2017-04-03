@@ -28,35 +28,28 @@ class ConnexionWrapper(QAbstractTableModel):
     def _name(self):
         return str(self._thing)
 
-    def rowCount(self, parent):
+    def rowCount(self, parent=None, *args, **kwargs):
         _rows = list(self._reader)
         return len(_rows)
 
     def columnCount(self, parent):
         return len(self._headerData)
 
-    def data(self, index, role):
+    def data(self, QModelIndex, role=None):
         if role == QtCore.Qt.DisplayRole:
-            if not index.isValid():
-                return QVariant()
-            elif role != Qt.DisplayRole:
-                return QVariant()
-            _row = index.row()
-            _col = index.column()
-            return QVariant(self._objectTab[_row][_col])
-        return None
-
-    def headerData(self, col, orientation, role):
-        if orientation == Qt.Horizontal and role == Qt.DisplayRole:
-            return QVariant(self._headerData[col])
-        if orientation == QtCore.Qt.Vertical:
-            return ''
-
-        return None
+            _row = QModelIndex.row()
+            _col = QModelIndex.column()
+            _value = self._objectTab[_row][_col]
+            return _value.name()
+        else:
+            return QtCore.QVariant()
 
     def rowCountlt(self):
         _rows = list(self._objectTab)
         return len(_rows)-1
+
+    def flags(self, QModelIndex):
+        return QtCore.Qr.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
 
     def columnCountlt(self):
