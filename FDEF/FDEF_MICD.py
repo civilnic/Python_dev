@@ -8,21 +8,36 @@ class FDEF_MICD(MICD):
     Base class to create MICD for FDEF model
     """
 
-    def __init__(self, pathname, modelname=None, modelversion=None):
+    def __init__(self, pathname, modelname=None, modelversion=None, deformat=False):
         MICD.__init__(self, pathname, modelname, modelversion, True)
+        self._deformat = deformat
 
+    @property
+    def deformat(self):
+        return self._deformat
+    @deformat.setter
+    def deformat(self, deformat):
+        self._deformat = deformat
 
     def AddLabelToMICD(self, labelObj):
 
         # compute nature field "IN/OUT" in fdef MICD
         # the nature in MICD is the opposite of nature in BDS
         # IN => OUT ,  OUT => IN
-        if labelObj.nature == "IN":
-            _micdPortType = "OUT"
-            _sheet_name = "FUN_OUT"
+        if not self._deformat:
+            if labelObj.nature == "IN":
+                _micdPortType = "OUT"
+                _sheet_name = "FUN_OUT"
+            else:
+                _micdPortType = "IN"
+                _sheet_name = "FUN_IN"
         else:
-            _micdPortType = "IN"
-            _sheet_name = "FUN_IN"
+            if labelObj.nature == "IN":
+                _micdPortType = "IN"
+                _sheet_name = "FUN_IN"
+            else:
+                _micdPortType = "OUT"
+                _sheet_name = "FUN_OUT"
 
         # port corresponding to label
         _micdPort = MICD_port(None, _micdPortType, None)
@@ -82,7 +97,7 @@ class FDEF_MICD(MICD):
         return True
 
 
-def AddParameterToMICD(micdFile, ParameterObj,sheet_name):
+def AddParameterToMICD(micdFile,ParameterObj,sheet_name):
 
     # label object corresponding to parameter
     _labelObj = ParameterObj.labelObj

@@ -35,6 +35,9 @@ class ConnexionWrapper(QAbstractTableModel):
     def columnCount(self, parent):
         return len(self._headerData)
 
+    def roleNames(self):
+        pass
+
     def data(self, QModelIndex, role=None):
         if role == QtCore.Qt.DisplayRole:
             _row = QModelIndex.row()

@@ -11,7 +11,7 @@ class FDEF_XML:
     """
 
 
-    def __init__(self, pathname, type, source=None,sourceType=None, tool=None):
+    def __init__(self,pathname,type,source="",sourceType="",tool=""):
         """
         Attributes are:
         _ path name of the file

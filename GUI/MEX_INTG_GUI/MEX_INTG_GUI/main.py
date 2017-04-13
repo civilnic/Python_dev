@@ -13,12 +13,12 @@ from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlEngine
 # Main Function
 if __name__ == '__main__':
 
-   _file = r"F:\Mes documents\Nicolas\Boulot\Developpement\Python\Python_dev\GUI\choice_cnx.csv"
-   _qml = r'F:\Mes documents\Nicolas\Boulot\Developpement\Python\Python_dev\GUI\MEX_INTG_GUI\MEX_INTG_GUI\MEX_INTG_GUI.qml'
+   _file = r"choice_cnx.csv"
+   _qml = r'MEX_INTG_GUI\MEX_INTG_GUI.qml'
    _Cnx_Wrapp = ConnexionWrapper(_file)
    print(_Cnx_Wrapp.rowCountlt())
    print(_Cnx_Wrapp.columnCountlt())
-   print(_Cnx_Wrapp.datalt(10,10))
+   print(_Cnx_Wrapp.datalt(0, 10))
 
    # app = QGuiApplication(sys.argv)
    # view = QQuickView()
@@ -36,6 +36,7 @@ if __name__ == '__main__':
    qmlRegisterType(ConnexionWrapper, 'cnxWrapper', 1, 0, 'ConnexionWrapper')
    engine = QQmlApplicationEngine(parent=app)
    engine.load(_qml)
+   print (engine.rootObjects())
    win = engine.rootObjects()[0]
    win.show()
    sys.exit(app.exec_())

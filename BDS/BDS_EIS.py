@@ -9,7 +9,7 @@ class BDS_EIS(BDS):
     Class to defined BDS data file
     """
 
-    def __init__(self,A429File,DISFile):
+    def __init__(self,A429File,DISFile=None):
         """
         Attributes are:
         _ path name of the file
@@ -19,7 +19,8 @@ class BDS_EIS(BDS):
         self.DISFile = DISFile
 
         self.parse_BDSA429()
-        self.parse_BDSDis()
+        if self.DISFile:
+            self.parse_BDSDis()
 
     def parse_BDSA429(self):
         """
