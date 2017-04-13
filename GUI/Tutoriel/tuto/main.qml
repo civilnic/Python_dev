@@ -1,40 +1,45 @@
-import QtQuick 2.7
-import QtQuick.Controls 1.5
-import QtQuick.Dialogs 1.2
+import QtQuick 2.5
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.2
 
 ApplicationWindow {
+    id: window
+    width: 280
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Hello World")
 
     menuBar: MenuBar {
         Menu {
-            title: qsTr("File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: console.log("Open action triggered");
-            }
-            MenuItem {
-                text: qsTr("Exit")
-                onTriggered: Qt.quit();
-            }
+            title: "&Fichier"
+            MenuItem { text: "Quitter" }
         }
     }
 
-    MainForm {
+    SplitView {
         anchors.fill: parent
-        button1.onClicked: messageDialog.show(qsTr("Button 1 pressed"))
-        button2.onClicked: messageDialog.show(qsTr("Button 2 pressed"))
-    }
+        orientation: Qt.Vertical
 
-    MessageDialog {
-        id: messageDialog
-        title: qsTr("May I have your attention, please?")
+        Rectangle {
+            width: window.width
+            Layout.fillHeight: true
+            Layout.minimumHeight: 120
+            Layout.maximumHeight: 240
 
-        function show(caption) {
-            messageDialog.text = caption;
-            messageDialog.open();
+            Text {
+                anchors.centerIn: parent
+                text: "Liste des livres"
+            }
+        }
+
+        Rectangle {
+            width: window.width
+            Layout.fillHeight: true
+            Layout.minimumHeight: 340
+            Layout.maximumHeight: 680
+
+            Text {
+                anchors.centerIn: parent
+                text: "Détails d'un livre"
+            }
         }
     }
 }
