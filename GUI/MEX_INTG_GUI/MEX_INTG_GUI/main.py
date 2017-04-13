@@ -1,4 +1,5 @@
 import sys
+import csv
 from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, QUrl, QVariant
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQuick import QQuickView
@@ -15,10 +16,10 @@ if __name__ == '__main__':
 
    _file = r"choice_cnx.csv"
    _qml = r'MEX_INTG_GUI\MEX_INTG_GUI.qml'
-   _Cnx_Wrapp = ConnexionWrapper(_file)
-   print(_Cnx_Wrapp.rowCountlt())
-   print(_Cnx_Wrapp.columnCountlt())
-   print(_Cnx_Wrapp.datalt(0, 10))
+   #_Cnx_Wrapp = ConnexionWrapper()
+   #print(_Cnx_Wrapp.rowCountlt())
+   #print(_Cnx_Wrapp.columnCountlt())
+   #print(_Cnx_Wrapp.datalt(0, 10))
 
    # app = QGuiApplication(sys.argv)
    # view = QQuickView()
@@ -31,13 +32,15 @@ if __name__ == '__main__':
    #
    # sys.exit(app.exec_())
 
+   _csvFile = open(_file, "r")
+   _reader = csv.reader(_csvFile, delimiter=';')
 
    app = QApplication(sys.argv)
    qmlRegisterType(ConnexionWrapper, 'cnxWrapper', 1, 0, 'ConnexionWrapper')
-   engine = QQmlApplicationEngine(parent=app)
+   engine = QQmlApplicationEngine()
+   engine.quit.connect(app.quit)
+   engine.rootContext().setContextProperty("csv_file", _reader)
    engine.load(_qml)
-   print (engine.rootObjects())
-   win = engine.rootObjects()[0]
-   win.show()
    sys.exit(app.exec_())
+
 

@@ -9,12 +9,8 @@ ApplicationWindow {
     width: 2100
     height: 1000
 
-    Component {
-        id: textDelegate
-        Text {
-            text: role
-        }
-    }
+    property var csv_file
+
 
     TableView {
         model: ConnexionWrapper
