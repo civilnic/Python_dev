@@ -10,8 +10,8 @@ from PyQt5.QtQml import qmlRegisterType
 # Main Function
 if __name__ == '__main__':
 
-    _file = r"D:\SVN_SOGETI\CAPITALISATION\OCASIME\Project_Tools\PYTHON_TOOLS\Python_dev\GUI\MEX_INTG_GUI\MEX_INTG_GUI\choice_cnx.csv"
-    _qml = r'MEX_INTG_GUI.qml'
+    _file = r"choice_cnx.csv"
+    _qml = r'main.qml'
 
     _data = []
     _csvFile = open(_file, 'r')
@@ -24,7 +24,6 @@ if __name__ == '__main__':
     qmlRegisterType(CustomModel, 'CustomModel', 1, 0, 'CustomModel')
     engine = QQmlApplicationEngine()
     engine.quit.connect(app.quit)
-    engine.rootContext().setContextProperty("fileCsv", _file)
 
     engine.load(_qml)
 

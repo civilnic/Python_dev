@@ -23,7 +23,7 @@ class CustomModel(QAbstractListModel):
             for _line in _reader:
                 _csv.append(_line)
 
-            self._data = _csv[1,]
+            self._data = _csv
             self._roles = {int(k): _csv[0][k].encode('utf-8') for k in _csv[0]}
 
         return True
@@ -118,5 +118,3 @@ class CustomModel(QAbstractListModel):
         else:
             self._just_created = True
             self._data = []
-
-

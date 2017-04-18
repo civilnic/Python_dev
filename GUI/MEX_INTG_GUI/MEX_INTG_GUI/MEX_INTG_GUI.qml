@@ -2,18 +2,12 @@ import QtQuick 2.7
 import QtQuick.Controls 1.5
 import QtQuick.Dialogs 1.2
 
-import CustomModel 1.0
 
 ApplicationWindow {
     title: qsTr("CNX MERGE HMI")
     width: 2100
     height: 1000
 
-    property var fileCsv
-
-    MyModel: CustomModel {
-        file: fileCsv
-    }
 
     TableView {
         id: csvTab
