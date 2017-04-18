@@ -1,115 +1,55 @@
-from PyQt5.QtCore import QAbstractTableModel
-from PyQt5.QtCore import QVariant
-from PyQt5.QtCore import Qt
-from PyQt5 import QtCore
-import csv
-import sys
 import os
-import json
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QAbstractListModel, QModelIndex, Qt
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType, QQmlListProperty
-
-class ConnexionWrapper__(QAbstractTableModel):
+import csv
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QAbstractListModel, QModelIndex, Qt
 
 
-
-    def __init__(self, filename, parent=None):
-        QAbstractTableModel.__init__(self, parent)
-        self._thing = "cnw_wrapper"
-        self._objectTab = []
-        self._filename = filename
-
-        _csvFile = open(self._filename, "r")
-
-        #self._reader = csv.DictReader(_csvFile, delimiter=';')
-        _reader = csv.reader(_csvFile, delimiter=';')
-
-        for _line in _reader:
-            self._objectTab.append(_line)
-
-        self._headerData = self._objectTab[0]
-        print(self._headerData)
-
-    def _name(self):
-        return str(self._thing)
-
-    def rowCount(self, parent=None, *args, **kwargs):
-        _rows = list(self._reader)
-        return len(_rows)
-
-    def columnCount(self, parent):
-        return len(self._headerData)
-
-    def roleNames(self):
-        pass
-
-    def data(self, QModelIndex, role=None):
-        if role == QtCore.Qt.DisplayRole:
-            _row = QModelIndex.row()
-            _col = QModelIndex.column()
-            _value = self._objectTab[_row][_col]
-            return _value.name()
-        else:
-            return QtCore.QVariant()
-
-    def rowCountlt(self):
-        _rows = list(self._objectTab)
-        return len(_rows)-1
-
-    def flags(self, QModelIndex):
-        return QtCore.Qr.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
-
-
-    def columnCountlt(self):
-        return len(self._headerData)
-
-    def datalt(self,row,col):
-        return self._objectTab[row][col]
-
-
-class ConnexionWrapper(QAbstractListModel):
+class CustomModel(QAbstractListModel):
 
     def __init__(self, data, parent=None, *args):
         QAbstractListModel.__init__(self, parent, *args)
 
-        self._objectTab = []
-        self._filename = r"choice_cnx.csv"
-
         self._data = data
+        self._roles = None
         self._file = None
         self._just_created = False
 
-    def _file_write(self):
+    def _file_read(self):
         if self._file is None:
             return False
 
-        with open(self._file, 'w') as f:
-            json.dump(self._data, f)
+        with open(self._file, 'r') as _csvFile:
+            _reader = csv.reader(_csvFile, delimiter=';')
+            _csv = []
+            for _line in _reader:
+                _csv.append(_line)
+
+            self._data = _csv[1,]
+            self._roles = {int(k): _csv[0][k].encode('utf-8') for k in _csv[0]}
+
         return True
 
     def rowCount(self, parent=QModelIndex()):
-        if self._file is None:
-            return 0
         return len(self._data)
 
     def data(self, index, role):
-        if self._file is None or not index.isValid():
+        if not index.isValid():
             return None
-        return self._data[index.row()]
+
+        return self._data[index.row()][self._roles[role].decode('utf-8')]
 
     def setData(self, index, value, role):
-        if self._file is None or not index.isValid():
-            return False
-
+        if not index.isValid():
+            return None
         self._data[index.row()] = value
+
+        if self._roles is None:
+            self._roles = dict(zip(range(Qt.UserRole + 1, Qt.UserRole + 1 + len(value)),
+                                   [v.encode('utf-8') for v in value.keys()]))
+
         self.dataChanged.emit(index, index, [role])
-        self._file_write()
         return True
 
     def insertRows(self, row, count, parent=None):
-        if self._file is None:
-            return False
 
         super(QAbstractListModel, self).beginInsertRows(QModelIndex(), row, row + count - 1)
         for i in range(count):
@@ -119,13 +59,10 @@ class ConnexionWrapper(QAbstractListModel):
         return True
 
     def removeRows(self, row, count, parent=None):
-        if self._file is None:
-            return False
 
         super(QAbstractListModel, self).beginRemoveRows(QModelIndex(), row, row + count - 1)
         for i in range(count):
             del self._data[row]
-        self._file_write()
         super(QAbstractListModel, self).endRemoveRows()
         return True
 
@@ -133,7 +70,7 @@ class ConnexionWrapper(QAbstractListModel):
         return Qt.ItemIsEditable | Qt.ItemIsEnabled | Qt.ItemIsSelectable
 
     def roleNames(self):
-        return {Qt.UserRole + 1: b"text"}
+        return self._roles
 
     countChanged = pyqtSignal()
 
@@ -151,20 +88,23 @@ class ConnexionWrapper(QAbstractListModel):
 
     @pyqtSlot(int, result=bool)
     def remove(self, index):
-        if self._file is None:
-            return False
 
         super(QAbstractListModel, self).beginRemoveRows(QModelIndex(), index, index)
         del self._data[index]
         super(QAbstractListModel, self).endRemoveRows()
-        self._file_write()
         return True
 
     @pyqtSlot(int, result=str)
     def get(self, index):
-        if self._file is None:
-            return None
-        return self._data[index]
+        return self._data[index][role_name]
+
+    @pyqtProperty(bool)
+    def justCreated(self):
+        return self._just_created
+
+    @pyqtSlot(str, result=int)
+    def findIndexByName(self, value):
+        return [i for i in range(len(self._data)) if self._data[i] == value][0]
 
     @pyqtProperty(str)
     def file(self):
@@ -174,16 +114,9 @@ class ConnexionWrapper(QAbstractListModel):
     def file(self, value):
         self._file = value
         if os.path.isfile(self._file) and os.path.getsize(self._file) > 0:
-            with open(self._file, 'r') as f:
-                self._data = json.load(f)
+            self._file_read()
         else:
             self._just_created = True
             self._data = []
 
-    @pyqtProperty(bool)
-    def justCreated(self):
-        return self._just_created
 
-    @pyqtSlot(str, result=int)
-    def findIndexByName(self, value):
-        return [i for i in range(len(self._data)) if self._data[i] == value][0]
