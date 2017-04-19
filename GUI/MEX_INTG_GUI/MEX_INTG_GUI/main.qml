@@ -9,6 +9,6 @@ MEX_INTG_GUI {
     title: "MEX_INTG_GUI"
 
     MyModel: CustomModel {
-        file: "choice_cnx.csv"
+
     }
 }
