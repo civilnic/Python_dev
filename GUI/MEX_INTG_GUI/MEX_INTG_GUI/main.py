@@ -1,6 +1,6 @@
 import sys
 import csv
-from GUI.MEX_INTG_GUI.MEX_INTG_GUI.Connexion_Wrapper import CustomModel
+from GUI.MEX_INTG_GUI.MEX_INTG_GUI.Connexion_Wrapper import CustomModel,TestModel
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import QQmlApplicationEngine
@@ -58,13 +58,11 @@ if __name__ == '__main__':
             if errors:
                 print (errors[0].description())
 
-
-
     myApp = QApplication(sys.argv)
-    qmlRegisterType(CustomModel, 'CustomModel', 1, 0, 'CustomModel')
+    qmlRegisterType(TestModel, 'TestModel', 1, 0, 'TestModel')
     appLabel = QQuickView()
     appLabel.statusChanged.connect(handleStatusChange)
-    ctxt = appLabel.rootContext()
+
     appLabel.setSource(QUrl(_qml))
 
     try:

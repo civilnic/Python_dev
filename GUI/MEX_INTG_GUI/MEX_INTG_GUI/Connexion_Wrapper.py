@@ -3,12 +3,36 @@ import csv
 from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QAbstractListModel, QModelIndex, Qt,QAbstractItemModel
 
 
+
+class TestModel(QAbstractListModel):
+
+    def __init__(self):
+
+        QAbstractListModel.__init__(self)
+
+        self._data = None
+        self._roles = {}
+        self._file = None
+        self._just_created = False
+
+
+
+
+
+
+
+
+
+
+
+
+
 class CustomModel(QAbstractListModel):
 
-    def __init__(self, data,  parent=None, *args):
+    def __init__(self,  parent=None, *args):
         QAbstractListModel.__init__(self, parent, *args)
 
-        self._data = data
+        self._data = None
         self._roles = {}
         self._file = None
         self._just_created = False
