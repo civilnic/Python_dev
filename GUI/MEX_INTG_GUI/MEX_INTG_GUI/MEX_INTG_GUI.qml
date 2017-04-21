@@ -5,9 +5,6 @@ import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     title: qsTr("CNX MERGE HMI")
-    width: 2100
-    height: 1000
-
 
     TableView {
         id: csvTab
