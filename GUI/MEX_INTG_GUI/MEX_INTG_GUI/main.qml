@@ -1,7 +1,7 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import TestModel 1.0
 
-MEX_INTG_GUI {
+Mex {
     width: 450
     height: 400
     visible: true
@@ -9,6 +9,5 @@ MEX_INTG_GUI {
 
     MyModel: TestModel {
         file: "choice_cnx.csv"
-
     }
 }

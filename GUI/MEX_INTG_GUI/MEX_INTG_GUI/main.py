@@ -34,7 +34,7 @@ from PyQt5.QtQml import qmlRegisterType
 #     #print (model.get(1,"Key"))
 #
 #     app = QApplication(sys.argv)
-#     qmlRegisterType(CustomModel, 'CustomModel', 1, 0, 'CustomModel')
+#     qmlRegisterType(TestModel, 'TestModel', 1, 0, 'TestModel')
 #     engine = QQmlApplicationEngine()
 #     engine.setOutputWarningsToStandardError(True)
 #

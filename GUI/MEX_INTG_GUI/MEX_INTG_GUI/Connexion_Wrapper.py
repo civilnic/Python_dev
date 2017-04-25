@@ -5,19 +5,84 @@ from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QAbstractListModel,
 
 
 class TestModel(QAbstractListModel):
+    def __init__(self, data, parent=None, *args):
+        QAbstractListModel.__init__(self, parent, *args)
 
-    def __init__(self):
-
-        QAbstractListModel.__init__(self)
-
-        self._data = None
+        self._data = data
         self._roles = {}
         self._file = None
         self._just_created = False
 
+    countChanged = pyqtSignal()
+
+    @pyqtProperty(int, notify=countChanged)
+    def count(self):
+        pass
+
+    @pyqtSlot(int, str, result=bool)
+    def insert(self, row, value):
+        pass
+
+    @pyqtSlot(str, result=bool)
+    def append(self, value):
+        pass
 
 
+    @pyqtSlot(int, str, result=str)
+    def get(self, index, role_name):
+        pass
 
+    @pyqtSlot(int, str, result=str)
+    def set(self, index, role_name):
+        pass
+
+    @pyqtSlot(int, result=bool)
+    def remove(self, index):
+        pass
+
+    @pyqtProperty(str)
+    def file(self):
+        return self._file
+
+    @file.setter
+    def file(self, value):
+        self._file = value
+        if os.path.isfile(self._file) and os.path.getsize(self._file) > 0:
+            self._file_read()
+        else:
+            self._just_created = True
+            self._data = []
+
+    # def _file_read(self):
+    #     if self._file is None:
+    #         return False
+    #
+    # #     with open(self._file, 'r') as _csvFile:
+    #
+    #         _reader = csv.reader(_csvFile, delimiter=';')
+    #         _csv = []
+    #
+    #         for _line in _reader:
+    #             self._data.append(_line)
+    #
+    #         self._data = _csv[1:]
+    #
+    #         for k in _csv[0]:
+    #             self._roles[_csv[0].index(k)] = _csv[0][_csv[0].index(k)].encode('utf-8')
+    #
+    # @pyqtProperty(str)
+    # def file(self):
+    #     return self._file
+    #
+    #
+    # @file.setter
+    # def file(self, fileName):
+    #     self._file = fileName
+    #     if os.path.isfile(self._file) and os.path.getsize(self._file) > 0:
+    #         self._file_read()
+    #     else:
+    #         self._just_created = True
+    #         self._data = []
 
 
 
