@@ -94,10 +94,10 @@ class TestModel(QAbstractListModel):
 
 class CustomModel(QAbstractListModel):
 
-    def __init__(self,  parent=None, *args):
+    def __init__(self, data, parent=None, *args):
         QAbstractListModel.__init__(self, parent, *args)
 
-        self._data = None
+        self._data = data
         self._roles = {}
         self._file = None
         self._just_created = False
@@ -216,6 +216,7 @@ class CustomModel(QAbstractListModel):
     @file.setter
     def file(self, value):
         self._file = value
+
         if os.path.isfile(self._file) and os.path.getsize(self._file) > 0:
             self._file_read()
         else:

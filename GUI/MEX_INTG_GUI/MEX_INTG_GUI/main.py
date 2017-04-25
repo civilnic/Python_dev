@@ -59,7 +59,7 @@ if __name__ == '__main__':
                 print (errors[0].description())
 
     myApp = QApplication(sys.argv)
-    qmlRegisterType(TestModel, 'TestModel', 1, 0, 'TestModel')
+    qmlRegisterType(CustomModel, 'CustomModel', 1, 0, 'CustomModel')
     appLabel = QQuickView()
     appLabel.statusChanged.connect(handleStatusChange)
 
