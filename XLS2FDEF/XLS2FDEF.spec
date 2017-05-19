@@ -3,8 +3,8 @@
 block_cipher = None
 
 
-a = Analysis(['D:\\SVN_SOGETI\\2016\\M3S401-OCASIME_VIRTUAL\\01-Management\\07-Delivery\\OCASIME\\2016_1072_SA_NEO_Amelioration_Process\\04-Internal_Step\\Python_dev\\XLS2FDEF\\XLS2FDEF.py'],
-             pathex=['D:\\SVN_SOGETI\\2016\\M3S401-OCASIME_VIRTUAL\\01-Management\\07-Delivery\\OCASIME\\2016_1072_SA_NEO_Amelioration_Process\\04-Internal_Step\\Python_dev\\XLS2FDEF'],
+a = Analysis(['D:\\SVN_SOGETI\\CAPITALISATION\\OCASIME\\Project_Tools\\PYTHON_TOOLS\\Python_dev\\XLS2FDEF\\XLS2FDEF.py'],
+             pathex=['D:\\SVN_SOGETI\\CAPITALISATION\\OCASIME\\Project_Tools\\PYTHON_TOOLS\\Python_dev\\XLS2FDEF'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -25,4 +25,4 @@ exe = EXE(pyz,
           debug=False,
           strip=False,
           upx=True,
-          console=True , icon='D:\\SVN_SOGETI\\2016\\M3S401-OCASIME_VIRTUAL\\01-Management\\07-Delivery\\OCASIME\\2016_1072_SA_NEO_Amelioration_Process\\04-Internal_Step\\Python_dev\\Compilation\\Python.ico')
+          console=True , icon='D:\\SVN_SOGETI\\CAPITALISATION\\OCASIME\\Project_Tools\\PYTHON_TOOLS\\Python_dev\\Compilation\\Python.ico')

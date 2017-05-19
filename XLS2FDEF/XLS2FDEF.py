@@ -62,7 +62,7 @@ def main():
     _modName = options.modName
     _version = options.version
 
-    if (_xls is None) or (_modName is None) or (_version is None) or (len(args) == 0):
+    if (_xls is None) or (_modName is None) or (_version is None):
         parser.error("incorrect number of arguments")
 
 
