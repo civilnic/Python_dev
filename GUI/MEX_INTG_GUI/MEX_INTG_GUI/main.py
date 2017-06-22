@@ -54,16 +54,18 @@ if __name__ == '__main__':
     # Prints QML errors
     def handleStatusChange(status):
         if status == QQuickView.Error:
-            errors = appLabel.errors()
+            errors = view.errors()
             if errors:
                 print (errors[0].description())
 
     myApp = QApplication(sys.argv)
-    qmlRegisterType(CustomModel, 'CustomModel', 1, 0, 'CustomModel')
-    appLabel = QQuickView()
-    appLabel.statusChanged.connect(handleStatusChange)
+    qmlRegisterType(TestModel, 'TestModel', 1, 0, 'TestModel')
 
-    appLabel.setSource(QUrl(_qml))
+    view = QQuickView()
+    view.rootContext().setContextProperty('fromPython', "text de la nasa")
+    view.statusChanged.connect(handleStatusChange)
+
+    view.setSource(QUrl(_qml))
 
     try:
         sys.exit(myApp.exec_())

@@ -8,6 +8,7 @@ ApplicationWindow
     property var MyModel
 
     TableView {
+
         id: csvTab
         anchors.fill: parent
 
