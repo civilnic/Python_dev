@@ -56,63 +56,105 @@ class BDS_EIS(BDS):
 
     def ParseLine(self, DicoLine):
 
-        if not DicoLine["NOM_BLOC"]:
-            return None
+        #
+        # treatment for "normal" label (BNR, DIS etc...)
+        #
+        if DicoLine["TYPE_UTIL_CONT"] == "NORMAL":
 
-        if int(DicoLine["NOM_BLOC"]) != 1:
-            return None
+            if int(DicoLine["NOM_BLOC"]) != 1:
+                return None
 
-        LabelObj = A429Label(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["FORMAT_BLOC"], DicoLine["SENS"], DicoLine["NOM_SOUS_ENS"])
-        LabelObj.input_trans_rate = DicoLine["FREQU_CONT"]
-        LabelObj.source = DicoLine["NOM_SUPP"]
+            LabelObj = A429Label(DicoLine["LABEL"], DicoLine["SDI"], DicoLine["FORMAT_BLOC"], DicoLine["SENS"], DicoLine["NOM_SOUS_ENS"])
+            LabelObj.input_trans_rate = DicoLine["FREQU_CONT"]
+            LabelObj.source = DicoLine["NOM_SUPP"]
 
-        LabelObj = self.add_Label(LabelObj)
+            LabelObj = self.add_Label(LabelObj)
 
-        SetLabelFormattedName(LabelObj)
+            SetLabelFormattedName(LabelObj)
 
-        if DicoLine['FORMAT_PARAM'] == "BNR":
+            if DicoLine['FORMAT_PARAM'] == "BNR":
 
-            ParamObj = A429ParamBNR(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
-                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBNR(DicoLine["TAILLE"], DicoLine["ECHEL"]))
-            ParamObj.signed = DicoLine["SIGNE"]
+                ParamObj = A429ParamBNR(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
+                                        DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBNR(DicoLine["TAILLE"], DicoLine["ECHEL"]))
+                ParamObj.signed = DicoLine["SIGNE"]
 
-        elif DicoLine['FORMAT_PARAM'] == "BCD":
-            ParamObj = A429ParamBCD(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
-                                    DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBCD(DicoLine["TAILLE"], DicoLine["ECHEL"]))
-            ParamObj.signed = DicoLine["SIGNE"]
+            elif DicoLine['FORMAT_PARAM'] == "BCD":
+                ParamObj = A429ParamBCD(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"],
+                                        DicoLine["TAILLE"], DicoLine["ECHEL"], self.ComputeResolutionBCD(DicoLine["TAILLE"], DicoLine["ECHEL"]))
+                ParamObj.signed = DicoLine["SIGNE"]
 
-        elif DicoLine['FORMAT_PARAM'] == "DW":
-            ParamObj = A429ParamDIS(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number)
-            ParamObj.BitNumber = DicoLine["POSITION"]
-            ParamObj.state0 = DicoLine["ETAT0"]
-            ParamObj.state1 = DicoLine["ETAT1"]
-
-
-        elif DicoLine['FORMAT_PARAM'] == "ISO5":
-
-            ParamObj = A429ParamISO5(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"], DicoLine["TAILLE"])
+            elif DicoLine['FORMAT_PARAM'] == "DW":
+                ParamObj = A429ParamDIS(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number)
+                ParamObj.BitNumber = DicoLine["POSITION"]
+                ParamObj.state0 = DicoLine["ETAT0"]
+                ParamObj.state1 = DicoLine["ETAT1"]
 
 
-        elif DicoLine['FORMAT_PARAM'] == "Opaque":
+            elif DicoLine['FORMAT_PARAM'] == "ISO5":
 
-            ParamObj = A429ParamOpaque(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"], DicoLine["TAILLE"])
+                ParamObj = A429ParamISO5(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"], DicoLine["TAILLE"])
 
-        else:
-            #print ("[BDS_EIS][ParseLine] Type non reconnu: " + DicoLine['FORMAT_PARAM'])
+
+            elif DicoLine['FORMAT_PARAM'] == "Opaque":
+
+                ParamObj = A429ParamOpaque(DicoLine["NOM_PARAM"], DicoLine["SENS"], LabelObj.number, DicoLine["POSITION"], DicoLine["TAILLE"])
+
+            else:
+                #print ("[BDS_EIS][ParseLine] Type non reconnu: " + DicoLine['FORMAT_PARAM'])
+                return LabelObj
+
+            ParamObj.formatparam = DicoLine['FORMAT_PARAM']
+            ParamObj.nombloc = DicoLine["NOM_BLOC"]
+            ParamObj.libbloc = DicoLine["LIB_BLOC"]
+            ParamObj.comments = DicoLine["LIB_PARAM"]
+            ParamObj.parameter_def = DicoLine["LIB_PARAM"]
+            ParamObj.unit = DicoLine["UNITE"]
+
+            LabelObj.refParameter(ParamObj)
+
+            SetParameterPreFormattedName(ParamObj)
+
+            return LabelObj
+        #
+        #   Treatment of frame label
+        #
+        elif DicoLine["TYPE_UTIL_CONT"] == "TRAME":
+
+            #
+            # create label object type = "Frame"
+            #
+            LabelObj = A429Label(DicoLine["LABEL"], DicoLine["SDI"], "Frame", DicoLine["SENS"], DicoLine["NOM_SOUS_ENS"])
+            LabelObj.input_trans_rate = DicoLine["FREQU_CONT"]
+            LabelObj.source = DicoLine["NOM_SUPP"]
+
+            LabelObj = self.add_Label(LabelObj)
+
+            SetLabelFormattedName(LabelObj)
+
+            #
+            # create parameter object type = opaque
+            # Parameter name is set to "BUFFER" because field is empty on BDS EIS.
+            # We assume that all label content is used => position = bit 29 / size = 18
+
+            ParamObj = A429ParamOpaque("BUFFER", DicoLine["SENS"], LabelObj.number, 29, 18)
+
+            ParamObj.formatparam = "Opaque"
+            # ParamObj.nombloc = DicoLine["NOM_BLOC"]
+            # ParamObj.libbloc = DicoLine["LIB_BLOC"]
+            # ParamObj.comments = DicoLine["LIB_PARAM"]
+            ParamObj.parameter_def = DicoLine["LIB_PARAM"]
+            # ParamObj.unit = DicoLine["UNITE"]
+
+            LabelObj.refParameter(ParamObj)
+
+            SetParameterPreFormattedName(ParamObj)
+
+            LabelObj.print(DisplayParam=True)
+
             return LabelObj
 
-        ParamObj.formatparam = DicoLine['FORMAT_PARAM']
-        ParamObj.nombloc = DicoLine["NOM_BLOC"]
-        ParamObj.libbloc = DicoLine["LIB_BLOC"]
-        ParamObj.comments = DicoLine["LIB_PARAM"]
-        ParamObj.parameter_def = DicoLine["LIB_PARAM"]
-        ParamObj.unit = DicoLine["UNITE"]
-
-        LabelObj.refParameter(ParamObj)
-
-        SetParameterPreFormattedName(ParamObj)
-
-        return LabelObj
+        else:
+            return None
 
 def SetLabelFormattedName(LabelObj):
 

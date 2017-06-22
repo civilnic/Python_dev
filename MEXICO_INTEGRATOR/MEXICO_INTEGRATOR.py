@@ -698,6 +698,10 @@ def parseCsvFile(csvFile, flowFile):
                                             logger.info("\t\t\tinit required in csv: " + _channelObj.init)
                                             logger.info("\t\t\t=> nothing to do for this channel: ")
                                             continue
+                                        if float(_mexChannelObj.init) != float(_channelObj.init):
+                                            logger.info("\t\t\tinit required in csv: " + _channelObj.init)
+                                            logger.info("\t\t\t=> apply for this channel: " + _channelObj.init)
+                                            break
                                     if _channelObj.init is not None:
                                         # if channel init is set to 0 => do not add into InitFile
                                         if float(_channelObj.init) == 0.0:
