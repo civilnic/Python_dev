@@ -111,12 +111,13 @@ def main():
     # _ create flow between FDEF and dedicated system
     #
 
-    with open(ToolConfigDict["FLOT"], 'w') as csvfile:
-        fieldnames = ['Producer_Model / Occ', 'Producer_variable' , 'Operator', 'SDB_Channel_Name', 'Init_Value',
-                      'Operator', 'Consumer_Model / Occ', 'Consumer_variable']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
+    if _flot:
+        with open(ToolConfigDict["FLOT"], 'w') as csvfile:
+            fieldnames = ['Producer_Model / Occ', 'Producer_variable' , 'Operator', 'SDB_Channel_Name', 'Init_Value',
+                          'Operator', 'Consumer_Model / Occ', 'Consumer_variable']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
 
-        writer.writeheader()
+            writer.writeheader()
 
     if _fwc:
         _syst = 'FWC'
@@ -124,7 +125,7 @@ def main():
         # parse BDS FWC
         _bdsFWC = BDS_FWC(ToolConfigDict[_syst]["BDS"], _xml)
 
-        _LabelListFWC = ComputeFDEF_XML_BDS(_bdsFWC,_syst)
+        _LabelListFWC = ComputeFDEF_XML_BDS(_bdsFWC, _syst)
 
     if _eis:
         _syst = 'EIS'
@@ -132,7 +133,7 @@ def main():
         # parse BDS FWC
         _bdsEIS = BDS_EIS(ToolConfigDict[_syst]["BDS"], _xml)
 
-        _LabelListEIS = ComputeFDEF_XML_BDS(_bdsEIS,_syst)
+        _LabelListEIS = ComputeFDEF_XML_BDS(_bdsEIS, _syst)
 
     if _sdac:
         _syst = 'SDAC'
@@ -140,7 +141,7 @@ def main():
         # parse BDS FWC
         _bdsSDAC = BDS_SDAC(ToolConfigDict[_syst]["BDS"], _xml)
 
-        _LabelListSDAC = ComputeFDEF_XML_BDS(_bdsSDAC,_syst)
+        _LabelListSDAC = ComputeFDEF_XML_BDS(_bdsSDAC, _syst)
 
 
 
