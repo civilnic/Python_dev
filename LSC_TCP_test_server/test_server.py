@@ -157,14 +157,16 @@ class ClientThread(threading.Thread):
         self.clientsocket = clientsocket
         self.multicastIP = IPMulticast
         self.dataServObj = dataservobj
+        self.running = False
 
         print("[+] Nouveau thread pour %s %s" % (self.ip, self.port,))
 
     def run(self):
 
+        self.running = True
         print("Connection de %s %s" % (self.ip, self.port,))
 
-        while True:
+        while self.running is True:
 
             # initialise empty buffer
             _headerBuffer = bytearray(50)
@@ -194,7 +196,8 @@ class ClientThread(threading.Thread):
             if _command not in Commands.keys():
                 print("Unknown command: "+_command)
                 print("Client déconnecté...")
-                exit(1)
+                self.running = False
+                break
 
             _bodyContent = ()
 
@@ -223,7 +226,8 @@ class ClientThread(threading.Thread):
             if _Hanswer is None:
                 print("ERROR ...")
                 print("Client déconnecté...")
-                exit(1)
+                self.running = False
+                break
             # send header
             self.clientsocket.send(_Hanswer)
 
@@ -232,12 +236,15 @@ class ClientThread(threading.Thread):
                 # send body
                 self.clientsocket.send(_Banswer)
 
+
             if _flag == "END_OF_CONNEXION":
-                print("Client déconnecté...")
-                exit(0)
+                print("END_OF_CONNEXION: Client déconnecté...")
 
+                self.running = False
+                break
 
-
+    def stop(self):
+        self.running = False
 
 
 
@@ -288,7 +295,8 @@ class ClientThread(threading.Thread):
                             return (None, None, None)
 
                     _body = BodyListContent[1] + SEPARATOR
-                    _body += str(_listObj.get_paramNumber()) + SEPARATOR
+                    print("get_paramNumber: "+ str(_listObj.get_paramNumber()))
+                    _body += str(_listObj.get_paramNumber())
 
                     for _paramName in _listObj.get_paramList():
                         _paramObj = _listObj.get_paramObj(_paramName)
@@ -347,9 +355,9 @@ if __name__ == '__main__':
     _myDataServerObj = DataServer(sys.argv[1])
     tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     tcpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    tcpsock.bind(("", 1111))
+    tcpsock.bind(("", int(sys.argv[2])))
 
-    _multicastAddress = sys.argv[2]
+    _multicastAddress = sys.argv[3]
 
     while True:
         tcpsock.listen(10)

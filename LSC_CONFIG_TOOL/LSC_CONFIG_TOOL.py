@@ -193,7 +193,7 @@ def main():
 
     _input_file = sys.argv[1]
 
-    _bdsMod = BDSModifier(_input_file, "Param SIMU1")
+    _bdsMod = BDSModifier(_input_file, sys.argv[2])
     _bdsMod.save("test.xls")
 
 
